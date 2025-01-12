@@ -1,0 +1,6 @@
+{{- if hasKey .git "personal" }}
+[user]
+  name = {{ .git.personal.username }}
+  email = {{ .git.personal.email }}
+  signingkey = 20AC86EE49130589
+{{- end }}

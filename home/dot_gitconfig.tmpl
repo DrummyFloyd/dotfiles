@@ -1,0 +1,61 @@
+# vim: ft=gitconfig
+[user]
+{{- if .git.default | eq "personal" }}
+  email = {{ .git.personal.email }}
+  name = {{ .git.personal.username }}
+  signingkey = 20AC86EE49130589
+{{- else }}
+  email = {{ .git.work.email }}
+  name = {{ .git.work.username }}
+{{- end }}
+
+[color]
+	ui = always
+
+[alias]
+   co = checkout
+   ci = commit
+   st = status
+   br = branch
+   lg = log --pretty=format:'%C(yellow)%h%Creset -%C(red)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit
+   rdiff = "!git log \"$1\"...\"$2\"  --pretty=format:\"- %s\" --reverse"
+
+[core]
+   editor = nvim
+   abbrev = 12
+   sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null
+
+[pretty]
+	shasum = "Sha1: %h (\"%s\")"
+
+[fetch]
+  prune = true
+
+[init]
+	defaultBranch = main
+
+[push]
+	autoSetupRemote = true
+
+[pull]
+  rebase = true
+
+[merge]
+    tool = nvim
+
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[gpg]
+	program = /usr/bin/gpg
+{{ if .git.default | eq "work" }}
+[includeIf "gitdir:/home/{{ .chezmoi.username }}/.local/share/chezmoi/**"]
+  path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
+[includeIf "gitdir:/home/{{ .chezmoi.username }}/Documents/OSS/**"]
+  path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
+{{- end -}}
+
+{{ if hasKey .git "work" }}
+[includeIf "gitdir:/home/{{ .chezmoi.username }}/Documents/Work/**"]
+  path = /home/{{ .chezmoi.username }}/.config/gitconfig/work
+{{- end -}}
