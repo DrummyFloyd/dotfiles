@@ -1,0 +1,6 @@
+{{- if .ssh.personalSsh -}}
+Host core-si
+  Hostname {{ (rbwFields "personalSshKeys").siCore.value }}
+  user ubuntu
+  Port 22
+{{- end }}
