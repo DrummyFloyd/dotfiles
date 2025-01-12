@@ -39,6 +39,7 @@ export ZSH_FZF_HISTORY_SEARCH_FZF_EXTRA_ARGS=" --border-label=History_Search"
 
 # Path append
 ## fnm init lts version
+export PATH=${HOME}/.local/bin/scripts/:${PATH}
 export PATH=${HOME}/.local/share/fnm:${PATH}
 export PATH=${HOME}/.local/bin:${PATH} # python binaries
 export PATH=${HOME}/bin:/usr/local/bin:${HOME}/.local/:${PATH}
