@@ -1,0 +1,10 @@
+#!/bin/bash
+
+mkdir -p /home/{{ .chezmoi.username }}/Documents/OSS/Github
+mkdir -p /home/{{ .chezmoi.username }}/Documents/OSS/Gitlab
+{{ if hasKey .git "work" }}
+mkdir -p /home/{{ .chezmoi.username }}/Documents/Work
+{{- end -}}
+{{ if hasKey .git "personal" }}
+mkdir -p /home/{{ .chezmoi.username }}/Documents/Personal
+{{ end -}}
