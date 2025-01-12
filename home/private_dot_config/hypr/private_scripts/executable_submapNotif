@@ -1,0 +1,19 @@
+#!/bin/bash
+
+iDIR="$HOME/.config/icons"
+
+notify_user() {
+  notify-send -h string:x-canonical-private-synchronous:hyprland -u low -i "${iDIR}/hyprland.png" "Submap: ${1}"
+}
+
+handle() {
+  if [[ ${1:0:6} == "submap" ]]; then
+    if [[ -n ${1#*submap>>} ]]; then
+      submap="${1#*submap>>}"
+      notify_user "${submap}"
+    else
+      notify_user "disabled"
+    fi
+  fi
+}
+socat -U - UNIX-CONNECT:"${XDG_RUNTIME_DIR}"/hypr/"${HYPRLAND_INSTANCE_SIGNATURE}"/.socket2.sock | while read line; do handle "${line}"; done

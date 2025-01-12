@@ -1,0 +1,43 @@
+#!/bin/bash
+iDIR="$HOME/.config/icons"
+
+monitors=$(hyprctl monitors -j | jq -r '.[] | "󰍹 id: \(.id) - \(.name)"')
+lenght_lines=$(hyprctl monitors -j | jq '. | length')
+
+# show wofi menu
+
+notify_user() {
+  notify-send -u low -i "${iDIR}/hyprland.png" "${1}"
+}
+
+check_if_only_one_monitor() {
+  if [ "${1}" == "1" ]; then
+    notify_user "Only one monitor is detected"
+    exit 1
+  else
+    echo "DEBUG: More than one monitor is detected => ${1}"
+  fi
+}
+
+disable_monitor() {
+  disabled_monitor=$(hyprctl monitors -j | jq -r --arg name "${1}" '.[] | select(.name != $name ) | .name')
+  if [[ "${disabled_monitor}" == *"${1}"* ]]; then
+    echo "Script Canceled or No monitor to disable or issue with the monitor switch"
+    echo "DEBUG: \$disabled_monitor=> ${disabled_monitor//$'\n'/ }"
+  else
+    hyprctl keyword monitor "${disabled_monitor}, disable"
+    notify_user "Monitor Dropped: ${disabled_monitor}"
+    notify_user "Main Monitor: ${selected_monitor}"
+    # INFO: Restart dunst to fix the issue with the notification
+    systemctl --user restart dunst.service
+  fi
+}
+
+# disable all monitors except the selected one
+check_if_only_one_monitor "${lenght_lines}"
+# used trap to avoid issue on wofi exit
+selected_monitor=$(echo -e "${monitors}" | wofi --show dmenu --lines '$({lenght_lines} + 1)' --prompt "Select Monitor" -W 15% -H 15% --hide-scroll | awk $'{print $NF}')
+trap 'disable_monitor "${selected_monitor}"' EXIT
+
+# kill all wofi instances
+pkill wofi

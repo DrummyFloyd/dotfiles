@@ -1,0 +1,89 @@
+#!/bin/bash
+
+iDIR="$HOME/.config/icons"
+VOLUME_LIMIT=1.2
+DEFAULT_SINK=@DEFAULT_AUDIO_SINK@
+DEFAULT_SOURCE=@DEFAULT_AUDIO_SOURCE@
+
+# Get Volume
+get_volume() {
+  volume=$(wpctl get-volume ${DEFAULT_SINK} | awk '{print $2 * 100}')
+  echo "$volume"
+}
+get_status_sink() {
+  status=$(wpctl get-volume ${DEFAULT_SINK} | awk '{print $3}')
+  echo "$status"
+}
+get_status_source() {
+  status=$(wpctl get-volume ${DEFAULT_SOURCE} | awk '{print $3}')
+  echo "$status"
+}
+
+# Get icons
+get_icon() {
+  current=$(get_volume)
+  if [[ "$current" -eq "0" ]]; then
+    echo "$iDIR/volume-mute.png"
+  elif [[ ("$current" -ge "0") && ("$current" -le "30") ]]; then
+    echo "$iDIR/volume-low.png"
+  elif [[ ("$current" -ge "30") && ("$current" -le "60") ]]; then
+    echo "$iDIR/volume-mid.png"
+  elif [[ ("$current" -ge "60") ]]; then
+    echo "$iDIR/volume-high.png"
+  fi
+}
+
+# Notify
+notify_user() {
+  notify-send "Volume: $(get_volume)% " -h string:x-canonical-private-synchronous:audio -i "$(get_icon)" -h int:value:"$(get_volume)"
+}
+
+# Increase Volume
+inc_volume() {
+  if [ -n "$(get_status_sink)" ]; then
+    wpctl set-mute ${DEFAULT_SINK} 0
+  fi
+  wpctl set-volume ${DEFAULT_SINK} 5%+ --limit ${VOLUME_LIMIT} && notify_user
+}
+
+# Decrease Volume
+dec_volume() {
+  if [ -n "$(get_status_sink)" ]; then
+    wpctl set-mute ${DEFAULT_SINK} 0
+  fi
+  wpctl set-volume ${DEFAULT_SINK} 5%- && notify_user
+}
+
+# Toggle Mute
+toggle_mute() {
+  if [ -z "$(get_status_sink)" ]; then
+    wpctl set-mute ${DEFAULT_SINK} 1 toggle && notify-send -h string:x-canonical-private-synchronous:audio -u low -i "$iDIR/volume-mute.png" "Volume Muted"
+  else
+    wpctl set-mute ${DEFAULT_SINK} 0 && notify-send -h string:x-canonical-private-synchronous:audio -u low -i "$(get_icon)" "Volume Unmuted"
+  fi
+}
+
+# Toggle Mic
+toggle_mic() {
+  if [ -z "$(get_status_source)" ]; then
+    wpctl set-mute ${DEFAULT_SOURCE} 1 && notify-send -h string:x-canonical-private-synchronous:audio -u low -i "$iDIR/microphone-mute.png" "microphone Muted"
+  else
+    wpctl set-mute ${DEFAULT_SOURCE} 0 && notify-send -h string:x-canonical-private-synchronous:audio -u low -i "$iDIR/microphone.png" "Microphone Unmuted"
+  fi
+}
+
+# Execute accordingly
+if [[ "$1" == "--get" ]]; then
+  get_volume
+elif [[ "$1" == "--inc" ]]; then
+  inc_volume
+elif [[ "$1" == "--dec" ]]; then
+  dec_volume
+elif [[ "$1" == "--toggle" ]]; then
+  toggle_mute
+elif [[ "$1" == "--toggle-mic" ]]; then
+  toggle_mic
+else
+  echo "Usage: $0 --get | --inc | --dec | --toggle | --toggle-mic"
+  exit 1
+fi

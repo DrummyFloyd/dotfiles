@@ -1,0 +1,76 @@
+/* from https://github.com/MrjmonnetRajan/Hypr-Dots/tree/main gruvMinimal*/
+window {
+  font-family:
+    CaskaydiaCove Nerd Font,
+    monospace;
+  font-size: 12pt;
+  color: #cde5f4;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+button {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 60%;
+  border: none;
+  color: #fbf1c7;
+  text-shadow: none;
+  border-radius: 20px 20px 20px 20px;
+  background-color: rgba(1, 121, 111, 0);
+  margin: 5px;
+  transition:
+    box-shadow 0.2s ease-in-out,
+    background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: rgba(213, 196, 161, 0.1);
+}
+
+#lock {
+  background-image: image(url("/home/jmonnet/.config/wlogout/icons/lock.png"));
+  background-size: 15%;
+}
+#lock:focus,
+#lock:hover {
+  background-image: image(
+    url("/home/jmonnet/.config/wlogout/icons/lock-hover.png")
+  );
+}
+
+#logout {
+  background-image: image(
+    url("/home/jmonnet/.config/wlogout/icons/logout.png")
+  );
+  background-size: 14%;
+}
+#logout:focus,
+#logout:hover {
+  background-image: image(
+    url("/home/jmonnet/.config/wlogout/icons/logout-hover.png")
+  );
+}
+
+#shutdown {
+  background-image: image(url("/home/jmonnet/.config/wlogout/icons/power.png"));
+  background-size: 14%;
+}
+#shutdown:focus,
+#shutdown:hover {
+  background-image: image(
+    url("/home/jmonnet/.config/wlogout/icons/power-hover.png")
+  );
+}
+
+#reboot {
+  background-image: image(
+    url("/home/jmonnet/.config/wlogout/icons/restart.png")
+  );
+  background-size: 14%;
+}
+#reboot:focus,
+#reboot:hover {
+  background-image: image(
+    url("/home/jmonnet/.config/wlogout/icons/restart-hover.png")
+  );
+}
