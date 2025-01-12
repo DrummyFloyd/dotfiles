@@ -1,0 +1,51 @@
+#!/bin/bash
+# Save this as ~/.local/bin/organized-git-clone or another location in your PATH
+
+# Function to extract path components from URL
+parse_url() {
+  local url="$1"
+  # Remove protocol prefix and .git suffix
+  local clean_url=$(echo "$url" | sed 's|^https\?://||' | sed 's/\.git$//')
+
+  # Remove the domain (github.com, gitlab.com, etc.)
+  local without_domain=$(echo "$clean_url" | cut -d'/' -f2-)
+
+  echo "$without_domain"
+}
+
+# Check if a URL is provided
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <repository-url> [git-clone-options]"
+  exit 1
+fi
+
+# Get the repository URL
+repo_url="$1"
+shift # Remove the URL from arguments, leaving any additional git clone options
+
+# Extract the path components
+path=$(parse_url "$repo_url")
+
+# Create the directory structure
+mkdir -p "$path"
+
+# Navigate to the parent directory
+parent_dir=$(dirname "$path")
+if [ "$parent_dir" != "." ]; then
+  cd "$parent_dir"
+fi
+
+# Get the final directory name
+target_dir=$(basename "$path")
+
+# Perform the git clone
+echo "Cloning into organized directory structure: $path"
+git clone "$repo_url" "$target_dir" "$@"
+
+# Print success message
+if [ $? -eq 0 ]; then
+  echo "Successfully cloned into $path"
+else
+  echo "Clone failed"
+  exit 1
+fi
