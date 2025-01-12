@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Define the directory where icons are stored
+iDIR="$HOME/.config/icons"
+
+# Get the current layout
+LAYOUT=$(hyprctl -j getoption general:layout | jq -r '.str')
+
+# Function to send a notification to the user
+notify_user() {
+  notify-send -h string:x-canonical-private-synchronous:hyprland -u low -i "${iDIR}/hyprland.png" "Layout: ${1}"
+}
+
+# Toggle between 'master' and 'dwindle'
+if [ "$LAYOUT" = "master" ]; then
+  # If current layout is 'master', change it to 'dwindle'
+  hyprctl keyword general:layout "dwindle"
+  notify_user "Dwindle"
+else
+  # Otherwise, change it to 'master'
+  hyprctl keyword general:layout "master"
+  notify_user "Master"
+fi

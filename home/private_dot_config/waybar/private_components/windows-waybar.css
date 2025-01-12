@@ -1,0 +1,21 @@
+window#waybar {
+  background: transparent;
+}
+
+tooltip {
+  background: black;
+  opacity: 0.8;
+  border: 1px solid rgba(100, 114, 125, 0.5);
+}
+tooltip label {
+  color: white;
+}
+#window {
+  margin-top: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  transition: none;
+  color: transparent;
+  background: transparent;
+}

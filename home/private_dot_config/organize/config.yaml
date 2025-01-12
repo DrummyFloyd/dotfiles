@@ -1,0 +1,161 @@
+# organize configuration file
+# https://organize.readthedocs.io
+
+rules:
+  - name: "Delete Duplicate"
+    locations:
+      - ~/Downloads/
+    subfolders: true
+    filters:
+      - duplicate
+      - name
+    actions:
+      - delete
+
+  - name: "Finds Yaml/Jsonfiles"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - yaml
+          - yml
+          - json
+    actions:
+      - echo: "Found Y(a)ml"
+      - move: ~/Downloads/Yaml
+
+  - name: "Finds Sounds"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - mp3
+          - wav
+    actions:
+      - echo: "Found Sonds"
+      - move: ~/Downloads/Sounds
+
+  - name: "Finds all patches"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - patch
+          - diff
+    actions:
+      - echo: "Found Patch"
+      - move: ~/Downloads/Patch
+
+  - name: "Finds PDF Files"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension: pdf
+    actions:
+      - echo: "Found PDF"
+      - move: ~/Downloads/PDF
+
+  - name: "Finds Videos Files"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - mp4
+          - mkv
+    actions:
+      - echo: "Found "
+      - move: ~/Videos/
+
+  - name: "Finds ISO Files"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension: iso
+    actions:
+      - echo: "Found ISO"
+      - move: ~/Downloads/ISO
+
+  - name: "Finds Images Files"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - jpg
+          - jpeg
+          - png
+          - svg
+          - gif
+          - webp
+    actions:
+      - echo: "Found Imgaes"
+      - move: ~/Downloads/Images
+
+  - name: "Finds Scripts"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - py
+          - sh
+    actions:
+      - echo: "Found Scripts"
+      - move: ~/Downloads/Scripts
+
+  - name: "Finds Archives"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - zip
+          - tar
+          - tar.gz
+          - gz
+          - rar
+    actions:
+      - echo: "Found Archives"
+      - move: ~/Downloads/Archives
+  - name: "Finds Torrents"
+    locations:
+      - ~/Downloads/
+    filters:
+      - extension:
+          - torrent
+    actions:
+      - echo: "Found Torrents"
+      - move: ~/Downloads/Torrents
+
+  - name: "Move screenCapture to Pictures/screenCapture"
+    locations:
+      - ~/Pictures
+    filters:
+      - name:
+          contains: grim
+    actions:
+      - move: ~/Pictures/screenCapture
+
+  - name: "Delete old screenCapture (grim)"
+    locations:
+      - ~/Pictures/screenCapture
+    filters:
+      - created:
+          months: 2
+    actions:
+      - delete
+
+  - name: "Move screenCapture to Pictures/codeSnap"
+    locations:
+      - ~/Pictures
+    filters:
+      - name:
+          contains: CodeSnap
+    actions:
+      - move: ~/Pictures/codeSnap
+
+  - name: "Delete old screenCapture (codeSnap)"
+    locations:
+      - ~/Pictures/codeSnap
+    filters:
+      - created:
+          months: 2
+    actions:
+      - delete

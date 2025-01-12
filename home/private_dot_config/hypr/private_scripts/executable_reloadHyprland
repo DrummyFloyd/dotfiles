@@ -1,0 +1,9 @@
+#!/bin/bash
+
+iDIR="$HOME/.config/icons"
+
+notify_user() {
+  notify-send -u low -i "${iDIR}/hyprland.png" "${1}"
+}
+
+hyprctl reload && notify_user "Config Reloaded"

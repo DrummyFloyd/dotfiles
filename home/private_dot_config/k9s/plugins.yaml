@@ -1,0 +1,279 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/derailed/k9s/master/internal/config/json/schemas/plugins.json
+plugins:
+  # View user-supplied values when the helm chart was created
+  helm-values:
+    shortCut: v
+    confirm: false
+    description: Values
+    scopes:
+      - helm
+    command: sh
+    background: false
+    args:
+      - -c
+      - "helm get values $COL-NAME -n $NAMESPACE --kube-context $CONTEXT | less -K"
+
+  #--- Create debug container for selected pod in current namespace
+  # See https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container
+  debug:
+    shortCut: Shift-D
+    description: Add debug container
+    scopes:
+      - containers
+    command: bash
+    background: false
+    confirm: true
+    args:
+      - -c
+      - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=nicolaka/netshoot:v0.13 --share-processes -- bash"
+  # remove finalizers from a stuck namespace
+  rm-ns:
+    shortCut: n
+    confirm: true
+    description: Remove NS Finalizers
+    scopes:
+      - namespace
+    command: sh
+    background: false
+    args:
+      - -c
+      - "kubectl get namespace $NAME -o json | jq '.spec.finalizers=[]' | kubectl replace --raw /api/v1/namespaces/$NAME/finalize -f - > /dev/null"
+
+  # watch events on selected resources
+  # requires linux "watch" command
+  # change '-n' to adjust refresh time in seconds
+  watch-events:
+    shortCut: Shift-E
+    confirm: false
+    description: Get Events
+    scopes:
+      - all
+    command: sh
+    background: false
+    args:
+      - -c
+      - "watch -n 5 kubectl get events --context $CONTEXT --namespace $NAMESPACE --field-selector involvedObject.name=$NAME"
+
+  # See https://k9scli.io/topics/plugins/
+  # full logs
+  raw-logs-follow:
+    shortCut: Ctrl-L
+    description: logs -f
+    scopes:
+      - po
+    command: kubectl
+    background: false
+    args:
+      - logs
+      - -f
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+      - --kubeconfig
+      - $KUBECONFIG
+  log-less:
+    shortCut: Shift-L
+    description: "logs|less"
+    scopes:
+      - po
+    command: bash
+    background: false
+    args:
+      - -c
+      - '"$@" | less'
+      - dummy-arg
+      - kubectl
+      - logs
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+      - --kubeconfig
+      - $KUBECONFIG
+  log-less-container:
+    shortCut: Shift-L
+    description: "logs|less"
+    scopes:
+      - containers
+    command: bash
+    background: false
+    args:
+      - -c
+      - '"$@" | less'
+      - dummy-arg
+      - kubectl
+      - logs
+      - -c
+      - $NAME
+      - $POD
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+      - --kubeconfig
+      - $KUBECONFIG
+  # Inspect certificate chains with openssl.
+  # See: https://github.com/openssl/openssl.
+  secret-openssl-ca:
+    shortCut: Ctrl-O
+    confirm: false
+    description: Openssl ca.crt
+    scopes:
+      - secrets
+    command: bash
+    background: false
+    args:
+      - -c
+      - kubectl get secret --context $CONTEXT -n $NAMESPACE $NAME -o jsonpath='{.data.ca\.crt}' | base64 -d | openssl storeutl -noout -text -certs /dev/stdin |& less
+  secret-openssl-tls:
+    shortCut: Shift-O
+    confirm: false
+    description: Openssl tls.crt
+    scopes:
+      - secrets
+    command: bash
+    background: false
+    args:
+      - -c
+      - kubectl get secret --context $CONTEXT -n $NAMESPACE $NAME -o jsonpath='{.data.tls\.crt}' | base64 -d | openssl storeutl -noout -text -certs /dev/stdin |& less
+
+  # crossplane-trace list all the relationships with a resource (Claim, Composite, or Managed Resource)
+  # Requires 'crossplane' cli binary installed
+  crossplane-trace:
+    shortCut: Ctrl-T
+    confirm: false
+    description: "Crossplane Trace"
+    scopes:
+      - all
+    command: sh
+    background: false
+    args:
+      - -c
+      - |
+        if [ -n "$NAMESPACE" ]; then
+          crossplane beta trace --context $CONTEXT -n $NAMESPACE $RESOURCE_NAME.$RESOURCE_GROUP $NAME -owide | less -K
+        else
+          crossplane beta trace --context $CONTEXT $RESOURCE_NAME.$RESOURCE_GROUP $NAME -owide | less -K
+        fi
+  duplicate-pod:
+    shortCut: Ctrl-B
+    description: Duplicate Pod
+    scopes:
+      - po
+    command: kubectl
+    background: true
+    args:
+      - duplicate
+      - pod
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+  duplicate-deployment:
+    shortCut: Ctrl-T
+    description: Duplicate Deployment
+    scopes:
+      - deploy
+    command: kubectl
+    background: true
+    args:
+      - duplicate
+      - deploy
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+  duplicate-statefulset:
+    shortCut: Ctrl-T
+    description: Duplicate StatefulSet
+    scopes:
+      - statefulset
+    command: kubectl
+    background: true
+    args:
+      - duplicate
+      - statefulset
+      - $NAME
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+  argocd:
+    shortCut: "s"
+    description: Sync ArgoCD Application
+    scopes:
+      - application
+    command: argocd
+    args:
+      - app
+      - sync
+      - $NAME
+      - --app-namespace
+      - $NAMESPACE
+    background: true
+    confirm: true
+  trace-dns:
+    shortCut: Shift-D
+    description: Trace DNS requests
+    scopes:
+      - containers
+      - pods
+      - nodes
+    command: bash
+    confirm: false
+    background: false
+    args:
+      - -c
+      - |
+        IG_VERSION=v0.34.0
+        IG_IMAGE=ghcr.io/inspektor-gadget/ig:$IG_VERSION
+        IG_FIELD=k8s.podName,src,dst,qr,qtype,name,rcode,latency_ns
+
+        GREEN='\033[0;32m'
+        RED='\033[0;31m'
+        BLUE='\033[0;34m'
+        NC='\033[0m' # No Color
+
+        # Ensure kubectl version is 1.30 or later
+        KUBECTL_VERSION=$(kubectl version --client | awk '/Client Version:/{print $3}')
+        if [[ "$(echo "$KUBECTL_VERSION" | cut -d. -f2)" -lt 30 ]]; then
+          echo -e "${RED}kubectl version 1.30 or later is required${NC}"
+          sleep 3
+          exit
+        fi
+
+        clear
+
+        # Handle containers
+        if [[ -n "$POD" ]]; then
+          echo -e "${GREEN}Tracing DNS requests for container ${BLUE}${NAME}${GREEN} in pod ${BLUE}${POD}${GREEN} in namespace ${BLUE}${NAMESPACE}${NC}"
+          IG_NODE=$(kubectl get pod "$POD" -n "$NAMESPACE" -o jsonpath='{.spec.nodeName}')
+          kubectl debug --kubeconfig=$KUBECONFIG  --context=$CONTEXT -q \
+            --profile=sysadmin "node/$IG_NODE" -it --image="$IG_IMAGE" -- \
+            ig run trace_dns:$IG_VERSION -F "k8s.podName==$POD" -F "k8s.containerName=$NAME" \
+            --fields "$IG_FIELD"
+            exit
+        fi
+
+        # Handle pods
+        if [[ -n "$NAMESPACE" ]]; then
+          echo -e "${GREEN}Tracing DNS requests for pod ${BLUE}${NAME}${GREEN} in namespace ${BLUE}${NAMESPACE}${NC}"
+          IG_NODE=$(kubectl get pod "$NAME" -n "$NAMESPACE" -o jsonpath='{.spec.nodeName}')
+          kubectl debug --kubeconfig=$KUBECONFIG  --context=$CONTEXT -q \
+            --profile=sysadmin  -it --image="$IG_IMAGE" "node/$IG_NODE" -- \
+            ig run trace_dns:$IG_VERSION -F "k8s.podName==$NAME" \
+            --fields "$IG_FIELD"
+            exit
+        fi
+
+        # Handle nodes
+        echo -e "${GREEN}Tracing DNS requests for node ${BLUE}${NAME}${NC}"
+        kubectl debug --kubeconfig=$KUBECONFIG  --context=$CONTEXT -q \
+          --profile=sysadmin -it --image="$IG_IMAGE" "node/$NAME" -- \
+          ig run trace_dns:$IG_VERSION --fields "$IG_FIELD"
+  # Sends logs over to jq for processing. This leverages kubectl plugin kubectl-jq.
