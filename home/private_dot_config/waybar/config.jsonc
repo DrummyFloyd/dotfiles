@@ -94,8 +94,8 @@
   },
   "custom/updates": {
     "format": "{}",
-    "exec": "~/.config/waybar/scripts/update-sys",
-    "on-click": "~/.config/waybar/scripts/update-sys update",
+    "exec": "~/.local/bin/scripts/update-sys",
+    "on-click": "~/.local/bin/scripts/update-sys update",
     "interval": 300,
     "tooltip": true,
   },
