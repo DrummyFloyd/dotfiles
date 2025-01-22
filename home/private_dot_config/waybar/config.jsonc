@@ -90,7 +90,7 @@
       "hdmi": "󰽟",
       "default": ["", "", ""],
     },
-    "on-double-click": "pavucontrol",
+    "on-double-click": "uwsm app -- pavucontrol",
   },
   "custom/updates": {
     "format": "{}",
