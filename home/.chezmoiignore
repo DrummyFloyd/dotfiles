@@ -1,10 +1,7 @@
-{{ if not (hasKey .git "work") }}
-.gitconfig-extra/work
+{{ if .git.default | ne "work" }}
+.config/gitconfig/work
 {{ end }}
-{{ if not (hasKey .git "personal") }}
-.gitconfig-extra/personal
-{{ end }}
-{{ if not .git.oss }}
-.gitconfig-extra/oss.*
+{{ if .git.default | ne "personal" }}
+.config/gitconfig/personal
 {{ end }}
 .config/nvim/lazy-lock.json
