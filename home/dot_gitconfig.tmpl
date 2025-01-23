@@ -13,18 +13,18 @@
 	ui = always
 
 [alias]
-   co = checkout
-   ci = commit
-   st = status
-   br = branch
-   lg = log --pretty=format:'%C(yellow)%h%Creset -%C(red)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit
-   pclone = "!organize-git-clone"
-   rdiff = "!git log \"$1\"...\"$2\"  --pretty=format:\"- %s\" --reverse"
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  lg = log --pretty=format:'%C(yellow)%h%Creset -%C(red)%d%Creset %s %C(bold blue)<%an>%Creset' --abbrev-commit
+  pclone = "!organize-git-clone"
+  rdiff = "!git log \"$1\"...\"$2\"  --pretty=format:\"- %s\" --reverse"
 
 [core]
-   editor = nvim
-   abbrev = 12
-   sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null
+  editor = nvim
+  abbrev = 12
+  sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null
 
 [pretty]
 	shasum = "Sha1: %h (\"%s\")"
@@ -42,10 +42,10 @@
   rebase = true
 
 [merge]
-    tool = nvim
+  tool = nvim
 
 [mergetool "nvim"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 
 [gpg]
 	program = /usr/bin/gpg
