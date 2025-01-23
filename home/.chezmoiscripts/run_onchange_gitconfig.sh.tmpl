@@ -2,9 +2,9 @@
 
 mkdir -p /home/{{ .chezmoi.username }}/Documents/OSS/Github
 mkdir -p /home/{{ .chezmoi.username }}/Documents/OSS/Gitlab
-{{ if hasKey .git "work" }}
+{{ if .git.default | ne "personal" }}
 mkdir -p /home/{{ .chezmoi.username }}/Documents/Work
 {{- end -}}
-{{ if hasKey .git "personal" }}
+{{ if .git.default | ne "work" }}
 mkdir -p /home/{{ .chezmoi.username }}/Documents/Personal
 {{ end -}}
