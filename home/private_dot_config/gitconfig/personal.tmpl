@@ -1,8 +1,13 @@
-{{- if hasKey .git "personal" }}
+{{- if hasKey .git "personal" -}}
 [user]
   name = {{ .git.personal.username }}
   email = {{ .git.personal.email }}
   signingkey = 20AC86EE49130589
+
 [commit]
 	gpgsign = true
+{{ if .ssh.personalSsh }}
+[core]
+  sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
+{{- end }}
 {{- end }}
