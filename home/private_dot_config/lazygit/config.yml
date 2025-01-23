@@ -4,6 +4,7 @@ gui:
   nerdFontsVersion: "3"
   sidePanelWidth: 0.2
 git:
+  overrideGpg: false
   parseEmoji: true
   paging:
     colorArg: always
@@ -16,3 +17,13 @@ os:
 # to skip without creating a new repo
 notARepository: "skip"
 confirmOnQuit: false
+customCommands:
+  - key: "<c-s>"
+    command: "git rebase --exec 'git commit --amend --gpg-sign --no-edit' @~{{.Form.numberCommits}}"
+    context: "commits"
+    description: "GPGSign previous commits"
+    prompts:
+      - type: "input"
+        title: "Number of commits to sign"
+        key: numberCommits
+        initialValue: "1"
