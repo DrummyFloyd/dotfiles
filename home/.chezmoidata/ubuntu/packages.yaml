@@ -1,0 +1,21 @@
+packages:
+  apt:
+    - bat
+    - build-essential
+    - curl
+    - fdfind
+    - gpnupg2
+    - kitty
+    - pipx
+    - python3
+    - python3-pip
+    - python3-venv
+    - ripgrep
+    - software-properties-common
+  wslApt:
+    - pinentry-tty
+    - wslview
+  pipx:
+    - organize
+    - tldr
+    - trash-cli

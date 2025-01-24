@@ -1,0 +1,20 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+{{if eq .osName "ubuntu" }}
+#!/bin/bash
+
+{{ range .packages.apt }}
+sudo apt install -y {{ . }}
+{{ end }}
+
+{{ if .wsl }}
+{{ range .packages.wslApt }}
+sudo apt install -y {{ . }}
+{{ end }}
+{{ end }}
+
+{{ range .packages.pipx }}
+pipx install {{ . }}
+{{ end }}
+{{end}}
