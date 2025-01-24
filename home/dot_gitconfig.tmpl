@@ -39,21 +39,11 @@
 
 [gpg]
 	program = /usr/bin/gpg
-{{ if .git.default | ne "personal" }}
+
 [include]
-  path = /home/{{ .chezmoi.username }}/.config/gitconfig/work
-
-[includeIf "gitdir:/home/{{ .chezmoi.username }}/.local/share/chezmoi/**"]
   path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
 
-[includeIf "gitdir:/home/{{ .chezmoi.username }}/Documents/OSS/**"]
-  path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
-
+{{- if .work }}
 [includeIf "gitdir:/home/{{ .chezmoi.username }}/Documents/Work/**"]
   path = /home/{{ .chezmoi.username }}/.config/gitconfig/work
-{{- end -}}
-
-{{ if .git.default | ne "work" }}
-[include]
-  path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
 {{- end -}}

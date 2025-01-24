@@ -1,4 +1,4 @@
-{{ if .configType | eq "full" -}}
+{{ if .configSize | eq "full" -}}
 if [ "$(tty)" = "/dev/tty1" ]; then
     if uwsm check may-start; then
         exec uwsm start hyprland.desktop

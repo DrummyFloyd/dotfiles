@@ -1,10 +1,14 @@
 #!/bin/bash
 
-mkdir -p /home/{{ .chezmoi.username }}/Documents/OSS/Github
-mkdir -p /home/{{ .chezmoi.username }}/Documents/OSS/Gitlab
-{{ if .git.default | ne "personal" }}
-mkdir -p /home/{{ .chezmoi.username }}/Documents/Work
-{{- end -}}
-{{ if .git.default | ne "work" }}
-mkdir -p /home/{{ .chezmoi.username }}/Documents/Personal
-{{ end -}}
+{{- if .work }}
+DIRS_TO_CREATE="Personal Work OSS/Github OSS/Gitlab"
+{{ else }}
+DIRS_TO_CREATE="Personal OSS/Github OSS/Gitlab"
+{{ end }}
+
+# check if directories exist
+for dir in $DIRS_TO_CREATE; do
+    if [ ! -d "/home/{{ .chezmoi.username }}/Documents/$dir" ]; then
+        mkdir -p "/home/{{ .chezmoi.username }}/Documents/$dir"
+    fi
+done

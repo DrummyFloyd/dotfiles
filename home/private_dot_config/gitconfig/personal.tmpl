@@ -1,4 +1,3 @@
-{{- if hasKey .git "personal" -}}
 [user]
   name = {{ .git.personal.username }}
   email = {{ .git.personal.email }}
@@ -9,5 +8,4 @@
 {{ if .ssh.personalSsh }}
 [core]
   sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
-{{- end }}
 {{- end }}

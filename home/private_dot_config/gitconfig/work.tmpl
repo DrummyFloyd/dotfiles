@@ -1,4 +1,4 @@
-{{- if hasKey .git "work" }}
+{{- if .work }}
 [user]
   name = {{ .git.work.username }}
   email = {{ .git.work.email }}

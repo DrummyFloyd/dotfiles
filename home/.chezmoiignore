@@ -1,19 +1,12 @@
-{{ if .git.default | ne "work" }}
-.config/gitconfig/work
+{{ if .machineType | eq "linux" }}
+{{ if .configSize | eq "minimal" }}
+{{ range .config.minimal.dotConfig }}
+.config/{{ . }}/
+.config/{{ . }}/**
 {{ end }}
-{{ if .git.default | ne "personal" }}
-.config/gitconfig/personal
 {{ end }}
 .config/nvim/lazy-lock.json
-{{ if .configType | eq "minimal" }}
-.backgrounds/**
-.config/dunst/**
-.config/hypr/**
-.config/icons/**
-.config/sops/**
-.config/waybar/**
-.config/wlogout/**
-.config/wofi/**
-.local/bin/scripts/**
-!.local/bin/scripts/organize-git-clone
+{{ if not .work }}
+.config/gitconfig/work
+{{ end }}
 {{ end }}
