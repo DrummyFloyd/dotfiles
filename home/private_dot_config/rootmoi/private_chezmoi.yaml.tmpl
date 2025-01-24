@@ -1,0 +1,16 @@
+{{- /*
+  vim:ft=yaml.gotmpl:
+*/ -}}
+{{- $chezmoiData := deepCopy . -}}
+{{- $chezmoiData = unset $chezmoiData "chezmoi" -}}
+
+{{- $sourceDir := joinPath .chezmoi.workingTree "root" -}}
+sourceDir: "{{ $sourceDir }}"
+
+destDir: "/"
+
+verbose: true
+
+data:
+  non_root_user: "{{ .chezmoi.username }}"
+  {{- $chezmoiData | toYaml | nindent 2 }}
