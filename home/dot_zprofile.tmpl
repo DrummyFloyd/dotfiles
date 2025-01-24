@@ -1,3 +1,6 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
 {{ if .configSize | eq "full" -}}
 if [ "$(tty)" = "/dev/tty1" ]; then
     if uwsm check may-start; then
