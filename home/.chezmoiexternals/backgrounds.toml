@@ -1,0 +1,16 @@
+{{- if .machineType | eq "linux"  }}
+{{- if .configSize | eq "full" }}
+["Pictures/Backgrounds/onepiece-grafiti.jpg"]
+  type = "file"
+  url = "https://images6.alphacoders.com/135/1350795.jpeg"
+  refresh = 0
+["Pictures/Backgrounds/mugiwara-dark-background.jpg"]
+  type = "file"
+  url = "https://images.alphacoders.com/864/864741.jpg"
+  refresh = 0
+["Pictures/Backgrounds/wano-tree.jpg"]
+  type = "file"
+  url = "https://images7.alphacoders.com/101/1017499.jpg"
+  refresh = 0
+{{- end }}
+{{- end }}
