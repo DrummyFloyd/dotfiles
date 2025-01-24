@@ -19,7 +19,7 @@ alias fgrep='fgrep --color=auto'
 # Confirm before overwriting something
 alias cp="cp -i"
 alias mv='mv -i'
-alias rm='garbage put'
+alias rm='trash-put --'
 
 # update-alternatives
 alias change_python='sudo update-alternatives --config python3'
