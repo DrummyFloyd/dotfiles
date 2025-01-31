@@ -4,6 +4,7 @@ return {
     dependencies = {
       "moyiz/blink-emoji.nvim",
     },
+    opts_extend = { "sources.default" },
     opts = {
       sources = {
         default = {
@@ -14,6 +15,7 @@ return {
             module = "blink-emoji",
             name = "Emoji",
             score_offset = 15,
+            opts = { insert = true },
           },
         },
       },
