@@ -73,3 +73,6 @@ alias docker-clean-all="docker system prune -a --volumes"
 
 # terraform
 alias tf="terraform"
+
+# FIX: eza ll https://github.com/zap-zsh/exa/pull/12/files
+alias ls='eza --group-directories-first --icons=auto'
