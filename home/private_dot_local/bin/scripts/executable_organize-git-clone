@@ -4,13 +4,21 @@
 # Function to extract path components from URL
 parse_url() {
   local url="$1"
-  # Remove protocol prefix and .git suffix
-  local clean_url=$(echo "$url" | sed 's|^https\?://||' | sed 's/\.git$//')
+  local clean_url
+  local without_domain
 
-  # Remove the domain (github.com, gitlab.com, etc.)
-  local without_domain=$(echo "$clean_url" | cut -d'/' -f2-)
+  # Handle SSH URLs (git@github.com:user/repo.git) and HTTPS URLs
+  if [[ "$url" =~ ^git@ ]]; then
+    # Convert git@domain:user/repo to user/repo
+    clean_url=$(echo "$url" | sed 's/^git@[^:]*://' | sed 's/\.git$//')
+  else
+    # Remove protocol prefix and .git suffix for HTTPS URLs
+    clean_url=$(echo "$url" | sed 's|^https\?://||' | sed 's/\.git$//')
+    # Remove the domain (github.com, gitlab.com, etc.)
+    clean_url=$(echo "$clean_url" | cut -d'/' -f2-)
+  fi
 
-  echo "$without_domain"
+  echo "$clean_url"
 }
 
 # Check if a URL is provided
