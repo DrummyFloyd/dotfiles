@@ -16,7 +16,7 @@ export FORGIT_LOG_GRAPH_ENABLE=false
 export FORGIT_PAGER='delta --side-by-side -w ${FZF_PREVIEW_COLUMNS:-$COLUMNS}'
 
 # FNM version
-export ZSH_FNM_NODE_VERSION="lts/iron"      #v20
+export ZSH_FNM_NODE_VERSION="lts/jod"       #v22
 export ZSH_FNM_ENV_EXTRA_ARGS="--use-on-cd" # work with .node-version file in root project node --version > .node-version
 
 # FZF options
