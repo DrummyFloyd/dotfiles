@@ -4,6 +4,7 @@ alias dotfiles="nvim ${HOME}/.dotfiles --cmd ':cd %'"
 
 # Color ip
 alias ip="ip -c"
+alias get-public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 # color cat
 alias cat="command -p bat --style=header,grid"
