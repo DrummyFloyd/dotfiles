@@ -6,6 +6,9 @@
   email = {{ .git.personal.email }}
   signingkey = 20AC86EE49130589
 
+[url "git@gitlab.com:"]
+       insteadOf = https://gitlab.com/
+
 [commit]
 	gpgsign = true
 {{ if .ssh.personalSsh }}
