@@ -1,0 +1,20 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
+{{- $chezmoiData := deepCopy . -}}
+{{- $chezmoiDiff := $chezmoiData.chezmoi.config.diff }}
+{{- $chezmoiData = unset $chezmoiData "chezmoi" -}}
+
+{{- $sourceDir := joinPath .chezmoi.workingTree "root" -}}
+sourceDir= "{{ $sourceDir }}"
+
+destDir= "/"
+
+verbose= true
+
+[diff]
+{{ $chezmoiDiff | toToml }}
+
+[data]
+non_root_user= "{{ .chezmoi.username }}"
+{{ $chezmoiData | toToml }}

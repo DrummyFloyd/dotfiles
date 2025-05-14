@@ -1,0 +1,17 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+
+PACMAN_CONF="/etc/pacman.conf"
+INCLUDE_LINE="Include = /etc/pacman.d/user.conf"
+
+
+# Check if Include line already exists
+if ! grep -q "^Include = /etc/pacman.d/user.conf" "$PACMAN_CONF"; then
+    log_task "Adding $INCLUDE_LINE line to $PACMAN_CONF"
+   sudo sed -i '/\[options\]/a '"$INCLUDE_LINE" "$PACMAN_CONF"
+fi

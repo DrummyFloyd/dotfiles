@@ -1,0 +1,9 @@
+[Trigger]
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+
+[Action]
+When = PostTransaction
+Exec = /bin/sh -c 'echo "packages:" > /etc/packages.yaml && echo "  yay:" >> /etc/packages.yaml && /usr/bin/pacman -Qqe | sed "s/^/    - /" >> /etc/packages.yaml'
