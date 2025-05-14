@@ -1,0 +1,65 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
+{{- /* CHOICES */ -}}
+{{- $configSizeChoices := list  "full" "minimal"  -}}
+
+{{- /* PROMPTS */ -}}
+{{- writeToStdout "🌟 Chezmoi configuration 🌟\n" -}}
+{{- writeToStdout "💡 Tip: You can re-enter prompted inputs with `chezmoi init --data=false`.💡\n" -}}
+{{- $configSize := promptChoice "🔧❓ Which configuration you want 🔧" $configSizeChoices "full" -}}
+{{- $bitwardenEmail := promptString "🔧❓Which Bitwarden email" -}}
+{{- $workConfig := promptBool "🔧❓Enable work configuration [y/N]" false -}}
+{{- $personalSsh := promptBool "🔧❓Retrieve personal sshKeys/config from BitWarden [Y/n]" true -}}
+{{- $generateSsh := promptBool "🔧❓Generate new sshKey [y/N]" false -}}
+
+{{- /* TEMPLATE */ -}}
+[hooks.read-source-state.pre]
+    command = ".local/share/chezmoi/.install-password-manager.sh"
+
+[merge]
+  command = "nvim"
+  args = ["-d", "{{ "{{ .Source }}" }}", "{{ "{{ .Destination }}" }}", "{{ "{{ .Target }}" }}"]
+
+[diff]
+  pager = "delta"
+  command = "delta"
+  args = "--side-by-side"
+  exclude = ["scripts", "dirs"]
+
+[data]
+  configSize = {{ $configSize | quote }}
+  machineType = {{ .chezmoi.os | quote }}
+  osName = {{ .chezmoi.osRelease.id | quote}}
+  wsl = {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft" ) }}true{{ else }}false{{ end }}
+  work = {{ $workConfig }}
+
+[data.bitwarden]
+  email = {{ $bitwardenEmail | quote }}
+
+[data.config.minimal]
+  dotConfig = [
+  "dunst",
+  "hypr",
+  "icons",
+  "k9s",
+  "sops",
+  "waybar",
+  "wlogout",
+  "wofi",
+  ]
+
+[data.ssh]
+  personalSsh = {{ $personalSsh }}
+  generateSsh = {{ $generateSsh }}
+
+[data.git.personal]
+  email = {{ promptString "📧❓Gitconfig: Personal email" | quote }}
+  username = {{ promptString "🧑❓Gitconfig: Personal username" | quote }}
+
+{{- if $workConfig }}
+[data.git.work]
+  email = {{ promptString "📧❓Gitconfig: Work email" | quote }}
+  username = {{ promptString "🧑❓Gitconfig: Work username" | quote }}
+  gpgKey = {{ promptBool "🔐❓Gitconfig: Work gpgKey [y/N]" false}}
+{{- end }}
