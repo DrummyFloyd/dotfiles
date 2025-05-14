@@ -3,6 +3,8 @@
 */ -}}
 #!/bin/bash
 
+{{ template "utils" }}
+
 {{- if .work }}
 DIRS_TO_CREATE="Personal Work OSS/Github OSS/Gitlab"
 {{ else }}
@@ -12,6 +14,7 @@ DIRS_TO_CREATE="Personal OSS/Github OSS/Gitlab"
 # check if directories exist
 for dir in $DIRS_TO_CREATE; do
     if [ ! -d "/home/{{ .chezmoi.username }}/Documents/$dir" ]; then
-        mkdir -p "/home/{{ .chezmoi.username }}/Documents/$dir"
+      log_task "Creating directory /home/{{ .chezmoi.username }}/Documents/$dir"
+      mkdir -p "/home/{{ .chezmoi.username }}/Documents/$dir"
     fi
 done

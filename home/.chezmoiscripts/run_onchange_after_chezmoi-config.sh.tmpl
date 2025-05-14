@@ -3,10 +3,13 @@
 */ -}}
 #!/bin/bash
 
+{{ template "utils" }}
+
 {{ if .ssh.generateSsh }}
 NEW_SSH_KEY_PATH="/home/{{ .chezmoi.username }}/.ssh/id_ed25519"
 
 if [ ! -f "$NEW_SSH_KEY_PATH" ]; then
+  log_task "Generating new SSH key to $NEW_SSH_KEY_PATH"
   ssh-keygen -t ed25519 -f "$NEW_SSH_KEY_PATH"
 fi
 {{ end }}
