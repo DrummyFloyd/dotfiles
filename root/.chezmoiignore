@@ -1,6 +1,6 @@
 {{ if .osName | ne "arch"}}
 /etc/pacman.d/**
 /etc/pacman.d/
-/etch/pacman.d/hooks/**
-/etch/pacman.d/hooks/
+/etc/pacman.d/hooks/**
+/etc/pacman.d/hooks/
 {{ end }}
