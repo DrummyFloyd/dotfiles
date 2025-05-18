@@ -1,0 +1,2 @@
+# cron organize tools
+0 */2 * * * /home/${USER}/.local/bin/organize run

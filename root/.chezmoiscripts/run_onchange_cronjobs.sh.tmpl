@@ -1,0 +1,14 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+USER={{ .non_root_user }}
+
+
+if [ -f /var/spool/cron/$USER ]; then
+  log_task "Updating cron jobs"
+  echo "{{ template "cronjobs" . }}" > /var/spool/cron/$USER
+fi
