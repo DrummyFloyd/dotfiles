@@ -79,7 +79,7 @@ case "$OS_NAME" in
 
     log_task "Installing missing packages: ${missing_packages[*]}"
     check_install_rbw_bin
-    DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install "${missing_packages}" --yes
+    DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install ${missing_packages} --yes
     ;;
   "arch")
     check_pacman_package
