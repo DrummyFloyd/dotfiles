@@ -15,7 +15,7 @@
 
 {{- /* TEMPLATE */ -}}
 [hooks.read-source-state.pre]
-    command = ".local/share/chezmoi/.install-password-manager.sh"
+    command = "{{ .chezmoi.workingTree }}/home/.chezmoihooks/install-prerequisite.sh"
 
 [merge]
   command = "nvim"
