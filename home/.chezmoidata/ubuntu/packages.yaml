@@ -14,7 +14,6 @@ aptPackages:
   - vim
   - zsh
 aptWsl:
-  - pinentry-tty
   - wslview
 pipx:
   - organize-tool
