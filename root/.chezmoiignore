@@ -4,3 +4,7 @@
 /etc/pacman.d/hooks/**
 /etc/pacman.d/hooks/
 {{ end }}
+{{ if .osName }| eq "arch"}}
+/etc/apt/sources.list.d/**
+/etc/apt/sources.list.d/
+{{ end }}
