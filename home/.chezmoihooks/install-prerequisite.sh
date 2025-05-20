@@ -10,9 +10,11 @@ UBUNTU_DEBIAN_PACKAGES=(
   curl
   git
   gpg
+  pinentry-tty
 )
 
 ARCH_PACKAGES=(
+  pinentry-tty
   rbw
   yay
 )
