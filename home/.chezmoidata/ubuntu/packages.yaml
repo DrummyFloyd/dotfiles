@@ -16,6 +16,6 @@ aptWsl:
   - pinentry-tty
   - wslview
 pipx:
-  - organize
+  - organize-tool
   - tldr
   - trash-cli
