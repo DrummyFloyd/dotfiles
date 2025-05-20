@@ -1,7 +1,7 @@
 {{- /*
   vim:ft=toml.gotmpl:
 */ -}}
-{{- if .machineType | eq "linux"  }}
+{{- if .isArch }}
 {{- if .configSize | eq "full" }}
 ["Pictures/Backgrounds/onepiece-grafiti.jpg"]
   type = "file"
