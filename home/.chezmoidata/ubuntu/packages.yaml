@@ -3,7 +3,7 @@ aptPackages:
   - curl
   - git
   - gpg
-  - gpnupg2
+  - gnupg2
   - kitty
   - mise
   - pipx
