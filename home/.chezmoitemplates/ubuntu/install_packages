@@ -17,7 +17,7 @@ done
 
 if [[ ${#missing_packages[@]} -gt 0 ]]; then
   log_task "Installing missing packages: ${missing_packages[*]}"
-  sudo apt update && apt install -y "${missing_packages[@]}"
+  sudo apt update && apt install -y ${missing_packages[@]}
 fi
 
 # Install pipx packages
