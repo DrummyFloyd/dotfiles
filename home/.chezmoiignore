@@ -10,3 +10,7 @@
 .config/gitconfig/work
 {{ end }}
 {{ end }}
+{{ if .is_arch }}
+.config/mise/devops.toml
+.config/mise/system.toml
+{{ end }}

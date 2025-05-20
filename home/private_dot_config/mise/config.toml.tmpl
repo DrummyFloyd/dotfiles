@@ -1,0 +1,31 @@
+{{- /*
+  vim:ft=gitconfig.gotmpl:
+*/ -}}
+[tools]
+usage = "2.1.1"
+
+[settings]
+{{ if .osName | eq "arch" }}
+trusted_config_paths = ['~/config/mise/config.toml']
+{{ else }}
+trusted_config_paths = [
+  '~/config/mise/config.toml',
+  '~/.config/mise/conf.d/devops.toml',
+  '~/.config/mise/conf.d/system.toml'
+]
+{{ end }}
+not_found_auto_install = true
+plugin_autoupdate_last_check_duration = '1 week'
+pin = true
+cache_prune_age = "30d"
+idiomatic_version_file_enable_tools = [
+  "python",
+  "node",
+  "go",
+  "terraform",
+  "yarn",
+]
+
+
+[hooks]
+enter = "mise i -q"
