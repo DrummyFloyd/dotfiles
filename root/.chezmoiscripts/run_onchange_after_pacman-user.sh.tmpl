@@ -5,7 +5,9 @@
 
 {{ template "utils" }}
 
-
+{{ if not .isArch }}
+exit 0
+{{ end }}
 PACMAN_CONF="/etc/pacman.conf"
 INCLUDE_LINE="Include = /etc/pacman.d/user.conf"
 
