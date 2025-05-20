@@ -1,0 +1,14 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/usr/bin/env bash
+
+{{ template "utils" }}
+
+zsh_path="/bin/zsh"
+
+if ! getent passwd '{{ .chezmoi.username }}' | cut -d : -f 7- | grep -q "^${zsh_path}$"; then
+  log_task "Configuring ZSH as default shell"
+
+  sudo usermod --shell "${zsh_path}" '{{ .chezmoi.username }}'
+fi

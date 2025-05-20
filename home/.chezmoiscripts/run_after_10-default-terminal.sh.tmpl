@@ -1,0 +1,13 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/usr/bin/env bash
+
+{{ if or ( .isArch ) ( .isWsl ) }}
+exit 0
+{{ end }}
+
+{{ template "utils" }}
+
+log_task "Configuring default terminal to kitty..."
+gsettings set org.gnome.desktop.default-applications.terminal exec '/usr/bin/kitty'
