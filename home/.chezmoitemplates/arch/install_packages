@@ -8,5 +8,5 @@ MISSING_PACKAGES=$(echo "$OUTPUT" | grep "error: package" | sed -e "s/error: pac
 
 if [[ -n "$MISSING_PACKAGES" ]]; then
   log_task "Installing packages: $MISSING_PACKAGES"
-  yay -Syu $MISSING_PACKAGES
+  yay -Syu "$MISSING_PACKAGES""
 fi

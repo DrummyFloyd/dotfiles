@@ -63,7 +63,7 @@ check_apt_package() {
 }
 
 check_pacman_package() {
-  output=$(sudo pacman -Q ${ARCH_PACKAGES[@]} 2>&1)
+  output=$(sudo pacman -Q "${ARCH_PACKAGES[@]}" 2>&1)
   missing_packages=$(echo "$output" | grep "error: package" | sed -e "s/error: package '\(.*\)' was not found/\1/" | tr '\n' ' ' | sed 's/ $//')
 }
 
@@ -79,7 +79,7 @@ case "$OS_NAME" in
 
     log_task "Installing missing packages: ${missing_packages[*]}"
     check_install_rbw_bin
-    DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install ${missing_packages} --yes
+    DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install "${missing_packages[@]}" --yes
     ;;
   "arch")
     check_pacman_package
