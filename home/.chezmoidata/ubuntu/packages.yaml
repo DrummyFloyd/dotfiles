@@ -12,6 +12,7 @@ aptPackages:
   - python3-venv
   - software-properties-common
   - vim
+  - zsh
 aptWsl:
   - pinentry-tty
   - wslview
