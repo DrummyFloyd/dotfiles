@@ -31,7 +31,9 @@
   configSize = {{ $configSize | quote }}
   machineType = {{ .chezmoi.os | quote }}
   osName = {{ .chezmoi.osRelease.id | quote}}
-  wsl = {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft" ) }}true{{ else }}false{{ end }}
+  isWsl = {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft" ) }}true{{ else }}false{{ end }}
+  isArch = {{ if (eq .chezmoi.osRelease.id "arch") }}true{{ else }}false{{ end }}
+  isUbuntu = {{ if (eq .chezmoi.osRelease.id "ubuntu") }}true{{ else }}false{{ end }}
   work = {{ $workConfig }}
 
 [data.bitwarden]

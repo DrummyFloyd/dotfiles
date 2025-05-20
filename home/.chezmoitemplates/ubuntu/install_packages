@@ -2,7 +2,7 @@
   vim:ft=bash.gotmpl:
 */ -}}
 PACKAGES={{ .aptPackages | join " " }}
-{{ if .is_wsl }}
+{{ if .isWsl }}
 PACKAGES+={{ .aptWsl | join " " }}
 {{ end }}
 

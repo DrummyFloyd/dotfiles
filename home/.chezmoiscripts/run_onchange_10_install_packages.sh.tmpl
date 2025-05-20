@@ -5,8 +5,8 @@
 
 {{ template "utils" }}
 
-{{ if .osName | eq "arch" }}
+{{ if .isArch }}
 {{ template "arch/install_packages" . }}
-{{ else if osName | eq "ubuntu" }}
+{{ else if .isUbuntu }}
 {{ template "ubuntu/install_packages" . }}
 {{ end }}

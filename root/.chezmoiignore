@@ -1,13 +1,13 @@
-{{ if .osName | ne "arch"}}
+{{ if not .isArch }}
 /etc/pacman.d/**
 /etc/pacman.d/
 /etc/pacman.d/hooks/**
 /etc/pacman.d/hooks/
 {{ end }}
-{{ if .osName }| eq "arch"}}
+{{ if .isArch }}
 /etc/apt/sources.list.d/**
 /etc/apt/sources.list.d/
-{{ if not .is_wsl }}
+{{ if not .isWsl }}
 /etc/wsl.conf
 {{ end }}
 {{ end }}

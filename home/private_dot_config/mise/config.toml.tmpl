@@ -5,7 +5,7 @@
 usage = "2.1.1"
 
 [settings]
-{{ if .osName | eq "arch" }}
+{{ if .isArch }}
 trusted_config_paths = ['~/config/mise/config.toml']
 {{ else }}
 trusted_config_paths = [
