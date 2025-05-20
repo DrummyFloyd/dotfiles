@@ -1,0 +1,37 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+PACKAGES={{ .aptPackages | join " " }}
+{{ if .is_wsl }}
+PACKAGES+={{ .aptWsl | join " " }}
+{{ end }}
+
+missing_packages=()
+
+for PACKAGE in $PACKAGES; do
+  if ! dpkg -l | grep -q "^ii  $PACKAGE "; then
+    missing_packages+=("$PACKAGE")
+  fi
+done
+
+
+if [[ ${#missing_packages[@]} -gt 0 ]]; then
+  log_task "Installing missing packages: ${missing_packages[*]}"
+  sudo apt update && apt install -y "${missing_packages[@]}"
+fi
+
+# Install pipx packages
+#
+PIPX_PACKAGES={{ .pipx | join " " }}
+
+missing_pipx_packages=()
+for PACKAGE in $PIPX_PACKAGES; do
+  if ! pipx list --short | grep -q "$PACKAGE"; then
+    missing_pipx_packages+=("$PACKAGE")
+  fi
+done
+
+if [[ ${#missing_pipx_packages[@]} -gt 0 ]]; then
+  log_task "Installing missing pipx packages: ${missing_pipx_packages[*]}"
+    pipx install ${missing_pipx_packages[@]}
+fi

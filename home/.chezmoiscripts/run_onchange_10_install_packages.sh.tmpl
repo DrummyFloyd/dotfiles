@@ -1,0 +1,12 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/usr/bin/env bash
+
+{{ template "utils" }}
+
+{{ if .osName | eq "arch" }}
+{{ template "arch/install_packages" . }}
+{{ else if osName | eq "ubuntu" }}
+{{ template "ubuntu/install_packages" . }}
+{{ end }}
