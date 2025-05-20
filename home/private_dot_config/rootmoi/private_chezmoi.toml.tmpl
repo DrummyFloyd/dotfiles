@@ -4,6 +4,10 @@
 {{- $chezmoiData := deepCopy . -}}
 {{- $chezmoiDiff := $chezmoiData.chezmoi.config.diff }}
 {{- $chezmoiData = unset $chezmoiData "chezmoi" -}}
+{{- $chezmoiData = unset $chezmoiData "archPackages"}}
+{{- $chezmoiData = unset $chezmoiData "aptPackages"}}
+{{- $chezmoiData = unset $chezmoiData "aptWsl"}}
+{{- $chezmoiData = unset $chezmoiData "pipx"}}
 
 {{- $sourceDir := joinPath .chezmoi.workingTree "root" -}}
 sourceDir= "{{ $sourceDir }}"
