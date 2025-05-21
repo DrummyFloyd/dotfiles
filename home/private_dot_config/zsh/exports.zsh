@@ -7,6 +7,9 @@ export TERMINAL="kitty"
 export MANPAGER="nvim +Man!"
 export TERM="xterm-kitty"
 
+# INFO: on daily basis do not want to execute rootmoi after bootstrap
+# unset if needed
+export NO_ROOTMOI=1
 # History
 HISTSIZE=10000
 SAVEHIST=10000
