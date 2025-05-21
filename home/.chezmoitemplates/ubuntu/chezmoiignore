@@ -1,11 +1,10 @@
 {{- /*
   vim:ft=gotmpl:
 */ -}}
-.chezmoiscripts/*-on-arch.sh.tmpl
+
 .chezmoiscripts/*-on-arch.sh
 
 {{ if not .isWsl }}
-.chezmoiscripts/*-on-windows.sh.tmpl
 .chezmoiscripts/*-on-windows.sh
 {{ end }}
 

@@ -1,7 +1,5 @@
 /etc/apt/sources.list.d/**
 /etc/apt/sources.list.d/
 
-.chezmoiscripts/*-on-ubuntu.sh.tmpl
 .chezmoiscripts/*-on-ubuntu.sh
-.chezmoiscripts/*-on-windows.sh.tmpl
 .chezmoiscripts/*-on-windows.sh
