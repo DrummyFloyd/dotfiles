@@ -32,8 +32,6 @@ plug "${HOME}/.config/zsh/bindings.zsh"
 # plugins
 # plug "jeffreytse/zsh-vi-mode"
 plug "zap-zsh/completions"
-plug "dominik-schwabe/zsh-fnm"
-plug "wintermi/zsh-bob"
 plug "hlissner/zsh-autopair"
 plug "romkatv/powerlevel10k"
 plug "zap-zsh/supercharge"
@@ -53,7 +51,3 @@ plug "zap-zsh/exa"
 
 # To add Specific env stuff (that should not be commited)
 [[ ! -f ~/.config/zsh/extras.zsh ]] || plug "${HOME}/.config/zsh/extras.zsh"
-
-# TODO: move in run_after_script when i decide to move to chezmoi or dotbot
-# coz its slow down too much the terminal startup
-# check_npm_packages neovim
