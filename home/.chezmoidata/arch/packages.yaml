@@ -1,4 +1,4 @@
-archPackages:
+packages:
   - acpi_call
   - acpilight
   - age
@@ -113,6 +113,7 @@ archPackages:
   - network-manager-applet
   - networkmanager
   - nmap
+  - nodejs-neovim
   - noto-fonts
   - noto-fonts-cjk
   - noto-fonts-emoji
