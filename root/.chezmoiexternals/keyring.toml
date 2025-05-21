@@ -1,3 +1,6 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
 {{ if .isUbuntu }}
 ["etc/apt/keyrings/mise-archive-keyring.gpg"]
   type = file
