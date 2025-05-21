@@ -9,7 +9,7 @@
 .chezmoiscripts/*-on-windows.sh
 {{ end }}
 
-{{- $listToIgnore := slice
+{{- $listToIgnore := list
   "dunst"
   "environments.d"
   "hypr"
