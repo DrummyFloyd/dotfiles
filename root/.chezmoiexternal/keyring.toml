@@ -1,0 +1,7 @@
+{{ if .isUbuntu}}
+["etc/apt/keyrings/mise-archive-keyring.gpg"]
+  type = file
+  url = "https://mise.jdx.dev/gpg-key.pub"
+  filter.command = [gpg]
+  filter.args = ["--dearmor"]
+{{ end }}
