@@ -1,7 +1,7 @@
 {{- /*
   vim:ft=bash.gotmpl:
 */ -}}
-{{ if .configSize | eq "full" -}}
+{{ if .isArch -}}
 if [ "$(tty)" = "/dev/tty1" ]; then
     if uwsm check may-start; then
         exec uwsm start hyprland.desktop
