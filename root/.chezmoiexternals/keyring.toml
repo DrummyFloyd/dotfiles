@@ -3,20 +3,20 @@
 */ -}}
 {{ if .isUbuntu }}
 ["etc/apt/keyrings/mise-archive-keyring.gpg"]
-  type = file
+  type = "file"
   url = "https://mise.jdx.dev/gpg-key.pub"
-  filter.command = gpg
+  filter.command = "gpg"
   filter.args = ["--dearmor"]
 
 ["etc/apt/keyrings/google-chrome-archive-keyring.gpg"]
-  type = file
+  type = "file"
   url = "https://dl.google.com/linux/linux_signing_key.pub"
-  filter.command = gpg
+  filter.command = "gpg"
   filter.args = ["--dearmor"]
 
 ["usr/share/keyrings/docker-archive-keyring.gpg"]
-  type = file
+  type = "file"
   url = "https://download.docker.com/linux/{{ .chezmoi.osRelease.id }}/gpg"
-  filter.command = gpg
+  filter.command = "gpg"
   filter.args = ["--dearmor"]
 {{ end }}
