@@ -3,6 +3,7 @@ aptPackages:
   - build-essential
   - ca-certificates
   - curl
+  - docker
   - git
   - gnupg2
   - google-chrome-stable

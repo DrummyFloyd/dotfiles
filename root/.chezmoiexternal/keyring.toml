@@ -10,4 +10,10 @@
   url = "https://dl.google.com/linux/linux_signing_key.pub"
   filter.command = [gpg]
   filter.args = ["--dearmor"]
+
+["usr/share/keyrings/docker-archive-keyring.gpg"]
+  type = file
+  url = "https://download.docker.com/linux/{{ .chezmoi.osRelease.id }}/gpg"
+  filter.command = [gpg]
+  filter.args = ["--dearmor"]
 {{ end }}
