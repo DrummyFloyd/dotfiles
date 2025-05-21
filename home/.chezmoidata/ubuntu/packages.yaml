@@ -19,3 +19,11 @@ pipx:
   - organize-tool
   - tldr
   - trash-cli
+wslWindows:
+  - Microsoft.VisualStudioCode
+  - Microsoft.WindowsTerminal
+  - Google.Chrome
+fontsDir: .local/share/fonts
+windowsTerminalFont:
+  fileName: Fira Code Regular Nerd Font Complete Mono.ttf
+  name: FiraCode Nerd Font Mono

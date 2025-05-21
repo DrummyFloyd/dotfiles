@@ -8,6 +8,8 @@
 {{- $chezmoiData = unset $chezmoiData "aptPackages"}}
 {{- $chezmoiData = unset $chezmoiData "aptWsl"}}
 {{- $chezmoiData = unset $chezmoiData "pipx"}}
+{{- $chezmoiData = unset $chezmoiData "fontsDir"}}
+{{- $chezmoiData = unset $chezmoiData "windowsTerminalFont"}}
 
 {{- $sourceDir := joinPath .chezmoi.workingTree "root" -}}
 sourceDir= "{{ $sourceDir }}"

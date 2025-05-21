@@ -1,0 +1,19 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
+{{ if .isUbuntu }}
+[{{ .fontsDir | quote }}]
+type = "file"
+{{ $nerdFontsVersion := (gitHubLatestVersion "ryanoasis/nerd-fonts").TagName }}
+url: "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
+
+{{ if .isWsl }}
+{{ $psScriptVersion := (gitHubLatestVersion "ralish/PSWinGlue").TagName }}
+[{{ (joinPath .chezmoi.workingTree "external-scripts/Install-Font.ps1" ) | quote }}]
+type = "file"
+url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Install-Font.ps1"
+
+[{{ (joinPath .chezmoi.workingTree "external-scripts/Uninstall-Font.ps1") | quote }}]
+type = "file"
+url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Uninstall-Font.ps1"
+{{ end }}
