@@ -4,12 +4,13 @@
 {{- $chezmoiData := deepCopy . -}}
 {{- $chezmoiDiff := $chezmoiData.chezmoi.config.diff }}
 {{- $chezmoiData = unset $chezmoiData "chezmoi" -}}
-{{- $chezmoiData = unset $chezmoiData "archPackages"}}
 {{- $chezmoiData = unset $chezmoiData "aptPackages"}}
 {{- $chezmoiData = unset $chezmoiData "aptWsl"}}
-{{- $chezmoiData = unset $chezmoiData "pipx"}}
+{{- $chezmoiData = unset $chezmoiData "archPackages"}}
 {{- $chezmoiData = unset $chezmoiData "fontsDir"}}
+{{- $chezmoiData = unset $chezmoiData "pipx"}}
 {{- $chezmoiData = unset $chezmoiData "windowsTerminalFont"}}
+{{- $chezmoiData = unset $chezmoiData "wslWindows"}}
 
 {{- $sourceDir := joinPath .chezmoi.workingTree "root" -}}
 sourceDir= "{{ $sourceDir }}"

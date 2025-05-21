@@ -1,4 +1,4 @@
-packages:
+archPackages:
   - acpi_call
   - acpilight
   - age
