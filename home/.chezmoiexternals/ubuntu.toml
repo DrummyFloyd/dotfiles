@@ -5,7 +5,7 @@
 {{ $nerdFontsVersion := (gitHubLatestRelease "ryanoasis/nerd-fonts").TagName }}
 [{{ .fontsDir | quote }}]
   type = "file"
-  url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
+  url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
 {{ end }}
 
 
@@ -14,9 +14,9 @@
 {{ $psScriptVersion := (gitHubLatestRelease "ralish/PSWinGlue").TagName }}
 ["{{ $externalScriptsDir }}/Install-Font.ps1"]
   type = "file"
-  url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Install-Font.ps1"
+  url = "https://raw.githubusercontent.com/ralish/PSWinGlue/{{ $psScriptVersion }}/Scripts/Install-Font.ps1"
 
 ["{{ $externalScriptsDir }}/Uninstall-Font.ps1"]
   type = "file"
-  url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Uninstall-Font.ps1"
+  url = "https://raw.githubusercontent.com/ralish/PSWinGlue/{{ $psScriptVersion }}/Scripts/Uninstall-Font.ps1"
 {{ end }}
