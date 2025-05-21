@@ -7,7 +7,6 @@
 {{- /* PROMPTS */ -}}
 {{- writeToStdout "🌟 Chezmoi configuration 🌟\n" -}}
 {{- writeToStdout "💡 Tip: You can re-enter prompted inputs with `chezmoi init --data=false`.💡\n" -}}
-{{- $configSize := promptChoice "🔧❓ Which configuration you want 🔧" $configSizeChoices "full" -}}
 {{- $bitwardenEmail := promptString "🔧❓Which Bitwarden email" -}}
 {{- $workConfig := promptBool "🔧❓Enable work configuration [y/N]" false -}}
 {{- $personalSsh := promptBool "🔧❓Retrieve personal sshKeys/config from BitWarden [Y/n]" true -}}
@@ -28,7 +27,6 @@
   exclude = ["scripts", "dirs"]
 
 [data]
-  configSize = {{ $configSize | quote }}
   machineType = {{ .chezmoi.os | quote }}
   osName = {{ .chezmoi.osRelease.id | quote}}
   isWsl = {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft" ) }}true{{ else }}false{{ end }}
