@@ -10,9 +10,10 @@ export TERM="xterm-kitty"
 # INFO: on daily basis do not want to execute rootmoi after bootstrap
 # unset if needed
 export NO_ROOTMOI=1
+
 # History
-HISTSIZE=10000
-SAVEHIST=10000
+export HISTSIZE=10000
+export SAVEHIST=10000
 
 # Forgit config
 export FORGIT_LOG_GRAPH_ENABLE=false
