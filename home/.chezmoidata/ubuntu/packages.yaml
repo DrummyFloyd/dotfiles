@@ -4,6 +4,7 @@ aptPackages:
   - git
   - gpg
   - gnupg2
+  - google-chrome-stable
   - kitty
   - mise
   - pipx
