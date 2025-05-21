@@ -2,9 +2,7 @@
   vim:ft=bash.gotmpl:
 */ -}}
 #!/bin/bash
-{{ if not .isWsl }}
-exit 0
-}}
+
 {{ template "utils" }}
 
 win_home="$(wslvar USERPROFILE)"

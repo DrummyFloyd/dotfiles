@@ -3,10 +3,6 @@
 */ -}}
 #!/bin/bash
 
-{{ if not .isUbuntu }}
-exit 0
-{{ end }}
-
 {{ template "utils" }}
 
 if [ ! -d /etc/apt/keyrings ]; then

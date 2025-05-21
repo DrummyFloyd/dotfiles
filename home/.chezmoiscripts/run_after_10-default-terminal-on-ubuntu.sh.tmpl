@@ -3,10 +3,6 @@
 */ -}}
 #!/usr/bin/env bash
 
-{{ if or ( .isArch ) ( .isWsl ) }}
-exit 0
-{{ end }}
-
 {{ template "utils" }}
 
 log_task "Configuring default terminal to kitty..."
