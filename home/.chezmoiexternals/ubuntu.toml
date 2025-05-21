@@ -6,6 +6,8 @@
 type = "file"
 {{ $nerdFontsVersion := (gitHubLatestRelease "ryanoasis/nerd-fonts").TagName }}
 url: "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
+{{ end }}
+
 
 {{ if .isWsl }}
 {{ $externalScriptsDir := includeTemplate "get-external-scripts-dir" . }}
