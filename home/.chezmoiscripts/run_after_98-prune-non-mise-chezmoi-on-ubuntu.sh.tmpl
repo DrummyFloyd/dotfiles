@@ -1,0 +1,13 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+
+chezmoi_executable="{{ .chezmoi.executable }}"
+if [[ "${chezmoi_executable}" != *"/mise/"* ]]; then
+  log_task "Uninstalling chezmoi not installed by mise: ${chezmoi_executable}"
+  sudo snap remove chezmoi
+fi
