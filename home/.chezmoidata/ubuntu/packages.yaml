@@ -23,9 +23,9 @@ pipx:
   - tldr
   - trash-cli
 wslWindows:
+  - Google.Chrome
   - Microsoft.VisualStudioCode
   - Microsoft.WindowsTerminal
-  - Google.Chrome
 fontsDir: .local/share/fonts
 windowsTerminalFont:
   fileName: Fira Code Regular Nerd Font Complete Mono.ttf
