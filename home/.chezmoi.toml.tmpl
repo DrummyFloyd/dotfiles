@@ -39,18 +39,6 @@
 [data.bitwarden]
   email = {{ $bitwardenEmail | quote }}
 
-[data.config.minimal]
-  dotConfig = [
-  "dunst",
-  "hypr",
-  "icons",
-  "k9s",
-  "sops",
-  "waybar",
-  "wlogout",
-  "wofi",
-  ]
-
 [data.ssh]
   personalSsh = {{ $personalSsh }}
   generateSsh = {{ $generateSsh }}

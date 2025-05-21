@@ -1,16 +1,5 @@
-{{ if .machineType | eq "linux" }}
-{{ if .configSize | eq "minimal" }}
-{{ range .config.minimal.dotConfig }}
-.config/{{ . }}/
-.config/{{ . }}/**
-{{ end }}
-{{ end }}
-.config/nvim/lazy-lock.json
-{{ if not .work }}
-.config/gitconfig/work
-{{ end }}
-{{ end }}
-{{ if .isArch }}
-.config/mise/devops.toml
-.config/mise/system.toml
+{{ if .isUbuntu }}
+{{ template "arch/chezmoiignore" .}}
+{{ else if .isArch }}
+{{ template "ubuntu/chezmoiignore" .}}
 {{ end }}

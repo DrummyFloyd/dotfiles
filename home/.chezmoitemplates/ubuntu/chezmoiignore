@@ -1,0 +1,38 @@
+{{- /*
+  vim:ft=gotmpl:
+*/ -}}
+.chezmoiscripts/*-on-arch.sh.tmpl
+.chezmoiscripts/*-on-arch.sh
+
+{{ if not .isWsl }}
+.chezmoiscripts/*-on-windows.sh.tmpl
+.chezmoiscripts/*-on-windows.sh
+{{ end }}
+
+{{- $listToIgnore := slice
+  "dunst"
+  "environments.d"
+  "hypr"
+  "hypr/hyprlock"
+  "icons"
+  "pacman"
+  "waybar"
+  "waybar/private_components"
+  "wlogout"
+  "wlogout/private_icons"
+  "wofi"
+}}
+{{ range $listToIgnore }}
+.config/{{ . }}
+.config/{{ . }}/**
+{{ end }}
+
+# rootmoi side
+/etc/pacman.d/**
+/etc/pacman.d/
+/etc/pacman.d/hooks/**
+/etc/pacman.d/hooks/
+
+{{ if not .isWsl }}
+/etc/wsl.conf
+{{ end }}

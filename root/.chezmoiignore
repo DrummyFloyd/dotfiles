@@ -1,13 +1,5 @@
-{{ if not .isArch }}
-/etc/pacman.d/**
-/etc/pacman.d/
-/etc/pacman.d/hooks/**
-/etc/pacman.d/hooks/
-{{ end }}
-{{ if .isArch }}
-/etc/apt/sources.list.d/**
-/etc/apt/sources.list.d/
-{{ if not .isWsl }}
-/etc/wsl.conf
-{{ end }}
+{{ if .isUbuntu }}
+{{ template "arch/chezmoiignore" .}}
+{{ else if .isArch }}
+{{ template "ubuntu/chezmoiignore" .}}
 {{ end }}
