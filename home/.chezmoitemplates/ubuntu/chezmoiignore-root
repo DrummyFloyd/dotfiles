@@ -1,0 +1,13 @@
+/etc/pacman.d/**
+/etc/pacman.d/
+/etc/pacman.d/hooks/**
+/etc/pacman.d/hooks/
+
+.chezmoiscripts/*-on-arch.sh.tmpl
+.chezmoiscripts/*-on-arch.sh
+
+{{ if not .isWsl }}
+/etc/wsl.conf
+.chezmoiscripts/*-on-windows.sh.tmpl
+.chezmoiscripts/*-on-windows.sh
+{{ end }}

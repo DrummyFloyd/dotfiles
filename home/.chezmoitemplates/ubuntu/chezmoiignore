@@ -26,13 +26,3 @@
 .config/{{ . }}
 .config/{{ . }}/**
 {{ end }}
-
-# rootmoi side
-/etc/pacman.d/**
-/etc/pacman.d/
-/etc/pacman.d/hooks/**
-/etc/pacman.d/hooks/
-
-{{ if not .isWsl }}
-/etc/wsl.conf
-{{ end }}
