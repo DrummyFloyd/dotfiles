@@ -2,10 +2,10 @@
   vim:ft=toml.gotmpl:
 */ -}}
 {{ if .isUbuntu }}
-[{{ .fontsDir | quote }}]
-type = "file"
 {{ $nerdFontsVersion := (gitHubLatestRelease "ryanoasis/nerd-fonts").TagName }}
-url: "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
+[{{ .fontsDir | quote }}]
+  type = "file"
+  url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
 {{ end }}
 
 
@@ -13,10 +13,10 @@ url: "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/v{{ $nerdFontsVersi
 {{ $externalScriptsDir := includeTemplate "get-external-scripts-dir" . }}
 {{ $psScriptVersion := (gitHubLatestRelease "ralish/PSWinGlue").TagName }}
 ["{{ $externalScriptsDir }}/Install-Font.ps1"]
-type = "file"
-url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Install-Font.ps1"
+  type = "file"
+  url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Install-Font.ps1"
 
 ["{{ $externalScriptsDir }}/Uninstall-Font.ps1"]
-type = "file"
-url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Uninstall-Font.ps1"
+  type = "file"
+  url = "https://raw.githubusercontent.com/ralish/PSWinGlue/v{{ $psScriptVersion }}/Scripts/Uninstall-Font.ps1"
 {{ end }}
