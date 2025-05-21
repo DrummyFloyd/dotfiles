@@ -23,6 +23,6 @@
   "wofi"
 }}
 {{ range $listToIgnore }}
-.config/{{ . }}
+.config/{{ . }}/
 .config/{{ . }}/**
 {{ end }}
