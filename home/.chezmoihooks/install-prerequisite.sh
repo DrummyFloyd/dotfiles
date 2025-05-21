@@ -80,8 +80,8 @@ case "$OS_NAME" in
     source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
 
     log_task "Installing missing packages: ${missing_packages[*]}"
-    check_install_rbw_bin
     DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install "${missing_packages[@]}" --yes
+    check_install_rbw_bin
     ;;
   "arch")
     check_pacman_package
