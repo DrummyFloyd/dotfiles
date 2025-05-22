@@ -65,8 +65,19 @@ check_apt_package() {
 }
 
 check_pacman_package() {
+  local output
+  set +e
   output=$(sudo pacman -Q "${ARCH_PACKAGES[@]}" 2>&1)
-  missing_packages=$(echo "$output" | grep "error: package" | sed -e "s/error: package '\(.*\)' was not found/\1/" | tr '\n' ' ' | sed 's/ $//')
+  set -e
+  while IFS= read -r line; do
+    if [[ "$line" == *"error: package"* ]]; then
+      # Extract package name from error message
+      local pkg_name
+      pkg_name=$(echo "$line" | sed -e "s/error: package '\(.*\)' was not found/\1/")
+      missing_packages+=("$pkg_name")
+    fi
+  done <<<"$output"
+  # missing_packages=$(echo "$output" | grep "error: package" | sed -e "s/error: package '\(.*\)' was not found/\1/" | tr '\n' ' ' | sed 's/ $//')
 }
 
 case "$OS_NAME" in
