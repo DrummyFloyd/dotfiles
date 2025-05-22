@@ -90,6 +90,7 @@ case "$OS_NAME" in
     # shellcheck source=../.chezmoitemplates/scripts-library
     source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
 
+    log_info "Os detected: ${OS_NAME}"
     log_task "Installing missing packages: ${missing_packages[*]}"
     DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install "${missing_packages[@]}" --yes
     check_install_rbw_bin
@@ -99,9 +100,11 @@ case "$OS_NAME" in
     if [[ ${#missing_packages[@]} -eq 0 ]]; then
       exit 0
     fi
-    #
+
     # shellcheck source=../.chezmoitemplates/scripts-library
     source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
+
+    log_info "Os detected: ${OS_NAME}"
     log_task "Installing missing packages: ${missing_packages[*]}"
 
     install_yay
