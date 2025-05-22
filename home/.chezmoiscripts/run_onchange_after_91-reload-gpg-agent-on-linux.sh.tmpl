@@ -1,0 +1,12 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+# gpg-agent.conf hash: {{ include "private_dot_gnupg/gpg-agent.conf" | sha256sum }}
+# gpg.conf hash: {{ include "private_dot_gnupg/gpg.conf" | sha256sum }}
+
+log_task "Reloading GPG conf..."
+gpg-connect-agent reloadagent /byegpg-connect-agent reloadagent /bye > /dev/null 2>&1
