@@ -25,7 +25,6 @@ aptWsl:
   - wslview
 pipx:
   - organize-tool
-  - thefuck
   - tldr
   - trash-cli
 wslWindows:

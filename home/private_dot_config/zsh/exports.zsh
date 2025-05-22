@@ -59,5 +59,4 @@ compinit
 # You can use whatever you want as an alias, like for Mondays:
 # eval "`pip completion --zsh`"
 # TODO: function to auto load
-eval $(thefuck --alias fock)
 source <(fzf --zsh)
