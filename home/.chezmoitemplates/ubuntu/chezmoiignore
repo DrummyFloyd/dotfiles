@@ -4,7 +4,7 @@
 
 .chezmoiscripts/*-on-arch.sh
 
-{{ if not .isWsl }}
+{{ if and ( not .isWsl) ( not .isWindowsAdmin ) }}
 .chezmoiscripts/*-on-windows.sh
 {{ end }}
 

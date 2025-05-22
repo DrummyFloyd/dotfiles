@@ -8,6 +8,7 @@
 {{- writeToStdout "💡 Tip: You can re-enter prompted inputs with `chezmoi init --data=false`.💡\n" -}}
 {{- $bitwardenEmail := promptString "🔧❓Which Bitwarden email" -}}
 {{- $workConfig := promptBool "🔧❓Enable work configuration [y/N]" false -}}
+{{- $isWindowsAdmin:= promptBool "🔧❓Are you Windows admin [y/N]" false -}}
 {{- $personalSsh := promptBool "🔧❓Retrieve personal sshKeys/config from BitWarden [Y/n]" true -}}
 {{- $generateSsh := promptBool "🔧❓Generate new sshKey [y/N]" false -}}
 
@@ -29,6 +30,7 @@
   machineType = {{ .chezmoi.os | quote }}
   osName = {{ .chezmoi.osRelease.id | quote}}
   isWsl = {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft" ) }}true{{ else }}false{{ end }}
+  isWindowsAdmin = {{ $isWindowsAdmin }}
   isArch = {{ if (eq .chezmoi.osRelease.id "arch") }}true{{ else }}false{{ end }}
   isUbuntu = {{ if (eq .chezmoi.osRelease.id "ubuntu") }}true{{ else }}false{{ end }}
   work = {{ $workConfig }}
