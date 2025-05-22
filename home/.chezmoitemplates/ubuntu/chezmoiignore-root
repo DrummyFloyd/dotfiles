@@ -1,3 +1,6 @@
+{{- /*
+  vim:ft=gotmpl:
+*/ -}}
 etc/pacman.d/**
 etc/pacman.d/
 etc/pacman.d/hooks/**
