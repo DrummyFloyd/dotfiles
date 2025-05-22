@@ -1,4 +1,4 @@
-archPackages:
+packages:
   - acpi_call
   - acpilight
   - age
@@ -173,7 +173,6 @@ archPackages:
   - swappy
   - talhelper-bin
   - terraform
-  - thefuck
   - tldr
   - tpi
   - tree
