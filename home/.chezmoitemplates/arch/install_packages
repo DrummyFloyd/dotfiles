@@ -2,7 +2,7 @@
   vim:ft=bash.gotmpl:
 */ -}}
 PACKAGES={{ .archPackages | join " " | quote }}
-OUTPUT=$(yay -Q {{ .packages | join " " }} 2>&1)
+OUTPUT=$(yay -Q {{ .archPackages | join " " }} 2>&1)
 
 MISSING_PACKAGES=$(echo "$OUTPUT" | grep "error: package" | sed -e "s/error: package '\(.*\)' was not found/\1/" | tr '\n' ' ' | sed 's/ $//')
 

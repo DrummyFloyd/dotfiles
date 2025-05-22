@@ -1,5 +1,6 @@
 etc/apt/sources.list.d/**
 etc/apt/sources.list.d/
+etc/wsl.conf
 
 .chezmoiscripts/*-on-ubuntu.sh
 .chezmoiscripts/*-on-windows.sh
