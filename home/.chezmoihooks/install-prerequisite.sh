@@ -14,6 +14,7 @@ UBUNTU_DEBIAN_PACKAGES=(
 )
 
 ARCH_PACKAGES=(
+  git
   pinentry-tty
   rbw
   yay
