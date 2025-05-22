@@ -3,3 +3,7 @@
 {{ else if .isArch }}
 {{ template "arch/chezmoiignore" . }}
 {{ end }}
+
+
+# common
+.config/nvim/lazy-lock.json
