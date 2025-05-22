@@ -13,7 +13,7 @@ ZAP_DIR="${HOME}/.local/share/zap/zap.zsh"
 if [[ -f ${ZAP_DIR} ]];then
     source ${ZAP_DIR}
 else
-    curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh | zsh -s --
+    curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh | zsh -s -- --keep
     source ${ZAP_DIR}
 fi
 
