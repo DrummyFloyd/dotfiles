@@ -8,6 +8,6 @@
 
 rbw_executable=$(which rbw)
 if [[ "${rbw_executable}" != *"/mise/"* ]]; then
-  log_task "Uninstalling rbw(-agent) not installed by mise: ${chezmoi_executable}"
+  log_task "Uninstalling rbw(-agent) not installed by mise: ${rbw_executable}"
   sudo rm -rf "${rbw_executable}" "${rbw_executable}-agent"
 fi
