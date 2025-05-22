@@ -1,0 +1,11 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+if [ -z "$(mise ls --raw --no-header)" ]; then
+  log_task "Installing mise plugins.."
+  mise i --yes
+fi
