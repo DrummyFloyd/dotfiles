@@ -97,7 +97,7 @@ case "$OS_NAME" in
     sudo pacman -S --noconfirm "${missing_packages[@]}"
     ;;
   *)
-    echo "unsupported OS"
+    log_error "unsupported OS"
     exit 1
     ;;
 esac
