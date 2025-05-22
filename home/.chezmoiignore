@@ -1,5 +1,5 @@
 {{ if .isUbuntu }}
-{{ template "arch/chezmoiignore" . }}
-{{ else if .isArch }}
 {{ template "ubuntu/chezmoiignore" . }}
+{{ else if .isArch }}
+{{ template "arch/chezmoiignore" . }}
 {{ end }}
