@@ -172,6 +172,7 @@ archPackages:
   - stylua
   - swappy
   - talhelper-bin
+  - talosctl
   - terraform
   - tldr
   - tpi
