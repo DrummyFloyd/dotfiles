@@ -12,6 +12,7 @@ aptPackages:
   - gnupg2
   - google-chrome-stable
   - gpg
+  - jq
   - kitty
   - mise
   - pipx
