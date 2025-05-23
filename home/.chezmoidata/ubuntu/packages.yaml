@@ -33,5 +33,5 @@ wslWindows:
   - Microsoft.WindowsTerminal
 fontsDir: .local/share/fonts
 windowsTerminalFont:
-  fileName: Fira Code Regular Nerd Font Complete Mono.ttf
-  name: FiraCode Nerd Font Mono
+  fileName: Fira Code Regular Nerd Font Complete.ttf
+  name: FiraCode Nerd Font
