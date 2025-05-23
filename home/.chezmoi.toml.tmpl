@@ -1,14 +1,20 @@
 {{- /*
   vim:ft=toml.gotmpl:
 */ -}}
-{{- /* CHOICES */ -}}
+{{- /* CHEZMOI CONFIGURATION */ -}}
+
+{{- /* COMPUTED VARS */ -}}
+{{- $machineType := .chezmoi.os -}}
+{{- $osName := .chezmoi.osRelease.id -}}
+{{- $isWsl := and .chezmoi.kernel.osrelease (.chezmoi.kernel.osrelease | lower | contains "microsoft") -}}
+{{- $isArch := eq .chezmoi.osRelease.id "arch" -}}
+{{- $isUbuntu := eq .chezmoi.osRelease.id "ubuntu" -}}
 
 {{- /* PROMPTS */ -}}
 {{- writeToStdout "🌟 Chezmoi configuration 🌟\n" -}}
 {{- writeToStdout "💡 Tip: You can re-enter prompted inputs with `chezmoi init --data=false`.💡\n" -}}
 {{- $bitwardenEmail := promptString "🔧❓Which Bitwarden email" -}}
 {{- $workConfig := promptBool "🔧❓Enable work configuration [y/N]" false -}}
-{{- $isWindowsAdmin:= promptBool "🔧❓Are you Windows admin [y/N]" false -}}
 {{- $personalSsh := promptBool "🔧❓Retrieve personal sshKeys/config from BitWarden [Y/n]" true -}}
 {{- $generateSsh := promptBool "🔧❓Generate new sshKey [y/N]" false -}}
 
@@ -28,11 +34,10 @@
 
 [data]
   machineType = {{ .chezmoi.os | quote }}
-  osName = {{ .chezmoi.osRelease.id | quote}}
-  isWsl = {{ if (.chezmoi.kernel.osrelease | lower | contains "microsoft" ) }}true{{ else }}false{{ end }}
-  isWindowsAdmin = {{ $isWindowsAdmin }}
-  isArch = {{ if (eq .chezmoi.osRelease.id "arch") }}true{{ else }}false{{ end }}
-  isUbuntu = {{ if (eq .chezmoi.osRelease.id "ubuntu") }}true{{ else }}false{{ end }}
+  osName = {{ .chezmoi.osRelease.id | quote }}
+  isWsl = {{ $isWsl }}
+  isArch = {{ $isArch }}
+  isUbuntu = {{ $isUbuntu }}
   work = {{ $workConfig }}
 
 [data.bitwarden]
@@ -45,6 +50,11 @@
 [data.git.personal]
   email = {{ promptString "📧❓Gitconfig: Personal email" | quote }}
   username = {{ promptString "🧑❓Gitconfig: Personal username" | quote }}
+
+{{- if $isWsl }}
+[data.wsl]
+  isWindowsAdmin = {{ promptBool "🔧❓Are you Windows admin [y/N]" false -}}
+{{- end }}
 
 {{- if $workConfig }}
 [data.git.work]
