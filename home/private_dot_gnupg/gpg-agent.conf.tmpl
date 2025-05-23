@@ -1,0 +1,9 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
+{{- if .isWsl -}}
+pinentry-program "/usr/bin/pinentry-curses"
+{{- else -}}
+pinentry-program "/usr/bin/pinentry"
+{{- end }}
+allow-loopback-pinentry
