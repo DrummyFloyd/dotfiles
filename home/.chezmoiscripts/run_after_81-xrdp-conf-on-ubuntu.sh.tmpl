@@ -1,0 +1,23 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+if ! groups {{ .chezmoi.username }} | grep -q xrdp; then
+  log_task "Adding {{ .chezmoi.username }} to xrdp group"
+  sudo usermod -aG xrdp {{ .chezmoi.username }}
+fi
+
+if ! groups {{ .chezmoi.username }} | grep -q ssl-cert; then
+  log_task "Adding {{ .chezmoi.username }} to ssl-cert group"
+  sudo usermod -aG ssl-cert {{ .chezmoi.username }}
+fi
+
+
+if ! ss -tuln | grep -q ":$PORT "; then
+    log_task "Port $PORT is not open will be opened for xrdp.."
+    sudo ufw allow 3389/tcp
+    sudo ufw reload
+fi
