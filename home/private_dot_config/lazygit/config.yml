@@ -4,7 +4,7 @@ gui:
   nerdFontsVersion: "3"
   sidePanelWidth: 0.2
 git:
-  overrideGpg: false
+  overrideGpg: true
   parseEmoji: true
   paging:
     colorArg: always
