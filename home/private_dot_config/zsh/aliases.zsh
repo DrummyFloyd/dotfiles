@@ -24,9 +24,6 @@ alias change_python='sudo update-alternatives --config python3'
 # git with extras
 alias gdiff="git diff |ydiff"
 alias glog="git log -p |ydiff"
-alias ydiff-cached='git diff --cached | ydiff'
-alias ydiff-show='git show | ydiff'
-alias ydiff='ydiff -s -w 0'
 
 # kubernetes
 alias k="kubectl"
