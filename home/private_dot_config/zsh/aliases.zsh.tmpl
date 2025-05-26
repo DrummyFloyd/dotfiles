@@ -1,3 +1,7 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+
 # Color ip
 alias ip="ip -c"
 alias get-public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -56,10 +60,12 @@ alias -- -='cd -'
 # pip glob issue
 alias pip='noglob pip'
 
+{{ if not .isWsl }}
 # Kitty ssh
 if [[ $TERM == "xterm-kitty" ]]; then
   alias ssh="kitty +kitten ssh"
 fi
+{{ end }}
 
 # docker alias
 alias docker-stop-all='docker rm -f $(docker ps -aq)'
