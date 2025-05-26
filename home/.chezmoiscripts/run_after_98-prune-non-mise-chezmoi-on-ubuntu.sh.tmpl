@@ -9,5 +9,11 @@
 chezmoi_executable="{{ .chezmoi.executable }}"
 if [[ "${chezmoi_executable}" != *"/mise/"* ]]; then
   log_task "Uninstalling chezmoi not installed by mise: ${chezmoi_executable}"
-  sudo snap remove chezmoi
+  if [[ "${chezmoi_executable}" == *"/snap/bin/chezmoi"* ]]; then
+    # If chezmoi was installed via snap, we need to remove it using snap
+    sudo snap remove chezmoi
+  else
+    # Otherwise, we can just remove the binary
+    sudo rm -f "${chezmoi_executable}"
+  fi
 fi
