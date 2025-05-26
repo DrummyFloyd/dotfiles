@@ -3,7 +3,7 @@ alias ip="ip -c"
 alias get-public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 # color cat
-alias cat="command -p bat --style=header,grid"
+alias bat="command -p bat --style=header,grid"
 
 # histrory
 alias history="history -Ei"
