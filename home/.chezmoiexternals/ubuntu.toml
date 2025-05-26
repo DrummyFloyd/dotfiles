@@ -11,7 +11,7 @@
 
 {{ if .isWsl }}
 {{ $externalScriptsDir := includeTemplate "get-external-scripts-dir" . }}
-{{ $psScriptVersion := (gitHubLatestRelease "ralish/PSWinGlue").TagName }}
+{{ $psScriptVersion := (gitHubLatestTag "ralish/PSWinGlue").Name }}
 ["{{ $externalScriptsDir }}/Install-Font.ps1"]
   type = "file"
   url = "https://raw.githubusercontent.com/ralish/PSWinGlue/{{ $psScriptVersion }}/Scripts/Install-Font.ps1"
