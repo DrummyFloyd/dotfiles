@@ -1,0 +1,5 @@
+{{- /*
+  vim:ft=gotmpl:
+*/ -}}
+
+.config/nvim/lazy-lock.json

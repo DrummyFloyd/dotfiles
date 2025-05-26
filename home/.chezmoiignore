@@ -4,6 +4,8 @@
 {{ template "arch/chezmoiignore" . }}
 {{ end }}
 
-
 # common
-.config/nvim/lazy-lock.json
+{{ template "chezmoiignore-common" . }}
+
+# Specific to install
+#
