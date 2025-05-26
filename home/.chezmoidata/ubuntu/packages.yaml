@@ -32,6 +32,7 @@ pipx:
   - organize-tool
   - tldr
   - trash-cli
+  - ydiff
 wslWindows:
   - Google.Chrome
   - Microsoft.VisualStudioCode
