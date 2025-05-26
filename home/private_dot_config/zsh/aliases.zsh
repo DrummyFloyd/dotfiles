@@ -1,7 +1,3 @@
-# Config File
-alias nvimrc="nvim ${HOME}/.config/nvim/ --cmd ':cd %'"
-alias dotfiles="nvim ${HOME}/.dotfiles --cmd ':cd %'"
-
 # Color ip
 alias ip="ip -c"
 alias get-public-ip="dig +short myip.opendns.com @resolver1.opendns.com"
