@@ -5,7 +5,7 @@
 
 {{ template "utils" }}
 
-# {{ $fontPath := joinPath .chezmoi.homeDir .fontsDir .windowsTerminalFont.fileName }}
+# {{ $fontPath := joinPath .chezmoi.homeDir .fontsDir  }}
 # {{ $externalScriptsDir := joinPath .chezmoi.homeDir (includeTemplate "get-external-scripts-dir" .) }}
 # {{ $installFontPs1Path := joinPath $externalScriptsDir "Install-Font.ps1" }}
 # The Uninstall-Font.ps1 is used by Install-Font.ps1
@@ -27,7 +27,8 @@ log_task "Installing terminal font '{{ .terminalFont.name }}' on Windows"
 
 log_manual_action "If this is the first time installing the font, please restart Windows Terminal to ensure they recognize the font"
 
-not_during_test c PowerShell.exe -NoProfile -ExecutionPolicy Bypass \
+
+c PowerShell.exe -NoProfile -ExecutionPolicy Bypass \
   -File "${install_font_ps1_path_for_win}" \
   -Path "${font_path_for_win}" \
   -Scope User \

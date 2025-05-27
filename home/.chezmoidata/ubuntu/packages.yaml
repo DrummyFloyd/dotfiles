@@ -41,5 +41,4 @@ ubuntuFonts:
   - Meslo
   - FiraCode
 windowsTerminalFont:
-  fileName: Fira Code Regular Nerd Font Complete.ttf
   name: FiraCode Nerd Font
