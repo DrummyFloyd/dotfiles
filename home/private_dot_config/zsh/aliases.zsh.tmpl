@@ -25,8 +25,9 @@ alias mv='mv -i'
 alias change_python='sudo update-alternatives --config python3'
 
 # git with extras
-alias gdiff="git diff |ydiff"
-alias glog="git log -p |ydiff"
+# BUG: https://github.com/ymattw/ydiff/issues/130
+alias gdiff="git diff --no-color |ydiff"
+alias glog="git log -p --no-color |ydiff"
 
 # kubernetes
 alias k="kubectl"
