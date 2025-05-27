@@ -1,3 +1,8 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
+{{ if .isWsl }}
 # INFO: https://github.com/jesseduffield/lazygit/issues/3308#issuecomment-2296655540
 use-agent
 pinentry-mode loopback
+{{ end}}

@@ -6,7 +6,7 @@
 {{ template "utils" }}
 
 # gpg-agent.conf hash: {{ includeTemplate "private_dot_gnupg/gpg-agent.conf.tmpl" . | sha256sum }}
-# gpg.conf hash: {{ include "private_dot_gnupg/gpg.conf" | sha256sum }}
+# gpg.conf hash: {{ include "private_dot_gnupg/gpg.conf.tmpl" | sha256sum }}
 
 log_task "Reloading GPG conf..."
 gpgconf --reload gpg-agent
