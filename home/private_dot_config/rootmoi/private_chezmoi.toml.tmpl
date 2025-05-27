@@ -20,7 +20,9 @@ destDir= "/"
 verbose= true
 
 [diff]
-{{ $chezmoiDiff | toToml }}
+exclude = ['dirs', 'scripts']
+reverse = false
+scriptContents = true
 
 [data]
 non_root_user= "{{ .chezmoi.username }}"
