@@ -1,2 +1,2 @@
 # cron organize tools
-0 */2 * * * /home/${USER}/.local/bin/organize run
+0 */2 * * * /home/{{ .non_root_user }}/.local/bin/organize run

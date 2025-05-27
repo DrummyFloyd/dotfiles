@@ -3,16 +3,25 @@
 */ -}}
 #!/bin/bash
 
+# cronjobs hash: {{ includeTemplate "cronjobs" . }}
+
 {{ template "utils" }}
 
 USER={{ .non_root_user }}
 
+CRONJOBS={{ template "cronjobs" .  }}
+{{- if .isArch }}
+CRONJOBS_PATH=/var/spool/cron/$USER
+{{- else if .isUbuntu }}
+CRONJOBS_PATH=/var/spool/cron/crontab/$USER
+{{- end }}
 
-if [ -f /var/spool/cron/$USER ]; then
-  log_task "Updating cron jobs"
-{{ if .isArch }}
-  echo "{{ template "cronjobs" . }}" > /var/spool/cron/$USER
-{{ else if .isUbuntu }}
-  echo "{{ template "cronjobs" . }}" > /var/spool/cron/crontab/$USER
-{{ end }}
+if [ ! -f ${CRONJOBS_PATH} ]; then
+  log_task "Create cronjobs file at ${CRONJOBS_PATH} ..."
+  sudo touch ${CRONJOBS_PATH}
+fi
+
+if ! grep -q "${CRONJOBS}" ${CRONJOBS_PATH} 2>/dev/null; then
+  log_task "Adding cronjobs to ${CRONJOBS_PATH} ..."
+  echo "${CRONJOBS}" | sudo tee -a ${CRONJOBS_PATH} > /dev/null
 fi
