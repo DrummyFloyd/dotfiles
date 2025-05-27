@@ -14,7 +14,7 @@
 
 {{- $listToIgnore := list
   "dunst"
-  "environments.d"
+  "environment.d"
   "hypr"
   "hypr/hyprlock"
   "icons"
