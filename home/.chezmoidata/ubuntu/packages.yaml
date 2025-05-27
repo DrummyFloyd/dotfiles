@@ -26,8 +26,7 @@ aptPackages:
   - vim
   - xrdp
   - zsh
-aptWsl:
-  - wslview
+aptWsl: []
 pipx:
   - organize-tool
   - tldr
