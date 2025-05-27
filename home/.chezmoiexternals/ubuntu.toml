@@ -1,13 +1,20 @@
 {{- /*
   vim:ft=toml.gotmpl:
 */ -}}
+
 {{ if .isUbuntu }}
 {{ $nerdFontsVersion := (gitHubLatestRelease "ryanoasis/nerd-fonts").TagName }}
-[{{ .fontsDir | quote }}]
-  type = "file"
-  url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/{{ $nerdFontsVersion }}/patched-fonts/FiraCode/Regular/FiraCodeNerdFontMono-Regular.ttf"
-{{ end }}
+{{ range .ubuntuFonts }}
+{{ $fontName := . }}
 
+["{{ joinPath ($.fontsDir) ($fontName) }}"]
+  type = "archive"
+  url = "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ $nerdFontsVersion }}/{{ $fontName }}.zip"
+  urls = ["https://github.com/ryanoasis/nerd-fonts/releases/download/{{ $nerdFontsVersion }}/{{ $fontName }}.tar.xz"]
+  refreshPeriod = "168h"
+  include = [ "**/*.ttf" ]
+{{ end }}
+{{ end }}
 
 {{ if .isWsl }}
 {{ $externalScriptsDir := includeTemplate "get-external-scripts-dir" . }}

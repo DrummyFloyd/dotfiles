@@ -37,6 +37,9 @@ wslWindows:
   - Microsoft.VisualStudioCode
   - Microsoft.WindowsTerminal
 fontsDir: .local/share/fonts
+ubuntuFonts:
+  - Meslo
+  - FiraCode
 windowsTerminalFont:
   fileName: Fira Code Regular Nerd Font Complete.ttf
   name: FiraCode Nerd Font
