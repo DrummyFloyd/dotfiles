@@ -33,5 +33,7 @@ done
 
 if [[ ${#missing_pipx_packages[@]} -gt 0 ]]; then
   log_task "Installing missing pipx packages: ${missing_pipx_packages[*]}"
-    pipx install "${missing_pipx_packages[@]}"
+  for PACKAGE in "${missing_pipx_packages[@]}"; do
+    pipx install "$PACKAGE"
+  done
 fi
