@@ -87,7 +87,7 @@ case "$OS_NAME" in
       exit 0
     fi
 
-    # shellcheck source=../.chezmoitemplates/scripts-library
+    # shellcheck source=../.chezmoitemplates/utils
     source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
 
     log_info "Os detected: ${OS_NAME}"
@@ -101,7 +101,7 @@ case "$OS_NAME" in
       exit 0
     fi
 
-    # shellcheck source=../.chezmoitemplates/scripts-library
+    # shellcheck source=../.chezmoitemplates/utils
     source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
 
     log_info "Os detected: ${OS_NAME}"
