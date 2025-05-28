@@ -9,4 +9,4 @@
 .config/mise/conf.d/**
 .config/mise/conf.d/
 
-.config/mise/.default-npm-packages
+.config/mise/.default-*-packages
