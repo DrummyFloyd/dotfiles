@@ -1,9 +1,9 @@
 {{- /*
   vim:ft=bash.gotmpl:
 */ -}}
-PACKAGES={{ .aptPackages | join " " | quote }}
-{{ if  and (.isWsl) ( gt (len .aptWsl ) 0 ) }}
-PACKAGES+={{ .aptWsl | join " " | quote }}
+PACKAGES={{ .ubuntu.apt | join " " | quote }}
+{{ if  and (.isWsl) ( gt (len .ubuntu.aptWsl ) 0 ) }}
+PACKAGES+={{ .ubuntu.aptWsl | join " " | quote }}
 {{ end }}
 
 missing_packages=()
@@ -22,7 +22,7 @@ fi
 
 # Install pipx packages
 #
-PIPX_PACKAGES={{ .ubuntuPipx | join " " | quote }}
+PIPX_PACKAGES={{ .ubuntu.pipx | join " " | quote }}
 
 missing_pipx_packages=()
 for PACKAGE in $PIPX_PACKAGES; do

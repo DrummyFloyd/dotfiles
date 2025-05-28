@@ -32,7 +32,7 @@ if ! command -v winget.exe >/dev/null; then
   unset msix_path msix_path_for_win
 fi
 
-readonly wanted_packages={{ .wslWindows | join " " | quote }}
+readonly wanted_packages={{ .ubuntu.windows | join " " | quote }}
 
 missing_packages=()
 

@@ -9,4 +9,4 @@ Target = *
 
 [Action]
 When = PostTransaction
-Exec = /bin/sh -c 'echo "archPackages:" > /home/{{ .non_root_user }}/.local/share/chezmoi/home/.chezmoidata/arch/packages.yaml && /usr/bin/pacman -Qqe | sed "s/^/  - /" >> /home/{{ .non_root_user }}/.local/share/chezmoi/home/.chezmoidata/arch/packages.yaml'
+Exec = /bin/sh -c 'echo "arch:" > /home/{{ .non_root_user }}/.local/share/chezmoi/home/.chezmoidata/arch/pacman.yaml && echo "  pacman:" >> /home/{{ .non_root_user }}/.local/share/chezmoi/home/.chezmoidata/arch/pacman.yaml && /usr/bin/pacman -Qqe | sed "s/^/    - /" >> /home/{{ .non_root_user }}/.local/share/chezmoi/home/.chezmoidata/arch/pacman.yaml'

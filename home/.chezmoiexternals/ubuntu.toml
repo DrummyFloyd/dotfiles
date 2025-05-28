@@ -4,10 +4,10 @@
 
 {{ if .isUbuntu }}
 {{ $nerdFontsVersion := (gitHubLatestRelease "ryanoasis/nerd-fonts").TagName }}
-{{ range .ubuntuFonts }}
+{{ range .ubuntu.fonts }}
 {{ $fontName := . }}
 
-["{{ joinPath ($.fontsDir) ($fontName) }}"]
+["{{ joinPath ($.ubuntu.fontsDir) ($fontName) }}"]
   type = "archive"
   url = "https://github.com/ryanoasis/nerd-fonts/releases/download/{{ $nerdFontsVersion }}/{{ $fontName }}.zip"
   urls = ["https://github.com/ryanoasis/nerd-fonts/releases/download/{{ $nerdFontsVersion }}/{{ $fontName }}.tar.xz"]

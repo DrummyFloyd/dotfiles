@@ -5,7 +5,7 @@
 
 {{ template "utils" }}
 
-# {{ $fontPath := joinPath .chezmoi.homeDir .fontsDir  }}
+# {{ $fontPath := joinPath .chezmoi.homeDir .ubuntu.fontsDir  }}
 # {{ $externalScriptsDir := joinPath .chezmoi.homeDir (includeTemplate "get-external-scripts-dir" .) }}
 # {{ $installFontPs1Path := joinPath $externalScriptsDir "Install-Font.ps1" }}
 # The Uninstall-Font.ps1 is used by Install-Font.ps1

@@ -7,6 +7,6 @@
 {{- end -}}
 
 {{- /* Set font */ -}}
-{{- $result = setValueAtPath "profiles.defaults.font.face" "FiraCode Nerd Font Mono" $result -}}
+{{- $result = setValueAtPath "profiles.defaults.font.face" {{ .ubuntu.windowsTerminalFont | quote }} $result -}}
 
 {{- toPrettyJson "    " $result | trimSuffix "\n" -}}

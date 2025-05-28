@@ -1,0 +1,5 @@
+ubuntu:
+  fontsDir: .local/share/fonts
+  fonts:
+    - Meslo
+    - FiraCode

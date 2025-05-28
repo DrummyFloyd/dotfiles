@@ -1,0 +1,8 @@
+arch:
+  pipx:
+    - organize-tool
+    - tldr
+    - trash-cli
+    - ydiff
+    - pre-commit
+    - gitingest

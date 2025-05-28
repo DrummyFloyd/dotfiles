@@ -4,7 +4,7 @@
 #!/usr/bin/env bash
 
 # Convert the template string to an array
-PACKAGES_STR={{ .archPackages | join " " | quote }}
+PACKAGES_STR={{ .arch.pacman | join " " | quote }}
 read -ra PACKAGES <<< "$PACKAGES_STR"
 
 OUTPUT=$(yay -Q "${PACKAGES[@]}" 2>&1)
@@ -26,7 +26,7 @@ fi
 
 # Install pipx packages
 #
-PIPX_PACKAGES={{ .archPipx | join " " | quote }}
+PIPX_PACKAGES={{ .arch.pipx | join " " | quote }}
 
 missing_pipx_packages=()
 for PACKAGE in $PIPX_PACKAGES; do

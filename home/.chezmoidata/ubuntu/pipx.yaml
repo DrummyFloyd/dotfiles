@@ -1,0 +1,7 @@
+ubuntu:
+  pipx:
+    - organize-tool
+    - tldr
+    - trash-cli
+    - ydiff
+    - pre-commit
