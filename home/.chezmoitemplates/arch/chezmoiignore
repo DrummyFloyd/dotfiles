@@ -10,3 +10,7 @@
 .config/mise/conf.d/
 
 .config/mise/.default-*-packages
+
+etc/apt/sources.list.d/**
+etc/apt/sources.list.d/
+etc/wsl.conf
