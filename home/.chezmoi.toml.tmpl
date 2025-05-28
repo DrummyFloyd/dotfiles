@@ -26,6 +26,9 @@
   command = "nvim"
   args = ["-d", "{{ "{{ .Source }}" }}", "{{ "{{ .Destination }}" }}", "{{ "{{ .Target }}" }}"]
 
+[github]
+  refreshPeriod = "168h"
+
 [diff]
   pager = "delta"
   command = "delta"
