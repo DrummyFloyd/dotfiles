@@ -25,5 +25,7 @@ ubuntu:
     - software-properties-common
     - ufw
     - vim
+    - vim-gtk3
+    - xcopy
     - xrdp
     - zsh
