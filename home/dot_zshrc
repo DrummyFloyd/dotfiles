@@ -17,9 +17,6 @@ else
     source ${ZAP_DIR}
 fi
 
-# history
-HISTFILE=~/.zsh_history
-
 # source
 # INFO:  need to  be first coz many system package rely on it
 plug "wintermi/zsh-mise"

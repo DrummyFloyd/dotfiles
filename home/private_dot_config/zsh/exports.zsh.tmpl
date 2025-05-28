@@ -1,11 +1,13 @@
 # User fav
+{{- if not .isWsl }}
 export XDG_CURRENT_DESKTOP=Hyprland
 export XDG_SESSION_TYPE=wayland
 export XDG_SESSION_DESKTOP=Hyprland
-export EDITOR="nvim"
+{{- end }}
 export TERMINAL="kitty"
 export MANPAGER="nvim +Man!"
 export TERM="xterm-kitty"
+export EDITOR="nvim"
 
 # INFO: on daily basis do not want to execute rootmoi after bootstrap
 # unset if needed
@@ -14,6 +16,8 @@ export NO_ROOTMOI=1
 # History
 export HISTSIZE=10000
 export SAVEHIST=10000
+export HISTFILE=~/.zsh_history
+
 
 # Forgit config
 export FORGIT_LOG_GRAPH_ENABLE=false
