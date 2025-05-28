@@ -25,8 +25,9 @@ fi
 PIPX_PACKAGES={{ .ubuntu.pipx | join " " | quote }}
 
 missing_pipx_packages=()
+pipx_list_output=$(pipx list)
 for PACKAGE in $PIPX_PACKAGES; do
-  if ! pipx list | grep -q "$PACKAGE"; then
+  if ! echo "$pipx_list_output" | grep -q "$PACKAGE"; then
     missing_pipx_packages+=("$PACKAGE")
   fi
 done
