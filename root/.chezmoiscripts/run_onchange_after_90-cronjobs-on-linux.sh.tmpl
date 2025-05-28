@@ -3,13 +3,15 @@
 */ -}}
 #!/bin/bash
 
-# cronjobs hash: {{ includeTemplate "cronjobs" . }}
+# cronjobs hash: {{ includeTemplate "cronjobs" . | sha256sum }}
 
 {{ template "utils" }}
 
 USER={{ .non_root_user }}
 
-CRONJOBS={{ template "cronjobs" .  }}
+CRONJOBS="""
+{{ template "cronjobs" .   }}
+"""
 {{- if .isArch }}
 CRONJOBS_PATH=/var/spool/cron/$USER
 {{- else if .isUbuntu }}
