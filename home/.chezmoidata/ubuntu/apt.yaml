@@ -26,6 +26,6 @@ ubuntu:
     - ufw
     - vim
     - vim-gtk3
-    - xcopy
+    - xclip
     - xrdp
     - zsh
