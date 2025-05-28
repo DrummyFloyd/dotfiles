@@ -17,6 +17,7 @@ return {
   },
   opts = {
     open_files_do_not_replace_types = { "terminal", "Trouble", "qf", "Outline", "trouble", "edgy" },
+    sources = { "filesystem" },
     window = {
       mappings = {
         ["S"] = "split_with_window_picker",
@@ -24,4 +25,5 @@ return {
       },
     },
   },
+  keys = { { "<leader>be", false }, { "<leader>ge", false } },
 }
