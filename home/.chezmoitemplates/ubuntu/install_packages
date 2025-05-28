@@ -7,9 +7,9 @@ PACKAGES+={{ .ubuntu.aptWsl | join " " | quote }}
 {{ end }}
 
 missing_packages=()
-
+dpkg_output=$(dpkg-query -W -f='${Package} ${Status}\n' 2>/dev/null)
 for PACKAGE in $PACKAGES; do
-  if ! dpkg-query -W -f='${Status}' "$PACKAGE" 2>/dev/null | grep -q "ok installed"; then
+  if ! echo "$dpkg_output" | grep -q "^$PACKAGE ok installed"; then
     missing_packages+=("$PACKAGE")
   fi
 done
