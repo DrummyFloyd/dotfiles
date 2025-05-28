@@ -27,11 +27,12 @@ aptPackages:
   - xrdp
   - zsh
 aptWsl: []
-pipx:
+ubuntuPipx:
   - organize-tool
   - tldr
   - trash-cli
   - ydiff
+  - pre-commit
 wslWindows:
   - Google.Chrome
   - Microsoft.VisualStudioCode

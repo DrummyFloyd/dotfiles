@@ -23,3 +23,21 @@ if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
   log_task "Installing packages: ${MISSING_PACKAGES[*]}"  # Use [*] for string expansion
   yay -Syu "${MISSING_PACKAGES[@]}"
 fi
+
+# Install pipx packages
+#
+PIPX_PACKAGES={{ .archPipx | join " " | quote }}
+
+missing_pipx_packages=()
+for PACKAGE in $PIPX_PACKAGES; do
+  if ! pipx list | grep -q "$PACKAGE"; then
+    missing_pipx_packages+=("$PACKAGE")
+  fi
+done
+
+if [[ ${#missing_pipx_packages[@]} -gt 0 ]]; then
+  log_task "Installing missing pipx packages: ${missing_pipx_packages[*]}"
+  for PACKAGE in "${missing_pipx_packages[@]}"; do
+    pipx install "$PACKAGE"
+  done
+fi

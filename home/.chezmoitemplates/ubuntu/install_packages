@@ -22,7 +22,7 @@ fi
 
 # Install pipx packages
 #
-PIPX_PACKAGES={{ .pipx | join " " | quote }}
+PIPX_PACKAGES={{ .ubuntuPipx | join " " | quote }}
 
 missing_pipx_packages=()
 for PACKAGE in $PIPX_PACKAGES; do

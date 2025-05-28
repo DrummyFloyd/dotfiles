@@ -221,3 +221,10 @@ archPackages:
   - zen-browser-bin
   - zram-generator
   - zsh
+archPipx:
+  - organize-tool
+  - tldr
+  - trash-cli
+  - ydiff
+  - pre-commit
+  - gitingest
