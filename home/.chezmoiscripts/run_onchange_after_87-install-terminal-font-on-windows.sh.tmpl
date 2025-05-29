@@ -12,7 +12,7 @@
 # {{ $uninstallFontPs1Path := joinPath $externalScriptsDir "Uninstall-Font.ps1" }}
 
 # hashes:
-# {{ include $fontPath | sha256sum }}
+# {{ $fontPath | toString | sha256sum }}
 # {{ include $installFontPs1Path | sha256sum }}
 # {{ include $uninstallFontPs1Path | sha256sum }}
 
@@ -23,7 +23,7 @@ font_path_for_win="$(wslpath -w '{{ $fontPath }}')"
 install_font_ps1_path='{{ $installFontPs1Path }}'
 install_font_ps1_path_for_win="$(wslpath -w "${install_font_ps1_path}")"
 
-log_task "Installing terminal font '{{ .terminalFont.name }}' on Windows"
+log_task "Installing terminal font '{{ .ubuntu.windowsTerminalFont.name }}' on Windows"
 
 log_manual_action "If this is the first time installing the font, please restart Windows Terminal to ensure they recognize the font"
 
