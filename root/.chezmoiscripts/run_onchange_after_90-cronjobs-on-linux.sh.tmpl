@@ -15,7 +15,7 @@ CRONJOBS="""
 {{- if .isArch }}
 CRONJOBS_PATH=/var/spool/cron/$USER
 {{- else if .isUbuntu }}
-CRONJOBS_PATH=/var/spool/cron/crontab/$USER
+CRONJOBS_PATH=/var/spool/cron/crontabs/$USER
 {{- end }}
 
 if [ ! -f ${CRONJOBS_PATH} ]; then
