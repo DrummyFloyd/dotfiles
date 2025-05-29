@@ -13,10 +13,9 @@
 {{- /* PROMPTS */ -}}
 {{- writeToStdout "🌟 Chezmoi configuration 🌟\n" -}}
 {{- writeToStdout "💡 Tip: You can re-enter prompted inputs with `chezmoi init --data=false`.💡\n" -}}
-{{- $bitwardenEmail := promptString "🔧❓Which Bitwarden email" -}}
-{{- $workConfig := promptBool "🔧❓Enable work configuration [y/N]" false -}}
-{{- $personalSsh := promptBool "🔧❓Retrieve personal sshKeys/config from BitWarden [Y/n]" true -}}
-{{- $generateSsh := promptBool "🔧❓Generate new sshKey [y/N]" false -}}
+{{- $bitwardenEmail := promptStringOnce . "bitwarden.email" "🔧❓Which Bitwarden email" -}}
+{{- $personalConfig := promptBoolOnce . "isPersonal" "🔧❓Enable personal configuration [Y/n]" true -}}
+{{- $workConfig := promptBoolOnce . "isWork" "🔧❓Enable work configuration [y/N]" false -}}
 
 {{- /* TEMPLATE */ -}}
 [hooks.read-source-state.pre]
@@ -36,32 +35,32 @@
   exclude = ["scripts", "dirs"]
 
 [data]
-  machineType = {{ .chezmoi.os | quote }}
-  osName = {{ .chezmoi.osRelease.id | quote }}
-  isWsl = {{ $isWsl }}
+  isPersonal = {{ $personalConfig }}
+  isWork = {{ $workConfig }}
   isArch = {{ $isArch }}
   isUbuntu = {{ $isUbuntu }}
-  work = {{ $workConfig }}
+  isWsl = {{ $isWsl }}
+  machineType = {{ .chezmoi.os | quote }}
+  osName = {{ .chezmoi.osRelease.id | quote }}
 
 [data.bitwarden]
   email = {{ $bitwardenEmail | quote }}
 
-[data.ssh]
-  personalSsh = {{ $personalSsh }}
-  generateSsh = {{ $generateSsh }}
-
-[data.git.personal]
-  email = {{ promptString "📧❓Gitconfig: Personal email" | quote }}
-  username = {{ promptString "🧑❓Gitconfig: Personal username" | quote }}
-
-{{- if $isWsl }}
-[data.wsl]
-  isWindowsAdmin = {{ promptBool "🔧❓Are you Windows admin [y/N]" false -}}
+{{ if $personalConfig -}}
+[data.personal]
+  email = {{ promptStringOnce . "personal.email" "📧❓Gitconfig: Personal email" | quote }}
+  username = {{ promptStringOnce . "personal.username" "🧑❓Gitconfig: Personal username" | quote }}
 {{- end }}
 
-{{- if $workConfig }}
-[data.git.work]
-  email = {{ promptString "📧❓Gitconfig: Work email" | quote }}
-  username = {{ promptString "🧑❓Gitconfig: Work username" | quote }}
-  gpgKey = {{ promptBool "🔐❓Gitconfig: Work gpgKey [y/N]" false}}
+{{ if $workConfig -}}
+[data.work]
+  generateWorkSshKey = {{ promptBool "🔧❓Generate new sshKey [Y/n]" true -}}
+  email = {{ promptStringOnce . "work.email" "📧❓Gitconfig: Work email" | quote }}
+  username = {{ promptStringOnce . "work.username" "🧑❓Gitconfig: Work username" | quote }}
+  # gpgKey = {{ promptBool "🔐❓Gitconfig: Work gpgKey [y/N]" false}}
+{{- end }}
+
+{{ if $isWsl -}}
+[data.wsl]
+  isWindowsAdmin = {{ promptBool "🔧❓Are you Windows admin [y/N]" false -}}
 {{- end }}

@@ -5,7 +5,7 @@
 
 {{ template "utils" }}
 
-{{ if .ssh.generateSsh }}
+{{ if and .isWork .work.generateWorkSshKey }}
 NEW_SSH_KEY_PATH="/home/{{ .chezmoi.username }}/.ssh/id_ed25519"
 
 if [ ! -f "$NEW_SSH_KEY_PATH" ]; then

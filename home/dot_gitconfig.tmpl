@@ -44,7 +44,7 @@
 [include]
   path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
 
-{{- if .work }}
+{{- if .isWork }}
 [includeIf "gitdir:/home/{{ .chezmoi.username }}/Documents/Work/**"]
   path = /home/{{ .chezmoi.username }}/.config/gitconfig/work
 {{- end -}}

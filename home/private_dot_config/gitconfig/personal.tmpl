@@ -2,8 +2,8 @@
   vim:ft=gitconfig.gotmpl:
 */ -}}
 [user]
-  name = {{ .git.personal.username }}
-  email = {{ .git.personal.email }}
+  name = {{ .personal.username }}
+  email = {{ .personal.email }}
   signingkey = 20AC86EE49130589
 
 [url "git@gitlab.com:"]
@@ -11,7 +11,7 @@
 
 [commit]
 	gpgsign = true
-{{ if .ssh.personalSsh }}
+{{ if .isPersonal }}
 [core]
   sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
 {{- end }}

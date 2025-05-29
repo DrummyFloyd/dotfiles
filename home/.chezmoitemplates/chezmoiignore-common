@@ -2,4 +2,19 @@
   vim:ft=gotmpl:
 */ -}}
 
+{{ if not .isPersonal }}
+.ssh/id_ed25519_personal
+.ssh/id_ed25519_personal.pub
+.ssh/personal/
+.ssh/personal/**
+.config/.gitconfig/personal
+{{ end}}
+
+{{ if not .isWork }}
+.chezmoiscripts/90-new-ssh-key-on-linux.sh
+.config/.gitconfig/work
+{{ end}}
+
+
+
 .config/nvim/lazy-lock.json

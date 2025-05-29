@@ -1,8 +1,8 @@
 {{- /*
   vim:ft=gitconfig.gotmpl:
 */ -}}
-{{- if .work }}
+{{- if .isWork }}
 [user]
-  name = {{ .git.work.username }}
-  email = {{ .git.work.email }}
+  name = {{ .work.username }}
+  email = {{ .work.email }}
 {{- end }}

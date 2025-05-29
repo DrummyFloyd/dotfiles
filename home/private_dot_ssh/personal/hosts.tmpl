@@ -1,7 +1,5 @@
-{{- if .ssh.personalSsh -}}
 Host core-si
   Hostname {{ (rbwFields "personalSshKeys").siCore.value }}
   user ubuntu
   Port 22
   IdentityFile ~/.ssh/id_ed25519_personal
-{{- end }}
