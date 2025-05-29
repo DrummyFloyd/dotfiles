@@ -60,7 +60,7 @@
   # gpgKey = {{ promptBool "🔐❓Gitconfig: Work gpgKey [y/N]" false}}
 {{- end }}
 
-{{ if $isWsl -}}
+{{- if $isWsl -}}
 [data.wsl]
   isWindowsAdmin = {{ promptBool "🔧❓Are you Windows admin [y/N]" false -}}
 {{- end }}
