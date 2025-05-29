@@ -17,7 +17,7 @@ etc/wsl.conf
 {{ end }}
 
 {{ if .isWsl }}
-.chezmoiscripts/run_after_81-xrdp-conf-on-ubuntu.sh
+.chezmoiscripts/81-xrdp-conf-on-ubuntu.sh
 {{ end }}
 
 {{- $listToIgnore := list
