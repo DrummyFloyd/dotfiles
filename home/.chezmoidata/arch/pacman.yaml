@@ -12,7 +12,6 @@ arch:
     - asciinema-agg-bin
     - asciiquarium
     - aws-cli
-    - aylurs-gtk-shell-git
     - azure-cli
     - base
     - base-devel
@@ -20,7 +19,6 @@ arch:
     - bc
     - bind
     - bitwarden
-    - bitwarden-cli
     - blueman
     - bluez-utils
     - btop
@@ -75,7 +73,6 @@ arch:
     - intel-ucode
     - iptables-nft
     - iwd
-    - java-runtime-common
     - jq
     - jsonnet-bundler-bin
     - k9s
@@ -107,7 +104,6 @@ arch:
     - mkcert
     - mpv
     - musl
-    - nano
     - nautilus
     - neovim
     - net-tools
@@ -118,7 +114,6 @@ arch:
     - noto-fonts
     - noto-fonts-cjk
     - noto-fonts-emoji
-    - nwg-look-bin
     - openbsd-netcat
     - opentofu
     - otf-font-awesome
@@ -131,20 +126,14 @@ arch:
     - postgresql-libs
     - powerline
     - powertop
-    - pre-commit
     - python
     - python-awscli-plugin-endpoint
     - python-boto3
-    - python-gitlab
-    - python-openstackclient
     - python-pip
     - python-pipx
-    - python-poetry
     - python-pyalsa
     - python-pynvim
-    - python-pywal
     - python-setuptools
-    - python-swiftclient
     - python-virtualenv
     - qbittorrent
     - qemu-base
@@ -171,7 +160,6 @@ arch:
     - sqlitebrowser
     - sshpass
     - stress
-    - stylua
     - swappy
     - talhelper-bin
     - talosctl
@@ -218,7 +206,6 @@ arch:
     - xorg-xinit
     - xournalpp
     - yay-bin
-    - yay-bin-debug
     - zapzap
     - zen-browser-bin
     - zram-generator
