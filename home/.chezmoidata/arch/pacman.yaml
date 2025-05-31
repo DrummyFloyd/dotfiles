@@ -158,6 +158,7 @@ arch:
     - rdesktop
     - remmina
     - ripgrep
+    - rpi-imager
     - rsync
     - rustup
     - sd
