@@ -29,7 +29,7 @@ done <<<"$OUTPUT"
 
 if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
   log_task "Installing packages: ${MISSING_PACKAGES[*]}"  # Use [*] for string expansion
-  yay -S --noconfirm ${MISSING_PACKAGES[@]}
+  yay -S --noconfirm "${MISSING_PACKAGES[@]}"
 fi
 
 # Install pipx packages
