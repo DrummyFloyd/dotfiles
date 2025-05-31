@@ -16,7 +16,7 @@ UBUNTU_DEBIAN_PACKAGES=(
 ARCH_PACKAGES=(
   git
   rbw
-  yay
+  yay-bin
 )
 
 missing_packages=()
