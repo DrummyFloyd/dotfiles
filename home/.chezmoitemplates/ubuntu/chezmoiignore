@@ -32,6 +32,7 @@ etc/wsl.conf
   "wlogout"
   "wlogout/private_icons"
   "wofi"
+  "yay"
 }}
 {{ range $listToIgnore }}
 .config/{{ . }}/
