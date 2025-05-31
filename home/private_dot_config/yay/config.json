@@ -10,7 +10,7 @@
   "pacmanconf": "/etc/pacman.conf",
   "redownload": "no",
   "answerclean": "All",
-  "answerdiff": "",
+  "answerdiff": "None",
   "answeredit": "",
   "answerupgrade": "",
   "gitbin": "git",

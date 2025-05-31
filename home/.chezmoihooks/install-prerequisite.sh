@@ -108,7 +108,7 @@ case "$OS_NAME" in
     log_info "Os detected: ${OS_NAME}"
     log_task "Installing missing packages: ${missing_packages[*]}"
 
-    sudo pacman -Syu --noconfirm "${missing_packages[@]}"
+    sudo pacman -Syu "${missing_packages[@]}"
     ;;
   *)
     log_error "unsupported OS"
