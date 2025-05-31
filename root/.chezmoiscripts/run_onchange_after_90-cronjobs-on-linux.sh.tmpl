@@ -13,17 +13,24 @@ CRONJOBS="""
 {{ template "cronjobs" .   }}
 """
 {{- if .isArch }}
-CRONJOBS_PATH=/var/spool/cron/$USER
+CRONJOBS_PATH=/var/spool/cron
 {{- else if .isUbuntu }}
-CRONJOBS_PATH=/var/spool/cron/crontabs/$USER
+CRONJOBS_PATH=/var/spool/cron/crontabs
 {{- end }}
 
-if [ ! -f ${CRONJOBS_PATH} ]; then
-  log_task "Create cronjobs file at ${CRONJOBS_PATH} ..."
-  sudo touch ${CRONJOBS_PATH}
+CRONJOB_FILE_PATH="${CRONJOBS_PATH}/${USER}"
+
+if [ ! -d ${CRONJOBS_PATH} ]; then
+  log_task "Create cronjobs directory at ${CRONJOBS_PATH} ..."
+  sudo mkdir -p ${CRONJOBS_PATH}
 fi
 
-if ! grep -q "${CRONJOBS}" ${CRONJOBS_PATH} 2>/dev/null; then
-  log_task "Adding cronjobs to ${CRONJOBS_PATH} ..."
-  echo "${CRONJOBS}" | sudo tee -a ${CRONJOBS_PATH} > /dev/null
+if [ ! -f ${CRONJOB_FILE_PATH} ]; then
+  log_task "Create cronjobs file at ${CRONJOBS_PATH} ..."
+  sudo touch ${CRONJOB_FILE_PATH}
+fi
+
+if ! grep -q "${CRONJOBS}" ${CRONJOB_FILE_PATH} 2>/dev/null; then
+  log_task "Adding cronjobs to ${CRONJOB_FILE_PATH} ..."
+  echo "${CRONJOBS}" | sudo tee -a ${CRONJOB_FILE_PATH} > /dev/null
 fi
