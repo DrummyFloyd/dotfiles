@@ -1,7 +1,7 @@
 return {
   {
     "mistricky/codesnap.nvim",
-    build = "make build_generator",
+    build = "make",
     event = "VeryLazy",
     keys = function()
       local wk = require("which-key")
