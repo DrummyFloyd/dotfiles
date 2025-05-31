@@ -3,9 +3,19 @@
 */ -}}
 # Convert the template string to an array
 PACKAGES_STR={{ .arch.pacman | join " " | quote }}
-read -ra PACKAGES <<< "$PACKAGES_STR"
 
-OUTPUT=$(yay -Q "${PACKAGES[@]}" 2>&1)
+read -ra PACKAGES <<< "$PACKAGES_STR"
+# Clean up any malformed package names with extra quotes
+CLEAN_PACKAGES=()
+for pkg in "${PACKAGES[@]}"; do
+  # Remove any surrounding quotes and escape characters
+  clean_pkg=$(echo "$pkg" | sed 's/^["'\'']*//; s/["'\'']*$//' | sed 's/\\//g')
+  if [[ -n "$clean_pkg" ]]; then
+    CLEAN_PACKAGES+=("$clean_pkg")
+  fi
+done
+
+OUTPUT=$(yay -Q ${CLEAN_PACKAGES[@]} 2>&1 || true)
 
 MISSING_PACKAGES=()
 
