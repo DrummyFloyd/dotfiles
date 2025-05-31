@@ -22,19 +22,21 @@ OUTPUT=$(yay -Q ${CLEAN_PACKAGES[@]} 2>&1 || true)
 
 PACKAGES_TO_REMOVE=()
 
-while IFS= read -r line; do
-  # Check if line contains package info (not an error)
-  if [[ "$line" != *"error:"* && -n "$line" ]]; then
-    # Extract package name from successful query (format: "packagename version")
-    pkg_name=$(echo "$line" | sed -n 's/^\([^ ]*\).*/\1/p')
-    if [[ -n "$pkg_name" ]]; then
-      PACKAGES_TO_REMOVE+=("$pkg_name")
+# Check each package individually for exact matches
+for pkg in "${CLEAN_PACKAGES[@]}"; do
+  # Use yay -Q with exact package name and check if it's installed
+  if OUTPUT=$(yay -Q "$pkg" 2>/dev/null); then
+    # Extract the exact package name from the output (first word before space)
+    installed_pkg=$(echo "$OUTPUT" | awk '{print $1}')
+    # Only add to removal list if the installed package name exactly matches what we're looking for
+    if [[ "$installed_pkg" == "$pkg" ]]; then
+      PACKAGES_TO_REMOVE+=("$pkg")
     fi
   fi
-done <<<"$OUTPUT"
+done
 
 if [[ ${#PACKAGES_TO_REMOVE[@]} -gt 0 ]]; then
   log_task "Remove conflicting or unwanted packages: ${PACKAGES_TO_REMOVE[*]}"
-  # INFO: Here we force remove  packages and deps becase some of them are reinstalling from .arch.packages
+  # INFO: Here we force remove packages and deps because some of them are reinstalling from .arch.packages
   yay -Rc --noconfirm ${PACKAGES_TO_REMOVE[@]}
 fi
