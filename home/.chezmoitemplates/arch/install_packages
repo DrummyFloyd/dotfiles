@@ -12,14 +12,14 @@ MISSING_PACKAGES=()
 while IFS= read -r line; do
   if [[ "$line" == *"error: package"* ]]; then
     # Extract package name from error message (no 'local' outside function)
-    pkg_name=$(echo "$line" | sed -e "s/error: package '\(.*\)' was not found/\1/")
+    pkg_name=$(echo "$line" | sed -n "s/error: package '\([^']*\)' was not found/\1/p")
     MISSING_PACKAGES+=("$pkg_name")  # Remove the $ before array name
   fi
 done <<<"$OUTPUT"
 
 if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
   log_task "Installing packages: ${MISSING_PACKAGES[*]}"  # Use [*] for string expansion
-  yay -Syu ${MISSING_PACKAGES[@]}
+  yay -S --noconfirm ${MISSING_PACKAGES[@]}
 fi
 
 # Install pipx packages
