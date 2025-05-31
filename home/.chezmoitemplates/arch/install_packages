@@ -1,8 +1,6 @@
 {{- /*
   vim:ft=bash.gotmpl:
 */ -}}
-#!/usr/bin/env bash
-
 # Convert the template string to an array
 PACKAGES_STR={{ .arch.pacman | join " " | quote }}
 read -ra PACKAGES <<< "$PACKAGES_STR"
