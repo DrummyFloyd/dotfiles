@@ -1,0 +1,40 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/usr/bin/env bash
+
+{{ template "utils" }}
+
+CONFLICTING_PACKAGES={{ .arch.unwantedPackages | join " " | quote }}
+
+read -ra PACKAGES <<< "$CONFLICTING_PACKAGES"
+# Clean up any malformed package names with extra quotes
+CLEAN_PACKAGES=()
+for pkg in "${PACKAGES[@]}"; do
+  # Remove any surrounding quotes and escape characters
+  clean_pkg=$(echo "$pkg" | sed 's/^["'\'']*//; s/["'\'']*$//' | sed 's/\\//g')
+  if [[ -n "$clean_pkg" ]]; then
+    CLEAN_PACKAGES+=("$clean_pkg")
+  fi
+done
+
+OUTPUT=$(yay -Q ${CLEAN_PACKAGES[@]} 2>&1 || true)
+
+PACKAGES_TO_REMOVE=()
+
+while IFS= read -r line; do
+  # Check if line contains package info (not an error)
+  if [[ "$line" != *"error:"* && -n "$line" ]]; then
+    # Extract package name from successful query (format: "packagename version")
+    pkg_name=$(echo "$line" | sed -n 's/^\([^ ]*\).*/\1/p')
+    if [[ -n "$pkg_name" ]]; then
+      PACKAGES_TO_REMOVE+=("$pkg_name")
+    fi
+  fi
+done <<<"$OUTPUT"
+
+if [[ ${#PACKAGES_TO_REMOVE[@]} -gt 0 ]]; then
+  log_task "Remove conflicting or unwanted packages: ${PACKAGES_TO_REMOVE[*]}"
+  # INFO: Here we force remove  packages and deps becase some of them are reinstalling from .arch.packages
+  yay -Rc --noconfirm ${PACKAGES_TO_REMOVE[@]}
+fi
