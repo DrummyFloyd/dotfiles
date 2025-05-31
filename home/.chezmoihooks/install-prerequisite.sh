@@ -96,6 +96,7 @@ case "$OS_NAME" in
     check_install_rbw_bin
     ;;
   "arch")
+    install_yay
     check_pacman_package
     if [[ ${#missing_packages[@]} -eq 0 ]]; then
       exit 0
@@ -107,7 +108,6 @@ case "$OS_NAME" in
     log_info "Os detected: ${OS_NAME}"
     log_task "Installing missing packages: ${missing_packages[*]}"
 
-    install_yay
     sudo pacman -S --noconfirm "${missing_packages[@]}"
     ;;
   *)
