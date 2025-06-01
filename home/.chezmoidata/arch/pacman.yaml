@@ -160,6 +160,7 @@ arch:
     - sqlitebrowser
     - sshpass
     - stress
+    - superfile
     - swappy
     - talhelper-bin
     - talosctl
