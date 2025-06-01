@@ -146,3 +146,59 @@ function service_exists() {
     return 1
   fi
 }
+# Function to ensure service(s) are enabled
+ensure_service_enabled() {
+    local services=("$@")
+    local needs_enabling=false
+    local services_to_enable=()
+
+    # Check which services need enabling
+    for service in "${services[@]}"; do
+        if ! systemctl is-enabled "$service" --quiet; then
+            needs_enabling=true
+            services_to_enable+=("$service")
+        fi
+    done
+
+    # Enable services if needed
+    if [[ "$needs_enabling" == true ]]; then
+        log_task "Enabling services: ${services_to_enable[*]}"
+        for service in "${services_to_enable[@]}"; do
+            sudo systemctl enable "$service"
+        done
+    fi
+}
+
+# Function to ensure service(s) are active
+ensure_service_active() {
+    local services=("$@")
+    local needs_restart=false
+    local services_to_restart=()
+
+    # Check which services need restarting
+    for service in "${services[@]}"; do
+        if ! systemctl is-active --quiet "$service"; then
+            needs_restart=true
+            services_to_restart+=("$service")
+        fi
+    done
+
+    # Restart services if needed
+    if [[ "$needs_restart" == true ]]; then
+        log_task "Restarting services: ${services_to_restart[*]}"
+        for service in "${services_to_restart[@]}"; do
+            sudo systemctl restart "$service"
+        done
+    fi
+}
+
+# Function to ensure user is in specified group
+ensure_user_in_group() {
+    local username="$1"
+    local group="$2"
+
+    if ! groups "$username" | grep -q "$group"; then
+        log_task "Adding $username to $group group"
+        sudo usermod -aG "$group" "$username"
+    fi
+}

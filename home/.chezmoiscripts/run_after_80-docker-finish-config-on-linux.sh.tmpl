@@ -5,19 +5,6 @@
 
 {{ template "utils" }}
 
-if ! systemctl is-enabled docker --quiet; then
-  log_task "Enabling docker/containerd services"
-  sudo systemctl enable docker.service
-  sudo systemctl enable containerd.service
-fi
-
-if ! systemctl is-active --quiet docker; then
-  log_task "Restarting docker/containerd services"
-  sudo systemctl restart docker.service
-  sudo systemctl restart containerd.service
-fi
-
-if ! groups {{ .chezmoi.username }} | grep -q docker; then
-  log_task "Adding {{ .chezmoi.username }} to docker group"
-  sudo usermod -aG docker {{ .chezmoi.username }}
-fi
+ensure_service_enabled docker.service
+ensure_service_active docker.service
+ensure_user_in_group "{{ .chezmoi.username }}" docker
