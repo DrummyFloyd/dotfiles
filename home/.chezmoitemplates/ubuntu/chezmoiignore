@@ -11,6 +11,7 @@ etc/pacman.d/hooks/
 
 {{ if not .isWsl }}
 etc/wsl.conf
+.local/share/applications/**
 {{ if not .wsl.isWindowsAdmin  }}
 .chezmoiscripts/*-on-windows.sh
 {{ end }}
