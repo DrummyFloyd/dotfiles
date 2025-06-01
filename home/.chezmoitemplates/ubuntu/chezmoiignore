@@ -27,6 +27,7 @@ etc/wsl.conf
   "hypr/hyprlock"
   "icons"
   "pacman"
+  "uwsm"
   "waybar"
   "waybar/private_components"
   "wlogout"
