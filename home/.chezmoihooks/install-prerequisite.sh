@@ -16,7 +16,6 @@ UBUNTU_DEBIAN_PACKAGES=(
 ARCH_PACKAGES=(
   git
   rbw
-  yay-bin
 )
 
 missing_packages=()
@@ -96,7 +95,6 @@ case "$OS_NAME" in
     check_install_rbw_bin
     ;;
   "arch")
-    install_yay
     check_pacman_package
     if [[ ${#missing_packages[@]} -eq 0 ]]; then
       exit 0
@@ -104,6 +102,8 @@ case "$OS_NAME" in
 
     # shellcheck source=../.chezmoitemplates/utils
     source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
+
+    install_yay
 
     log_info "Os detected: ${OS_NAME}"
     log_task "Installing missing packages: ${missing_packages[*]}"
