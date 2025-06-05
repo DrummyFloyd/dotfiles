@@ -13,4 +13,5 @@
 
 etc/apt/sources.list.d/**
 etc/apt/sources.list.d/
+etc/apt/
 etc/wsl.conf
