@@ -1,0 +1,8 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+ensure_user_in_group_fast "{{ .chezmoi.username }}" docker wheel

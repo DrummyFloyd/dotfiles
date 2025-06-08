@@ -1,3 +1,6 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
 # shellcheck shell=bash
 
 set -euo pipefail
@@ -146,58 +149,39 @@ function service_exists() {
     return 1
   fi
 }
-# Function to ensure service(s) are enabled
-ensure_service_enabled() {
-    local services=("$@")
-    local needs_enabling=false
-    local services_to_enable=()
 
-    # Check which services need enabling
+# Ultra-fast with enable --now (enable and start together)
+function ensure_services_fast() {
+    local services=("$@")
+    local services_needing_action=()
+
+    # Check if any service needs action (either not enabled or not active)
     for service in "${services[@]}"; do
-        if ! systemctl is-enabled "$service" --quiet; then
-            needs_enabling=true
-            services_to_enable+=("$service")
+        if ! systemctl is-enabled "$service" --quiet || ! systemctl is-active --quiet "$service"; then
+            services_needing_action+=("$service")
         fi
     done
 
-    # Enable services if needed
-    if [[ "$needs_enabling" == true ]]; then
-        log_task "Enabling services: ${services_to_enable[*]}"
-        for service in "${services_to_enable[@]}"; do
-            sudo systemctl enable "$service"
-        done
-    fi
-}
-
-# Function to ensure service(s) are active
-ensure_service_active() {
-    local services=("$@")
-    local needs_restart=false
-    local services_to_restart=()
-
-    # Check which services need restarting
-    for service in "${services[@]}"; do
-        if ! systemctl is-active --quiet "$service"; then
-            needs_restart=true
-            services_to_restart+=("$service")
-        fi
-    done
-
-    # Restart services if needed
-    if [[ "$needs_restart" == true ]]; then
-        log_task "Restarting services: ${services_to_restart[*]}"
-        for service in "${services_to_restart[@]}"; do
-            sudo systemctl restart "$service"
-        done
+    # Use enable --now to both enable and start in one command
+    if (( ${#services_needing_action[@]} > 0 )); then
+        log_task "Enabling and starting services: ${services_needing_action[*]}"
+        sudo systemctl enable --now "${services_needing_action[@]}"
     fi
 }
 
 # Function to ensure user is in specified group
-ensure_user_in_group() {
+function ensure_user_in_group_fast() {
     local username="$1"
     local group="$2"
 
-    if ! groups "$username" | grep -q "$group"; then
+    # Quick group existence check first
+    if ! getent group "$group" >/dev/null 2>&1; then
+        echo "Error: Group $group does not exist" >&2
+        return 1
+    fi
+
+    # Fast membership check using getent
+    if ! getent group "$group" | cut -d: -f4 | grep -qw "$username"; then
         log_task "Adding $username to $group group"
         sudo usermod -aG "$group" "$username"
     fi
