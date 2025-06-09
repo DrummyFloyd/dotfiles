@@ -9,6 +9,9 @@ export MANPAGER="nvim +Man!"
 export TERM="xterm-kitty"
 export EDITOR="nvim"
 
+# github
+export GITHUB_TOKEN={{ (rbwFields "githubTokens" ).miseToken.value | quote }}
+
 # INFO: on daily basis do not want to execute rootmoi after bootstrap
 # unset if needed
 export NO_ROOTMOI=1
