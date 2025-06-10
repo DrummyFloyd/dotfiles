@@ -6,7 +6,7 @@
 {{ template "utils" }}
 
 {{- if .isArch }}
-ensure_services_fast docker.service containerd.service NetworkManager.service cronie.service
+ensure_services_fast docker.service containerd.service NetworkManager.service cronie.service systemd-resolved.service
 {{- else if .isUbuntu }}
 ensure_services_fast docker.service containerd.service
 {{- end }}
