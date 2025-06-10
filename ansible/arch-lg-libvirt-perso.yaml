@@ -1,0 +1,7 @@
+- hosts: localhost
+  become: yes
+  roles:
+    - role: lookingglass
+      vars:
+        lg_version: "B7"
+        # lg_make_options: "-DENABLE_LIBDECOR=ON -j$(nproc)"

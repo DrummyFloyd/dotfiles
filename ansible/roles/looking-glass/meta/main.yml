@@ -1,0 +1,26 @@
+# vim:ft=yaml.ansible:
+galaxy_info:
+  author: ansible-user
+  description: Ansible role to build and install LookingGlass
+  company: ""
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+    - name: ArchLinux
+      versions:
+        - any
+  galaxy_tags:
+    - system
+    - virtualization
+    - gaming
+    - gpu
+
+dependencies: []

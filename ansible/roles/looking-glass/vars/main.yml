@@ -1,0 +1,8 @@
+# Distribution specific package names
+package_mapping:
+  Debian:
+    kernel_headers: "linux-headers"
+    dkms: "dkms"
+  Archlinux:
+    kernel_headers: "linux-headers"
+    dkms: "dkms"

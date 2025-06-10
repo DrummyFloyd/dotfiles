@@ -1,0 +1,7 @@
+# vim:ft=yaml.ansible:
+- name: restart dkms
+  shell: |
+    dkms remove lookingglass || true
+    dkms install "/tmp/LookingGlass/modules"
+  become: yes
+  listen: "reload dkms"

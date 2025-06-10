@@ -1,0 +1,11 @@
+# LookingGlass repository URL
+lg_repo_url: "https://github.com/gnif/LookingGlass.git"
+
+# Version/tag to checkout (leave empty for latest)
+lg_version: ""
+
+# Make options for building (can include -DENABLE_LIBDECOR=ON for Wayland)
+lg_make_options: "-DENABLE_LIBDECOR=ON"
+
+# Additional cmake options
+lg_cmake_options: ""
