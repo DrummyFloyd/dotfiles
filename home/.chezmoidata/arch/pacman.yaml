@@ -37,6 +37,7 @@ arch:
     - downgrade
     - dunst
     - efibootmgr
+    - egl-wayland
     - eza
     - fastfetch
     - fcitx5-configtool
