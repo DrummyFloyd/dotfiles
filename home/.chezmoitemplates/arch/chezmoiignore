@@ -9,10 +9,9 @@
 # set by uwsm
 .config/environment.d/**
 .config/environment.d/
-.config/mise/conf.d/**
-.config/mise/conf.d/
 
-.config/mise/.default-*-packages
+.config/mise/conf.d/devops.toml
+.config/mise/conf.d/system.toml
 
 etc/apt/sources.list.d/**
 etc/apt/sources.list.d/

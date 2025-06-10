@@ -6,10 +6,13 @@ usage = "latest"
 
 [settings]
 {{ if .isArch }}
-trusted_config_paths = ['~/config/mise/config.toml']
+  trusted_config_paths = [
+  '~/.config/mise/config.toml',
+  '~/.config/mise/conf.d/toolschain.toml'
+  ]
 {{ else }}
 trusted_config_paths = [
-  '~/config/mise/config.toml',
+  '~/.config/mise/config.toml',
   '~/.config/mise/conf.d/devops.toml',
   '~/.config/mise/conf.d/system.toml'
 ]

@@ -51,7 +51,6 @@ arch:
     - git-delta
     - github-cli
     - glab
-    - go
     - go-tools
     - go-yq
     - google-chrome
@@ -108,7 +107,7 @@ arch:
     - network-manager-applet
     - networkmanager
     - nmap
-    - nodejs-neovim
+    - nodejs
     - noto-fonts
     - noto-fonts-cjk
     - noto-fonts-emoji
@@ -146,7 +145,6 @@ arch:
     - ripgrep
     - rpi-imager
     - rsync
-    - rustup
     - sd
     - slack-desktop
     - slurp
