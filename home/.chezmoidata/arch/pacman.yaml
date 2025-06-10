@@ -178,6 +178,7 @@ arch:
     - vulkan-radeon
     - waybar
     - webcord-bin
+    - wev
     - wf-recorder
     - wget
     - whois
@@ -193,10 +194,6 @@ arch:
     - xf86-video-ati
     - xf86-video-nouveau
     - xf86-video-vmware
-    - xfce4-settings
-    - xorg-server
-    - xorg-xev
-    - xorg-xinit
     - xournalpp
     - yay-bin
     - zapzap
