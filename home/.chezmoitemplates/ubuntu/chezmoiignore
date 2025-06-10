@@ -26,7 +26,6 @@ etc/wsl.conf
 
 {{- $listToIgnore := list
   "dunst"
-  "environment.d"
   "fcitx5"
   "hypr"
   "hypr/hyprlock"

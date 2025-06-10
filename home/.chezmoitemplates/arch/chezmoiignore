@@ -6,6 +6,9 @@
 .chezmoiscripts/*-on-windows.sh
 
 
+# set by uwsm
+.config/environment.d/**
+.config/environment.d/
 .config/mise/conf.d/**
 .config/mise/conf.d/
 
