@@ -34,7 +34,6 @@ plug "romkatv/powerlevel10k"
 plug "zap-zsh/supercharge"
 plug "zsh-users/zsh-autosuggestions"
 plug "zsh-users/zsh-syntax-highlighting"
-plug "wfxr/forgit"
 # must be load after fzf to work
 plug "joshskidmore/zsh-fzf-history-search"
 plug "MohamedElashri/eza-zsh"
