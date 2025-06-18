@@ -30,7 +30,6 @@ arch:
     - cursor-bin
     - dbus-c++
     - dmidecode
-    - dnsmasq
     - docker
     - docker-buildx
     - docker-compose
