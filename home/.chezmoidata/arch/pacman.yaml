@@ -173,6 +173,7 @@ arch:
     - wf-recorder
     - wget
     - whois
+    - wireguard-tools
     - wireless_tools
     - wl-clipboard
     - wlogout
