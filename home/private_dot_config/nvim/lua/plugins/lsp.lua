@@ -51,6 +51,15 @@ return {
             bashls = {
               filetypes = { "sh", "zsh" },
             },
+            basedpyright = {
+              settings = {
+                basedpyright = {
+                  analysis = {
+                    typeCheckingMode = "standard",
+                  },
+                },
+              },
+            },
           },
         },
         yamlls = {
