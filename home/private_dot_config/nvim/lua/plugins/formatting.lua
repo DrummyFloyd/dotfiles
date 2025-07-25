@@ -5,6 +5,7 @@ return {
       formatters_by_ft = {
         ["*"] = { "trim_whitespace", "trim_newlines" },
         ["zsh"] = { "shfmt" },
+        python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
       },
       formatters = {
         shfmt = {

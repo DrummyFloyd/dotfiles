@@ -57,6 +57,7 @@ return {
                   analysis = {
                     typeCheckingMode = "standard",
                   },
+                  disableOrganizeImports = true,
                 },
               },
             },
