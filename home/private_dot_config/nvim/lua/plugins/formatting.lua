@@ -21,6 +21,7 @@ return {
         ["ansible"] = { "ansible_lint" },
         ["zsh"] = { "shellcheck" },
         go = { "golangcilint" },
+        python = { "ruff" },
       },
     },
   },
