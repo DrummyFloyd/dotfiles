@@ -9,7 +9,7 @@ k9s:
   ui:
     enableMouse: false
     headless: false
-    logoless: true
+    logoless: false
     crumbsless: false
     reactive: false
     noIcons: false
