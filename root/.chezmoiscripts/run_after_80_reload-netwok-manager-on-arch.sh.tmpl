@@ -1,0 +1,10 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+
+log_task "Restarting NetworkManager service"
+systemctl restart NetworkManager

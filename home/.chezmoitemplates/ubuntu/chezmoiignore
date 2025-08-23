@@ -8,6 +8,8 @@ etc/pacman.d/**
 etc/pacman.d/
 etc/pacman.d/hooks/**
 etc/pacman.d/hooks/
+etc/NetworkManager/**
+etc/NetworkManager/
 
 {{ if not .isWsl }}
 etc/wsl.conf
