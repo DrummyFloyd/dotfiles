@@ -34,6 +34,7 @@ arch:
     - docker-buildx
     - docker-compose
     - downgrade
+    - doxx
     - dunst
     - efibootmgr
     - egl-wayland
