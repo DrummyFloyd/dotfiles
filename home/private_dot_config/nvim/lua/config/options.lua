@@ -20,3 +20,20 @@ vim.g.ai_cmp = false
 -- better coop with fzf-lua
 vim.env.FZF_DEFAULT_OPTS = ""
 vim.g.snacks_animate = false
+
+-- https://github.com/folke/snacks.nvim/discussions/2218#discussioncomment-14536355
+local find_scratch = function(buf)
+  local file = vim.api.nvim_buf_get_name(buf)
+  return vim.iter(Snacks.scratch.list()):find(function(s)
+    return s.file == file
+  end)
+end
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("scratch_diagnostic", { clear = true }),
+  pattern = "markdown",
+  callback = function(e)
+    if find_scratch(e.buf) then
+      vim.diagnostic.enable(false, { bufnr = e.buf })
+    end
+  end,
+})
