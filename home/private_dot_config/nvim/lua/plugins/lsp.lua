@@ -17,7 +17,6 @@ return {
       vim.list_extend(opts.ensure_installed, {
         -- add mason ensure installed here
         "gitlab-ci-ls",
-        "golangci-lint",
         "kcl",
         "tree-sitter-cli",
       })
