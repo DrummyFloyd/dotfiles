@@ -204,7 +204,7 @@ plugins:
       - $NAMESPACE
       - --context
       - $CONTEXT
-  argocd:
+  argocd-sync:
     shortCut: "s"
     description: Sync ArgoCD Application
     scopes:
@@ -219,11 +219,11 @@ plugins:
     background: true
     confirm: true
   disable-auto-sync:
-    shortCut: Shift-J
-    confirm: false
+    shortCut: Shift-D
+    confirm: true
     scopes:
       - apps
-    description: Disable argocd sync
+    description: Disable ArgoCD Sync
     command: kubectl
     background: false
     args:
@@ -236,11 +236,11 @@ plugins:
       - '-p=[{"op":"replace", "path": "/spec/syncPolicy/automated", "value": {}}]'
 
   enable-auto-sync:
-    shortCut: Shift-B
-    confirm: false
+    shortCut: Shift-S
+    confirm: true
     scopes:
       - apps
-    description: Enable argocd sync
+    description: Enable ArgoCD Sync
     command: kubectl
     background: false
     args:
