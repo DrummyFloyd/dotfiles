@@ -6,9 +6,9 @@ gui:
 git:
   overrideGpg: true
   parseEmoji: true
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never --side-by-side
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never --side-by-side
   commit:
     signOff: false
 disableStartupPopups: true
