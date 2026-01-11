@@ -4,7 +4,7 @@
 {
   "email": {{ .bitwarden.email | quote }},
   "sso_id": null,
-  "base_url": "https://vault.bitwarden.eu",
+  "base_url": {{ .bitwarden.server | quote }},
   "identity_url": null,
   "ui_url": null,
   "notifications_url": null,

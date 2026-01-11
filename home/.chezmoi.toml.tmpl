@@ -14,6 +14,7 @@
 {{- writeToStdout "🌟 Chezmoi configuration 🌟\n" -}}
 {{- writeToStdout "💡 Tip: You can re-enter prompted inputs with `chezmoi init --data=false`.💡\n" -}}
 {{- $bitwardenEmail := promptStringOnce . "bitwarden.email" "🔧❓Which Bitwarden email" -}}
+{{- $bitwardenServer := promptStringOnce . "bitwarden.server" "🔧❓Which Bitwarden server (leave empty for default)" "https://vault.bitwarden.eu" -}}
 {{- $personalConfig := promptBoolOnce . "isPersonal" "🔧❓Enable personal configuration [Y/n]" true -}}
 {{- $workConfig := promptBoolOnce . "isWork" "🔧❓Enable work configuration [y/N]" false -}}
 
@@ -44,6 +45,7 @@
 
 [data.bitwarden]
   email = {{ $bitwardenEmail | quote }}
+  server ={{ $bitwardenServer | quote}}
 
 {{ if $personalConfig -}}
 [data.personal]
