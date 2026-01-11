@@ -27,8 +27,8 @@ arch:
     - clang
     - cowsay
     - cronie
-    - cursor-bin
     - dbus-c++
+    - dhcpcd
     - dmidecode
     - docker
     - docker-buildx
@@ -36,6 +36,7 @@ arch:
     - downgrade
     - doxx
     - dunst
+    - eddie-ui
     - efibootmgr
     - egl-wayland
     - eza
@@ -80,6 +81,7 @@ arch:
     - kubent-bin
     - kustomize
     - lazygit
+    - lazysql
     - less
     - libdisplay-info
     - libisoburn
@@ -93,7 +95,9 @@ arch:
     - luajit-tiktoken-bin
     - luarocks
     - mandoc
+    - mediainfo
     - meld
+    - metasploit
     - minikube
     - mise
     - mkcert
@@ -148,9 +152,11 @@ arch:
     - sops
     - sqlitebrowser
     - sshpass
+    - strace
     - stress
     - superfile
     - swappy
+    - systemd-resolvconf
     - talhelper-bin
     - talosctl
     - terraform
@@ -164,9 +170,9 @@ arch:
     - uwsm
     - vde2
     - vim
-    - virtctl-bin
     - virtualbox-guest-iso
     - viu
+    - vlc
     - vulkan-intel
     - waybar
     - webcord-bin
