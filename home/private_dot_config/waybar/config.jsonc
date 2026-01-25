@@ -43,7 +43,7 @@
     "window-rewrite-default": "",
     "window-rewrite": {
       "title<.*youtube.*>": "",
-      "class<Webcord>": "",
+      "class<vesktop>": "",
       "class<Slack>": "󰒱",
       "class<com.rtosta.zapzap>": "󰖣",
       "title<.*Gmail.*>": "󰊫",

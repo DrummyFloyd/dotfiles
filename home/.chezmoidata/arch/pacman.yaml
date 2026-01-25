@@ -169,13 +169,13 @@ arch:
     - uv
     - uwsm
     - vde2
+    - vesktop-bin
     - vim
     - virtualbox-guest-iso
     - viu
     - vlc
     - vulkan-intel
     - waybar
-    - webcord-bin
     - wev
     - wf-recorder
     - wget
