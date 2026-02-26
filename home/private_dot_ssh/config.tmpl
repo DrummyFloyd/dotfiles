@@ -2,6 +2,10 @@
 Include extras/*
 Include personal/*
 
+Host *
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
 # Common configurations
 AddKeysToAgent yes
 ForwardAgent yes
