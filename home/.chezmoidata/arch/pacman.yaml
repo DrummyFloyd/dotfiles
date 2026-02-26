@@ -55,18 +55,17 @@ arch:
     - glab
     - go-tools
     - go-yq
+    - google-chrome
     - gox
     - graphviz
     - grim
     - gtk2
     - helm
-    - helmfile
     - htop
     - hyperfine
     - hyprland
     - hyprlock
     - hyprpaper
-    - inetutils
     - intel-media-driver
     - intel-ucode
     - iptables-nft
@@ -193,6 +192,7 @@ arch:
     - xf86-video-ati
     - xf86-video-nouveau
     - xf86-video-vmware
+    - xorg-xhost
     - xournalpp
     - yay-bin
     - zapzap
