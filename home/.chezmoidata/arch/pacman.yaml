@@ -12,7 +12,6 @@ arch:
     - asciinema-agg-bin
     - asciiquarium
     - aws-cli
-    - azure-cli
     - base
     - base-devel
     - bat
@@ -68,7 +67,7 @@ arch:
     - hyprpaper
     - intel-media-driver
     - intel-ucode
-    - iptables-nft
+    - iptables
     - iwd
     - jq
     - jsonnet-bundler-bin
