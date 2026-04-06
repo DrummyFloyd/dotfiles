@@ -159,21 +159,21 @@ plugins:
   #       else
   #         crossplane beta trace --context $CONTEXT $RESOURCE_NAME.$RESOURCE_GROUP $NAME -owide | less -K
   #       fi
-  duplicate-pod:
-    shortCut: Ctrl-B
-    description: Duplicate Pod
-    scopes:
-      - po
-    command: kubectl
-    background: true
-    args:
-      - duplicate
-      - pod
-      - $NAME
-      - -n
-      - $NAMESPACE
-      - --context
-      - $CONTEXT
+  # duplicate-pod:
+  #   shortCut: Ctrl-B
+  #   description: Duplicate Pod
+  #   scopes:
+  #     - po
+  #   command: kubectl
+  #   background: true
+  #   args:
+  #     - duplicate
+  #     - pod
+  #     - $NAME
+  #     - -n
+  #     - $NAMESPACE
+  #     - --context
+  #     - $CONTEXT
   duplicate-deployment:
     shortCut: Ctrl-T
     description: Duplicate Deployment
