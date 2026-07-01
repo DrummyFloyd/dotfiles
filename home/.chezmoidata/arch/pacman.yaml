@@ -194,6 +194,7 @@ arch:
     - xorg-xhost
     - xournalpp
     - yay-bin
+    - yubikey-manager
     - zapzap
     - zen-browser-bin
     - zram-generator
