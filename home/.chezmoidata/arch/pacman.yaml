@@ -149,6 +149,7 @@ arch:
     - sof-firmware
     - sops
     - sqlitebrowser
+    - sshfs
     - sshpass
     - strace
     - stress
@@ -168,6 +169,7 @@ arch:
     - uwsm
     - vde2
     - vesktop-bin
+    - vesktop-bin-debug
     - vim
     - virtualbox-guest-iso
     - viu
