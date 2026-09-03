@@ -1,0 +1,46 @@
+{
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [
+      "Read(*.env)",
+      "Bash(rm:*)",
+      "Bash(git push:*)"
+    ],
+    "ask": [
+      "Bash(gh pr create:*)",
+      "Bash(glab mr create:*)"
+    ],
+    "defaultMode": "default"
+  },
+  "enabledPlugins": {
+    "crowdsec@crowdsecurity": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "crowdsecurity": {
+      "source": {
+        "source": "github",
+        "repo": "crowdsecurity/crowdsec-skill"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "verbose": false,
+  "autoCompactEnabled": false,
+  "agentPushNotifEnabled": true
+}
