@@ -16,19 +16,21 @@ local Notify = {}
 --- Wraps a value in single quotes, escaping any it contains.
 --- @param value string
 --- @return string
-local function quote(value) return "'" .. value:gsub("'", [['\'']]) .. "'" end
+local function quote(value)
+	return "'" .. value:gsub("'", [['\'']]) .. "'"
+end
 
 --- Sends a low-urgency notification.
 --- @param text string
 --- @param icon string|nil File name inside ~/.config/icons
 --- @param tag string|nil Synchronous tag
 function Notify.send(text, icon, tag)
-  hl.exec_cmd(table.concat({
-    "notify-send -u low",
-    "-i " .. quote(ICONS .. "/" .. (icon or DEFAULT_ICON)),
-    "-h " .. quote("string:x-canonical-private-synchronous:" .. (tag or DEFAULT_TAG)),
-    quote(text),
-  }, " "))
+	hl.exec_cmd(table.concat({
+		"notify-send -u low",
+		"-i " .. quote(ICONS .. "/" .. (icon or DEFAULT_ICON)),
+		"-h " .. quote("string:x-canonical-private-synchronous:" .. (tag or DEFAULT_TAG)),
+		quote(text),
+	}, " "))
 end
 
 return Notify

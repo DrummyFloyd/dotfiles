@@ -4,7 +4,7 @@
 local Machine = require("config").machine
 
 for _, monitor in ipairs(Machine.monitors) do
-  hl.monitor(monitor)
+	hl.monitor(monitor)
 end
 
 -- G9 (ultrawide): centered master layout.

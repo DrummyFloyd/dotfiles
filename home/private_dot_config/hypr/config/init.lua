@@ -15,13 +15,13 @@ Config.machine = Machines.load()
 
 --- Loads every configuration module. Called once from hyprland.lua.
 function Config.setup()
-  require("config.env")
-  require("config.general")
-  require("config.animations")
-  require("config.monitors")
-  require("config.rules")
-  require("keymaps")
-  hl.on("hyprland.start", require("config.autostart"))
+	require("config.env")
+	require("config.general")
+	require("config.animations")
+	require("config.monitors")
+	require("config.rules")
+	require("keymaps")
+	hl.on("hyprland.start", require("config.autostart"))
 end
 
 return Config

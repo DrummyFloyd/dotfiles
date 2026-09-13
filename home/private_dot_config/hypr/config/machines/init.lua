@@ -8,19 +8,25 @@ local Machines = {}
 --- Short hostname ($HOSTNAME, falling back to /etc/hostname), nil if unusable.
 --- @return string|nil
 local function hostname()
-  local name = os.getenv("HOSTNAME")
-  if not name or name == "" then
-    local file = io.open("/etc/hostname", "r")
-    if not file then return nil end
-    name = file:read("*l")
-    file:close()
-  end
-  if not name then return nil end
+	local name = os.getenv("HOSTNAME")
+	if not name or name == "" then
+		local file = io.open("/etc/hostname", "r")
+		if not file then
+			return nil
+		end
+		name = file:read("*l")
+		file:close()
+	end
+	if not name then
+		return nil
+	end
 
-  name = name:match("^%s*([^.%s]+)")
-  if not name or not name:match("^[%w_-]+$") then return nil end
+	name = name:match("^%s*([^.%s]+)")
+	if not name or not name:match("^[%w_-]+$") then
+		return nil
+	end
 
-  return name
+	return name
 end
 
 --- @class Machine
@@ -33,17 +39,17 @@ end
 --- Profile for the current machine: default.lua overridden by <hostname>.lua.
 --- @return Machine
 function Machines.load()
-  local profile = require("config.machines.default")
-  local name = hostname()
-  local module = name and ("config.machines." .. name)
+	local profile = require("config.machines.default")
+	local name = hostname()
+	local module = name and ("config.machines." .. name)
 
-  if module and package.searchpath(module, package.path) then
-    for key, value in pairs(require(module)) do
-      profile[key] = value
-    end
-  end
+	if module and package.searchpath(module, package.path) then
+		for key, value in pairs(require(module)) do
+			profile[key] = value
+		end
+	end
 
-  return profile
+	return profile
 end
 
 return Machines

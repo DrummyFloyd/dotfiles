@@ -27,9 +27,9 @@ Bind.leader_cmd("Return", "uwsm app -- kitty", "Terminal")
 Bind.leader_cmd("E", "uwsm app -- nautilus", "File manager")
 Bind.leader_cmd("A", "uwsm app -- zen-browser || uwsm app -- firefox", "Browser")
 Bind.leader_cmd(
-  "SHIFT + A",
-  "uwsm app -- zen-browser --private-window || uwsm app -- firefox --private-window",
-  "Browser (private window)"
+	"SHIFT + A",
+	"uwsm app -- zen-browser --private-window || uwsm app -- firefox --private-window",
+	"Browser (private window)"
 )
 Bind.leader_cmd("D", "uwsm app -- $(wofi --show drun --define=drun-print_desktop_file=true)", "App launcher")
 Bind.leader_cmd("M", "wlogout --protocol layer-shell -b 2", "Logout menu")
@@ -65,9 +65,9 @@ Bind.leader_key({ "ESCAPE", "code:49" }, hl.dsp.focus({ workspace = "previous" }
 
 -- Workspaces 1 to 10 on the number row (keycodes 10 to 19)
 for i = 1, 10 do
-  local key = "code:" .. (i + 9)
-  Bind.leader_key(key, hl.dsp.focus({ workspace = i }), "Go to workspace " .. i)
-  Bind.leader_key("SHIFT + " .. key, hl.dsp.window.move({ workspace = i }), "Move to workspace " .. i)
+	local key = "code:" .. (i + 9)
+	Bind.leader_key(key, hl.dsp.focus({ workspace = i }), "Go to workspace " .. i)
+	Bind.leader_key("SHIFT + " .. key, hl.dsp.window.move({ workspace = i }), "Move to workspace " .. i)
 end
 
 -- Scroll through workspaces
@@ -103,9 +103,9 @@ Bind.leader_cmd("SHIFT + S", 'grim -g "$(slurp -d)" - | wl-copy', "Screenshot to
 --- @param disabled boolean
 --- @return fun()
 local function internal_panel(disabled)
-  return function()
-    hl.monitor({ output = "eDP-1", mode = "highres", position = "auto", scale = 1, disabled = disabled })
-  end
+	return function()
+		hl.monitor({ output = "eDP-1", mode = "highres", position = "auto", scale = 1, disabled = disabled })
+	end
 end
 
 -- stylua: ignore start
