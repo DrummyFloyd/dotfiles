@@ -30,7 +30,9 @@ local function hostname()
 end
 
 --- @class Machine
---- @field monitors HL.MonitorSpec[] Monitors, in order; output = "" is the catch-all rule
+--- @field monitors HL.MonitorSpec[] Monitors, in order; output = "" is the catch-all rule.
+---        Entries may carry `layout` and `layout_opts`, which config/monitors.lua turns
+---        into a workspace rule scoped to that monitor instead of an hl.monitor() field.
 --- @field devices HL.DeviceSpec[] Per-input-device settings
 --- @field nvidia boolean Apply the NVIDIA environment variables
 --- @field nvidia_backend string|nil GBM backend: "nvidia-drm" (default) or "nvidia-open"

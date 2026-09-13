@@ -5,7 +5,6 @@
 
 local Bind = require("lib.bind")
 local Config = require("config")
-local Layout = require("lib.layout")
 
 local SCRIPTS = Config.scripts
 
@@ -19,7 +18,6 @@ Bind.leader_key("SHIFT + F", hl.dsp.window.fullscreen({ action = "toggle", mode 
 Bind.leader_cmd("L", "uwsm app -- hyprlock", "Lock screen")
 Bind.leader_cmd("SHIFT + R", SCRIPTS .. "/reloadHyprland", "Reload Hyprland")
 Bind.leader_cmd("P", SCRIPTS .. "/mainMonitorSwitch", "Switch main monitor")
-Bind.leader_key("X", Layout.toggle, "Toggle master/dwindle")
 
 -- ############################# Applications #############################
 

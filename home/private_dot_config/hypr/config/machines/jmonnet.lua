@@ -1,16 +1,22 @@
 --- Laptop: internal eDP-1, G9 at home, AOC at the office.
 --- Monitors are declared in order; the last entry (output = "") covers any
 --- unknown display hotplugged in.
+---
+--- `layout` and `layout_opts` are not monitor settings: config/monitors.lua
+--- turns them into a workspace rule scoped to that monitor. A monitor without
+--- them falls back to general.layout from config/general.lua.
 
 --- @type Machine
 return {
 	monitors = {
-		-- Home: Samsung Odyssey G9 (ultrawide)
+		-- Home: Samsung Odyssey G9 (ultrawide), master on the left and slaves stacked right
 		{
 			output = "desc:Samsung Electric Company Odyssey G93SC HNTW900406",
 			mode = "5120x1440",
 			position = "auto-right",
 			scale = 1,
+			layout = "master",
+			layout_opts = { orientation = "left" },
 		},
 		-- Office: AOC Q27P1B
 		{
@@ -20,7 +26,13 @@ return {
 			scale = 1,
 		},
 		-- Internal panel
-		{ output = "eDP-1", mode = "highres", position = "0x0", scale = 1 },
+		{
+			output = "eDP-1",
+			mode = "highres",
+			position = "0x0",
+			scale = 1,
+			layout = "dwindle",
+		},
 		-- Default for any new display
 		{ output = "", mode = "highres", position = "auto", scale = 1 },
 	},
