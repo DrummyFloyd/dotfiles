@@ -41,26 +41,47 @@ local function monitor_name(output)
 	end
 end
 
---- Applies every monitor spec, then binds each declared layout to that monitor's
---- workspaces. Replayed on hotplug: a workspace rule can only name a monitor
---- that is currently connected.
-local function apply()
+--- Binds each declared layout to that monitor's workspaces.
+--- A workspace keeps the layout it was given when it was created, so one that
+--- migrates to another screen (hotplug, a monitor disabled by mainMonitorSwitch,
+--- a manual move) drags the old layout along. Registering the rule again makes
+--- Hyprland re-evaluate every workspace currently sitting on that monitor, which
+--- is what puts the migrated ones back on the right layout.
+--- A monitor declared without a layout gets general.layout spelled out, so that
+--- fallback holds after a migration instead of only at creation time.
+--- Only a currently connected monitor can be named in a rule.
+local function apply_rules()
+	local fallback = hl.get_config("general.layout")
+
 	for _, entry in ipairs(Machine.monitors) do
 		local spec, rule = split(entry)
-		hl.monitor(spec)
 
-		if rule and spec.output ~= "" then
+		if spec.output ~= "" then
 			local name = monitor_name(spec.output)
 			if name then
 				hl.workspace_rule({
 					workspace = "m[" .. name .. "]",
-					layout = rule.layout,
-					layout_opts = rule.layout_opts,
+					layout = rule and rule.layout or fallback,
+					layout_opts = rule and rule.layout_opts,
 				})
 			end
 		end
 	end
 end
 
+--- Applies every monitor spec, then the workspace rules that go with them.
+--- Replayed on hotplug.
+local function apply()
+	for _, entry in ipairs(Machine.monitors) do
+		hl.monitor((split(entry)))
+	end
+
+	apply_rules()
+end
+
 apply()
 hl.on("monitor.added", apply)
+--- Only the rules are replayed here: re-applying the monitor specs would undo a
+--- monitor that mainMonitorSwitch just disabled.
+hl.on("monitor.removed", apply_rules)
+hl.on("workspace.move_to_monitor", apply_rules)
