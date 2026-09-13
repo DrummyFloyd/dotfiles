@@ -25,8 +25,11 @@ disable_monitor() {
     echo "Script Canceled or No monitor to disable or issue with the monitor switch"
     echo "DEBUG: \$disabled_monitor=> ${disabled_monitor//$'\n'/ }"
   else
-    hyprctl keyword monitor "${disabled_monitor}, disable"
-    notify_user "Monitor Dropped: ${disabled_monitor}"
+    while read -r monitor; do
+      [ -z "${monitor}" ] && continue
+      hyprctl eval "hl.monitor({ output = \"${monitor}\", disabled = true })"
+    done <<<"${disabled_monitor}"
+    notify_user "Monitor Dropped: ${disabled_monitor//$'\n'/ }"
     notify_user "Main Monitor: ${selected_monitor}"
     # INFO: Restart dunst to fix the issue with the notification
     systemctl --user restart dunst.service
