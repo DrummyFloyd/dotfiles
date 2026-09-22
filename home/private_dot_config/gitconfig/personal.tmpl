@@ -14,4 +14,10 @@
 {{ if .isPersonal }}
 [core]
   sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
+
+[includeIf "gitdir:~/Documents/OSS/Github/**"]
+  path = oss.github
+
+[includeIf "gitdir:~/Documents/OSS/Gitlab/**"]
+  path = oss.gitlab
 {{- end }}
