@@ -45,9 +45,13 @@ autoload -Uz colors && colors
 # Then stub it so plugins don't run it again.
 zmodload zsh/complist
 autoload -Uz compinit
-_zcompdump_stale=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24))
-if (( $#_zcompdump_stale )); then compinit; else compinit -C; fi
-unset _zcompdump_stale
+_zcompdump=${ZDOTDIR:-$HOME}/.zcompdump
+if [[ -n $_zcompdump(#qN.mh+24) ]]; then compinit; else compinit -C; fi
+# Compile dump when (re)generated, source picks the newer .zwc automatically
+if [[ -s $_zcompdump && ( ! -s $_zcompdump.zwc || $_zcompdump -nt $_zcompdump.zwc ) ]]; then
+  zcompile $_zcompdump
+fi
+unset _zcompdump
 compinit() { : }
 
 # INFO: must be after compinit, which resets _comp_options
