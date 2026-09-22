@@ -11,17 +11,11 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git commit:*)"
-    ],
-    "deny": [
-      "Read(*.env)",
-      "Bash(rm:*)",
-      "Bash(git push:*)"
-    ],
-    "ask": [
-      "Bash(gh pr create:*)",
+      "Bash(git commit:*)",
       "Bash(glab mr create:*)"
     ],
+    "deny": ["Read(*.env)", "Bash(rm:*)", "Read(*.sec)"],
+    "ask": ["Bash(gh pr create:*)", "Bash(git push:*)"],
     "defaultMode": "default"
   },
   "enabledPlugins": {
