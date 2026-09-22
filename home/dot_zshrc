@@ -19,7 +19,7 @@ fi
 
 # source
 # INFO:  need to  be first coz many system package rely on it
-plug "wintermi/zsh-mise"
+eval "$(mise activate zsh --shims)"
 plug "${HOME}/.config/zsh/behaviours.zsh"
 plug "${HOME}/.config/zsh/aliases.zsh"
 plug "${HOME}/.config/zsh/exports.zsh"
@@ -31,8 +31,8 @@ plug "${HOME}/.config/zsh/bindings.zsh"
 plug "zap-zsh/completions"
 plug "hlissner/zsh-autopair"
 plug "romkatv/powerlevel10k"
-plug "zap-zsh/supercharge"
 plug "zsh-users/zsh-autosuggestions"
+plug "zap-zsh/supercharge"
 plug "zsh-users/zsh-syntax-highlighting"
 # must be load after fzf to work
 plug "joshskidmore/zsh-fzf-history-search"

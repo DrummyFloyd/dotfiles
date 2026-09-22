@@ -9,6 +9,11 @@ export MANPAGER="nvim +Man!"
 export TERM="xterm-kitty"
 export EDITOR="nvim"
 
+# mise
+export MISE_AUTO_INSTALL=0
+export MISE_PARANOID=0
+export MISE_DISABLE_HINTS=1
+
 # github
 export GITHUB_TOKEN={{ (rbwFields "githubTokens" ).miseToken.value | quote }}
 
@@ -51,12 +56,18 @@ export PATH=${HOME}/.local/share/fnm:${PATH}
 export PATH=${HOME}/.local/bin:${PATH} # python binaries
 export PATH=${HOME}/bin:/usr/local/bin:${HOME}/.local/:${PATH}
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-[[ "$(command -v go)" ]] && export PATH=$PATH:$(go env GOPATH)/bin
-[[ "$(command -v gem)" ]] && export PATH=$PATH:$(gem environment path):$(ruby -r rubygems -e 'puts Gem.user_dir')/bin
+(( $+commands[go] )) && export PATH=$PATH:$(go env GOPATH)/bin
+# INFO: glob instead of spawning ruby (~100ms)
+path+=(${HOME}/.local/share/gem/ruby/*/bin(N))
 
 # INFO: fix issue /dev/fd/12:18: command not found: compdef error made by some completions below
-autoload compinit
-compinit
+# Full compinit (~150ms) only when dump is older than 24h, cached otherwise.
+# Then stub it so plugins (zap-zsh/completions, supercharge) don't run it again.
+autoload -Uz compinit
+_zcompdump_stale=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24))
+if (( $#_zcompdump_stale )); then compinit; else compinit -C; fi
+unset _zcompdump_stale
+compinit() { : }
 
 # Completion for command
 # You can use whatever you want as an alias, like for Mondays:
