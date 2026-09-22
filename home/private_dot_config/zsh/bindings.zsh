@@ -24,3 +24,16 @@ bindkey -M vicmd '^[[3;5~' kill-word
 bindkey -M emacs "${terminfo[kcbt]}" reverse-menu-complete
 bindkey -M viins "${terminfo[kcbt]}" reverse-menu-complete
 bindkey -M vicmd "${terminfo[kcbt]}" reverse-menu-complete
+
+# [Ctrl-X] - reload zshrc
+bindkey -s '^x' '^usource $ZSHRC\n'
+
+# [Ctrl-Backspace] - delete whole backward-word
+bindkey '^H' backward-kill-word
+
+# [Ctrl-X a] - expand alias (widget defined in behaviours.zsh)
+bindkey '^Xa' alias-expension
+
+# [?] / [/] - search history from completion menu
+bindkey -M menuselect '?' history-incremental-search-forward
+bindkey -M menuselect '/' history-incremental-search-backward

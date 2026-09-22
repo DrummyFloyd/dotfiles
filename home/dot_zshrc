@@ -24,19 +24,18 @@ plug "${HOME}/.config/zsh/behaviours.zsh"
 plug "${HOME}/.config/zsh/aliases.zsh"
 plug "${HOME}/.config/zsh/exports.zsh"
 plug "${HOME}/.config/zsh/functions.zsh"
-plug "${HOME}/.config/zsh/bindings.zsh"
 
 # plugins
 # plug "jeffreytse/zsh-vi-mode"
-plug "zap-zsh/completions"
 plug "hlissner/zsh-autopair"
 plug "romkatv/powerlevel10k"
 plug "zsh-users/zsh-autosuggestions"
-plug "zap-zsh/supercharge"
 plug "zsh-users/zsh-syntax-highlighting"
 # must be load after fzf to work
 plug "joshskidmore/zsh-fzf-history-search"
 plug "MohamedElashri/eza-zsh"
+# INFO: after plugins so our bindings win (e.g. ^H vs zsh-autopair)
+plug "${HOME}/.config/zsh/bindings.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

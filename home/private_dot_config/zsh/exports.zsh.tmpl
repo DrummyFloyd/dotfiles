@@ -22,8 +22,8 @@ export GITHUB_TOKEN={{ (rbwFields "githubTokens" ).miseToken.value | quote }}
 export NO_ROOTMOI=1
 
 # History
-export HISTSIZE=10000
-export SAVEHIST=10000
+export HISTSIZE=50000
+export SAVEHIST=50000
 export HISTFILE=~/.zsh_history
 
 
@@ -56,18 +56,12 @@ export PATH=${HOME}/.local/share/fnm:${PATH}
 export PATH=${HOME}/.local/bin:${PATH} # python binaries
 export PATH=${HOME}/bin:/usr/local/bin:${HOME}/.local/:${PATH}
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-(( $+commands[go] )) && export PATH=$PATH:$(go env GOPATH)/bin
+# INFO: GOPATH set by xdg template; `go env` through mise shim costs ~40ms
+export PATH=$PATH:${GOPATH:-$HOME/go}/bin
 # INFO: glob instead of spawning ruby (~100ms)
 path+=(${HOME}/.local/share/gem/ruby/*/bin(N))
 
-# INFO: fix issue /dev/fd/12:18: command not found: compdef error made by some completions below
-# Full compinit (~150ms) only when dump is older than 24h, cached otherwise.
-# Then stub it so plugins (zap-zsh/completions, supercharge) don't run it again.
-autoload -Uz compinit
-_zcompdump_stale=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24))
-if (( $#_zcompdump_stale )); then compinit; else compinit -C; fi
-unset _zcompdump_stale
-compinit() { : }
+# INFO: compinit is done in behaviours.zsh (needed by compdef below)
 
 # Completion for command
 # You can use whatever you want as an alias, like for Mondays:
