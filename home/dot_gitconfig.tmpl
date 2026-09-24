@@ -46,9 +46,9 @@
 	program = /usr/bin/gpg
 
 [include]
-  path = /home/{{ .chezmoi.username }}/.config/gitconfig/personal
+  path = {{ .chezmoi.homeDir }}/.config/gitconfig/personal
 
 {{- if .isWork }}
-[includeIf "gitdir:/home/{{ .chezmoi.username }}/Documents/Work/**"]
-  path = /home/{{ .chezmoi.username }}/.config/gitconfig/work
+[includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/Work/**"]
+  path = {{ .chezmoi.homeDir }}/.config/gitconfig/work
 {{- end -}}
