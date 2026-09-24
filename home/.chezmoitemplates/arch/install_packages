@@ -1,52 +1,19 @@
 {{- /*
   vim:ft=bash.gotmpl:
 */ -}}
-# Convert the template string to an array
-PACKAGES_STR={{ .arch.pacman | join " " | quote }}
+PACKAGES=(
+{{- range .arch.pacman }}
+  {{ . | quote }}
+{{- end }}
+)
 
-read -ra PACKAGES <<< "$PACKAGES_STR"
-# Clean up any malformed package names with extra quotes
-CLEAN_PACKAGES=()
-for pkg in "${PACKAGES[@]}"; do
-  # Remove any surrounding quotes and escape characters
-  clean_pkg=$(echo "$pkg" | sed 's/^["'\'']*//; s/["'\'']*$//' | sed 's/\\//g')
-  if [[ -n "$clean_pkg" ]]; then
-    CLEAN_PACKAGES+=("$clean_pkg")
-  fi
-done
-
-OUTPUT=$(yay -Q ${CLEAN_PACKAGES[@]} 2>&1 || true)
-
-MISSING_PACKAGES=()
-
-while IFS= read -r line; do
-  if [[ "$line" == *"error: package"* ]]; then
-    # Extract package name from error message (no 'local' outside function)
-    pkg_name=$(echo "$line" | sed -n "s/error: package '\([^']*\)' was not found/\1/p")
-    MISSING_PACKAGES+=("$pkg_name")  # Remove the $ before array name
-  fi
-done <<<"$OUTPUT"
+# INFO: pacman -T prints unsatisfied targets only, locale independent and
+# resolves provides. Exits 127 when something is missing.
+mapfile -t MISSING_PACKAGES < <(pacman -T "${PACKAGES[@]}" || true)
 
 if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
-  log_task "Installing packages: ${MISSING_PACKAGES[*]}"  # Use [*] for string expansion
-  yay -S --noconfirm "${MISSING_PACKAGES[@]}"
+  log_task "Installing packages: ${MISSING_PACKAGES[*]}"
+  yay -S --needed --noconfirm "${MISSING_PACKAGES[@]}"
 fi
 
-# Install pipx packages
-#
-PIPX_PACKAGES={{ .arch.pipx | join " " | quote }}
-
-missing_pipx_packages=()
-pipx_list_output=$(pipx list)
-for PACKAGE in $PIPX_PACKAGES; do
-  if ! echo "$pipx_list_output" | grep -q "$PACKAGE"; then
-    missing_pipx_packages+=("$PACKAGE")
-  fi
-done
-
-if [[ ${#missing_pipx_packages[@]} -gt 0 ]]; then
-  log_task "Installing missing pipx packages: ${missing_pipx_packages[*]}"
-  for PACKAGE in "${missing_pipx_packages[@]}"; do
-    pipx install "$PACKAGE"
-  done
-fi
+{{ template "install_pipx" .arch.pipx }}

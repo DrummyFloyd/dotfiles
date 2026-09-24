@@ -5,38 +5,22 @@
 
 {{ template "utils" }}
 
-CONFLICTING_PACKAGES={{ .arch.unwantedPackages | join " " | quote }}
+UNWANTED_PACKAGES=(
+{{- range .arch.unwantedPackages }}
+  {{ . | quote }}
+{{- end }}
+)
 
-read -ra PACKAGES <<< "$CONFLICTING_PACKAGES"
-# Clean up any malformed package names with extra quotes
-CLEAN_PACKAGES=()
-for pkg in "${PACKAGES[@]}"; do
-  # Remove any surrounding quotes and escape characters
-  clean_pkg=$(echo "$pkg" | sed 's/^["'\'']*//; s/["'\'']*$//' | sed 's/\\//g')
-  if [[ -n "$clean_pkg" ]]; then
-    CLEAN_PACKAGES+=("$clean_pkg")
-  fi
-done
-
-OUTPUT=$(yay -Q ${CLEAN_PACKAGES[@]} 2>&1 || true)
-
-PACKAGES_TO_REMOVE=()
-
-# Check each package individually for exact matches
-for pkg in "${CLEAN_PACKAGES[@]}"; do
-  # Use yay -Q with exact package name and check if it's installed
-  if OUTPUT=$(yay -Q "$pkg" 2>/dev/null); then
-    # Extract the exact package name from the output (first word before space)
-    installed_pkg=$(echo "$OUTPUT" | awk '{print $1}')
-    # Only add to removal list if the installed package name exactly matches what we're looking for
-    if [[ "$installed_pkg" == "$pkg" ]]; then
-      PACKAGES_TO_REMOVE+=("$pkg")
-    fi
-  fi
-done
+# INFO: keep exact names only, pacman -Qq silently skips missing ones
+mapfile -t PACKAGES_TO_REMOVE < <(
+  pacman -Qq "${UNWANTED_PACKAGES[@]}" 2>/dev/null |
+    grep -xF -f <(printf '%s\n' "${UNWANTED_PACKAGES[@]}") || true
+)
 
 if [[ ${#PACKAGES_TO_REMOVE[@]} -gt 0 ]]; then
   log_task "Remove conflicting or unwanted packages: ${PACKAGES_TO_REMOVE[*]}"
-  # INFO: Here we force remove packages and deps because some of them are reinstalling from .arch.packages
-  yay -Rc --noconfirm ${PACKAGES_TO_REMOVE[@]}
+  # INFO: -Rdd skips dependency checks instead of cascading removal (-Rc) of
+  # everything depending on it; the replacement (e.g. iptables-nft) is
+  # installed right after by 05-install-packages.
+  sudo pacman -Rdd --noconfirm "${PACKAGES_TO_REMOVE[@]}"
 fi

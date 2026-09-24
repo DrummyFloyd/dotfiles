@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Compare declared Arch packages (chezmoi .arch.pacman) with explicitly
+# installed ones, so pacman.yaml can be curated by hand.
+
+set -euo pipefail
+export LC_ALL=C
+
+if [[ ! -f /etc/arch-release ]]; then
+  echo "pkg-drift: Arch Linux only" >&2
+  exit 1
+fi
+
+mapfile -t DECLARED < <(
+  chezmoi execute-template '{{ range .arch.pacman }}{{ . }}{{ "\n" }}{{ end }}' |
+    sed '/^$/d' | sort -u
+)
+
+echo "==> Installed explicitly, not declared in pacman.yaml:"
+comm -13 \
+  <(printf '%s\n' "${DECLARED[@]}") \
+  <(pacman -Qqe | grep -v -- '-debug$' | sort -u) |
+  sed 's/^/  /'
+
+echo "==> Declared in pacman.yaml, not installed:"
+# INFO: pacman -T resolves provides, exits 127 when something is missing
+{ pacman -T "${DECLARED[@]}" || true; } | sed 's/^/  /'

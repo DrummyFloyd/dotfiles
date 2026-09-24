@@ -1,40 +1,28 @@
 {{- /*
   vim:ft=bash.gotmpl:
 */ -}}
-PACKAGES={{ .ubuntu.apt | join " " | quote }}
-{{ if  and (.isWsl) ( gt (len .ubuntu.aptWsl ) 0 ) }}
-PACKAGES+={{ .ubuntu.aptWsl | join " " | quote }}
-{{ end }}
+PACKAGES=(
+{{- range .ubuntu.apt }}
+  {{ . | quote }}
+{{- end }}
+{{- if .isWsl }}
+{{- range .ubuntu.aptWsl }}
+  {{ . | quote }}
+{{- end }}
+{{- end }}
+)
 
-missing_packages=()
-dpkg_output=$(dpkg-query -W -f='${Package} ${Status}\n' 2>/dev/null)
-for PACKAGE in $PACKAGES; do
-  if ! echo "$dpkg_output" | grep -q "^$PACKAGE.*ok installed$"; then
-    missing_packages+=("$PACKAGE")
+MISSING_PACKAGES=()
+INSTALLED_PACKAGES=$(dpkg-query -W -f='${db:Status-Abbrev} ${Package}\n' 2>/dev/null | awk '$1 == "ii" { print $2 }')
+for pkg in "${PACKAGES[@]}"; do
+  if ! grep -qxF "${pkg}" <<<"${INSTALLED_PACKAGES}"; then
+    MISSING_PACKAGES+=("${pkg}")
   fi
 done
 
-
-if [[ ${#missing_packages[@]} -gt 0 ]]; then
-  log_task "Installing missing packages: ${missing_packages[*]}"
-  sudo apt update && sudo apt install -y "${missing_packages[@]}"
+if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
+  log_task "Installing missing packages: ${MISSING_PACKAGES[*]}"
+  sudo apt update && sudo apt install -y "${MISSING_PACKAGES[@]}"
 fi
 
-# Install pipx packages
-#
-PIPX_PACKAGES={{ .ubuntu.pipx | join " " | quote }}
-
-missing_pipx_packages=()
-pipx_list_output=$(pipx list)
-for PACKAGE in $PIPX_PACKAGES; do
-  if ! echo "$pipx_list_output" | grep -q "$PACKAGE"; then
-    missing_pipx_packages+=("$PACKAGE")
-  fi
-done
-
-if [[ ${#missing_pipx_packages[@]} -gt 0 ]]; then
-  log_task "Installing missing pipx packages: ${missing_pipx_packages[*]}"
-  for PACKAGE in "${missing_pipx_packages[@]}"; do
-    pipx install "$PACKAGE"
-  done
-fi
+{{ template "install_pipx" .ubuntu.pipx }}

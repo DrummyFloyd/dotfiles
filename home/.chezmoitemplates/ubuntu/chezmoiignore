@@ -3,6 +3,7 @@
 */ -}}
 
 .chezmoiscripts/*-on-arch.sh
+.local/bin/scripts/pkg-drift
 
 etc/pacman.d/**
 etc/pacman.d/
