@@ -18,11 +18,12 @@ else
 fi
 
 # source
-# INFO:  need to  be first coz many system package rely on it
-eval "$(mise activate zsh --shims)"
 plug "${HOME}/.config/zsh/behaviours.zsh"
 plug "${HOME}/.config/zsh/aliases.zsh"
 plug "${HOME}/.config/zsh/exports.zsh"
+# INFO: after exports so mise shims take precedence over PATH additions,
+# before anything running tools that may come from mise (fzf on ubuntu)
+eval "$(mise activate zsh --shims)"
 # INFO: fzf key-bindings and completion, after exports (FZF_* vars)
 source <(fzf --zsh)
 plug "${HOME}/.config/zsh/functions.zsh"
