@@ -48,10 +48,14 @@
 [url "git@gitlab.com:"]
   insteadOf = https://gitlab.com/
 
+{{- if .isPersonal }}
+
 [include]
   path = {{ .chezmoi.homeDir }}/.config/gitconfig/personal
+{{- end }}
 
 {{- if .isWork }}
+
 [includeIf "gitdir:{{ .chezmoi.homeDir }}/Documents/Work/**"]
   path = {{ .chezmoi.homeDir }}/.config/gitconfig/work
-{{- end -}}
+{{- end }}
