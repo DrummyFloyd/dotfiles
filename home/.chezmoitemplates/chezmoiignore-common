@@ -8,6 +8,8 @@
 .ssh/personal/
 .ssh/personal/**
 .config/gitconfig/personal
+.config/gitconfig/oss.github
+.config/gitconfig/oss.gitlab
 {{ end}}
 
 {{ if not .isWork }}
