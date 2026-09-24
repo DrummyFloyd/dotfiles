@@ -7,12 +7,12 @@
 .ssh/id_ed25519_personal.pub
 .ssh/personal/
 .ssh/personal/**
-.config/.gitconfig/personal
+.config/gitconfig/personal
 {{ end}}
 
 {{ if not .isWork }}
 .chezmoiscripts/90-new-ssh-key-on-linux.sh
-.config/.gitconfig/work
+.config/gitconfig/work
 {{ end}}
 
 
