@@ -6,6 +6,3 @@
 
 # common
 {{ template "chezmoiignore-common" . }}
-
-# Specific to install
-#
