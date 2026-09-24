@@ -57,11 +57,3 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH=$PATH:${GOPATH:-$HOME/go}/bin
 # INFO: glob instead of spawning ruby (~100ms)
 path+=(${HOME}/.local/share/gem/ruby/*/bin(N))
-
-# INFO: compinit is done in behaviours.zsh (needed by compdef below)
-
-# Completion for command
-# You can use whatever you want as an alias, like for Mondays:
-# eval "`pip completion --zsh`"
-# TODO: function to auto load
-source <(fzf --zsh)

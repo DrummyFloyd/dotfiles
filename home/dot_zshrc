@@ -23,6 +23,8 @@ eval "$(mise activate zsh --shims)"
 plug "${HOME}/.config/zsh/behaviours.zsh"
 plug "${HOME}/.config/zsh/aliases.zsh"
 plug "${HOME}/.config/zsh/exports.zsh"
+# INFO: fzf key-bindings and completion, after exports (FZF_* vars)
+source <(fzf --zsh)
 plug "${HOME}/.config/zsh/functions.zsh"
 
 # plugins
