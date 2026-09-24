@@ -6,12 +6,9 @@
   email = {{ .personal.email }}
   signingkey = 20AC86EE49130589
 
-[url "git@gitlab.com:"]
-       insteadOf = https://gitlab.com/
-
 [commit]
 	gpgsign = true
-{{ if .isPersonal }}
+
 [core]
   sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
 
@@ -20,4 +17,3 @@
 
 [includeIf "gitdir:~/Documents/OSS/Gitlab/**"]
   path = oss.gitlab
-{{- end }}

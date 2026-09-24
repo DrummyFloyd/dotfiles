@@ -45,6 +45,9 @@
 [gpg]
 	program = /usr/bin/gpg
 
+[url "git@gitlab.com:"]
+  insteadOf = https://gitlab.com/
+
 [include]
   path = {{ .chezmoi.homeDir }}/.config/gitconfig/personal
 
