@@ -1,2 +1,4 @@
 # cron organize tools
 0 */2 * * * {{ .non_root_home }}/.local/bin/organize run
+# empty trash older than 30 days (organize trashes old downloads)
+30 12 * * * {{ .non_root_home }}/.local/bin/trash-empty 30
