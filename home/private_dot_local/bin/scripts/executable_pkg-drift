@@ -2,6 +2,10 @@
 
 # Compare declared Arch packages (chezmoi .arch.pacman) with explicitly
 # installed ones, so pacman.yaml can be curated by hand.
+#
+# Machine-local exceptions (installed on purpose, not shared) can be listed in
+# ${XDG_CONFIG_HOME:-~/.config}/pkg-drift/ignore: one package per line, '#'
+# comments allowed. This file is not managed by chezmoi.
 
 set -euo pipefail
 export LC_ALL=C
@@ -16,9 +20,15 @@ mapfile -t DECLARED < <(
     sed '/^$/d' | sort -u
 )
 
+IGNORE_FILE="${XDG_CONFIG_HOME:-${HOME}/.config}/pkg-drift/ignore"
+IGNORED=()
+if [[ -f "${IGNORE_FILE}" ]]; then
+  mapfile -t IGNORED < <(sed -e 's/#.*//' -e 's/[[:space:]]//g' -e '/^$/d' "${IGNORE_FILE}")
+fi
+
 echo "==> Installed explicitly, not declared in pacman.yaml:"
 comm -13 \
-  <(printf '%s\n' "${DECLARED[@]}") \
+  <(printf '%s\n' "${DECLARED[@]}" "${IGNORED[@]}" | sort -u) \
   <(pacman -Qqe | grep -v -- '-debug$' | sort -u) |
   sed 's/^/  /'
 
