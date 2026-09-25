@@ -1,204 +1,207 @@
 arch:
   pacman:
-    - acpi_call
-    - acpilight
-    - age
-    - alsa-firmware
-    - alsa-utils
-    - ansible
-    - argocd
-    - arp-scan
-    - asciinema
-    - asciinema-agg-bin
-    - asciiquarium
-    - aws-cli
+    # --- system base
     - base
     - base-devel
-    - bat
-    - bc
-    - bind
-    - bitwarden
-    - blueman
-    - bluez-utils
-    - btop
-    - chart-testing
-    - chezmoi
-    - clang
-    - cowsay
-    - cronie
-    - dbus-c++
-    - dhcpcd
-    - dmidecode
-    - docker
-    - docker-buildx
-    - docker-compose
-    - downgrade
-    - doxx
-    - dunst
-    - eddie-ui
+    - linux
+    - linux-firmware
+    - intel-ucode
     - efibootmgr
-    - egl-wayland
-    - eza
-    - fastfetch
-    - fcitx5-configtool
-    - fcitx5-qt
-    - fd
-    - firefox
-    - freerdp
+    - zram-generator
+    - cronie
     - fwupd
-    - fzf
-    - ghostty
-    - git
-    - git-delta
-    - github-cli
-    - glab
-    - go-tools
-    - go-yq
-    - google-chrome
-    - gox
-    - graphviz
-    - grim
-    - gtk2
-    - helm
-    - htop
-    - hyperfine
+    - smartmontools
+    - powertop
+    - acpi_call
+    - acpilight
+    - dmidecode
+    - zsh
+    - less
+    - mandoc
+    - iptables
+    - systemd-resolvconf
+
+    # --- package management
+    - yay-bin
+    - pacman-contrib
+    - downgrade
+
+    # --- graphics (Intel Iris Xe)
+    - intel-media-driver
+    - vulkan-intel
+
+    # --- audio / bluetooth
+    - pipewire-pulse
+    - alsa-utils
+    - alsa-firmware
+    - sof-firmware
+    - bluez-utils
+    - blueman
+    - pavucontrol
+
+    # --- network
+    - networkmanager
+    - network-manager-applet
+    - iwd
+    - wireguard-tools
+    - eddie-ui
+    - dbus-c++ # needed by eddie-ui, not declared as dep
+    - bind
+    - whois
+    - nmap
+    - arp-scan
+    - openbsd-netcat
+    - socat
+    - wget
+    - rsync
+    - rclone
+    - sshfs
+    - sshpass
+
+    # --- hyprland desktop
     - hyprland
     - hyprlock
     - hyprpaper
-    - intel-media-driver
-    - intel-ucode
-    - iptables
-    - iwd
-    - jq
-    - jsonnet-bundler-bin
-    - k9s
-    - kitty
-    - krew
-    - kubectl
-    - kubectx
-    - kubent-bin
-    - kustomize
-    - lazygit
-    - lazysql
-    - less
-    - libdisplay-info
-    - libisoburn
-    - libliftoff
-    - libreoffice-fresh
-    - libva-intel-driver
-    - lighttpd
-    - linux
-    - linux-firmware
-    - lsof
-    - luajit-tiktoken-bin
-    - luarocks
-    - mandoc
-    - mediainfo
-    - meld
-    - metasploit
-    - minikube
-    - mise
-    - mkcert
-    - mpv
-    - musl
+    - uwsm
+    - xdg-desktop-portal-hyprland
+    - xdg-utils
+    - xorg-xhost
+    - polkit-kde-agent
+    - qt5-wayland
+    - qt6-wayland
+    - qt5ct
+    - qt6ct
+    - waybar
+    - wofi
+    - wlogout
+    - dunst
+    - udiskie
     - nautilus
-    - neovim
-    - net-tools
-    - network-manager-applet
-    - networkmanager
-    - nmap
-    - nodejs
+    - fcitx5-configtool
+    - fcitx5-qt
+    # screenshots / screen
+    - grim
+    - slurp
+    - swappy
+    - wf-recorder
+    - wl-clipboard
+    - wlr-randr
+    - wev
+
+    # --- fonts
     - noto-fonts
     - noto-fonts-cjk
     - noto-fonts-emoji
-    - openbsd-netcat
-    - opentofu
     - otf-font-awesome
-    - pacman-contrib
-    - pavucontrol
-    - pipewire-pulse
-    - polkit-kde-agent
-    - postgresql-libs
-    - powerline
-    - powertop
+    - ttf-firacode-nerd
+    - ttf-meslo-nerd
+
+    # --- terminal / editors
+    - kitty
+    - neovim
+    - vim
+
+    # --- cli tools
+    - 7zip
+    - unrar
+    - bat
+    - bc
+    - btop
+    - htop
+    - eza
+    - fd
+    - fzf
+    - ripgrep
+    - sd
+    - jq
+    - go-yq
+    - tree
+    - viu
+    - mediainfo
+    - fastfetch
+    - superfile
+    - hyperfine
+    - strace
+    - lsof
+    - stress
+    - libisoburn
+    - asciinema
+    - asciinema-agg-bin
+    - asciiquarium
+    - cowsay
+
+    # --- git
+    - git
+    - git-delta
+    - lazygit
+    - github-cli
+    - glab
+    - meld
+
+    # --- dotfiles / secrets
+    - chezmoi
+    - mise
+    - rbw
+    - age
+    - sops
+    - bitwarden
+    - yubikey-manager
+    - yubico-authenticator-bin
+
+    # --- dev toolchains
+    - clang
+    - musl
     - python
-    - python-awscli-plugin-endpoint
-    - python-boto3
     - python-pip
     - python-pipx
     - python-pynvim
-    - python-setuptools
     - python-virtualenv
-    - qbittorrent
-    - qt5-wayland
-    - qt5ct
-    - qt6-wayland
-    - qt6ct
-    - rbw
-    - rclone
-    - rdesktop
-    - remmina
-    - ripgrep
-    - rpi-imager
-    - rsync
-    - sd
-    - slack-desktop
-    - slurp
-    - smartmontools
-    - socat
-    - sof-firmware
-    - sops
-    - sqlitebrowser
-    - sshfs
-    - sshpass
-    - strace
-    - stress
-    - superfile
-    - swappy
-    - systemd-resolvconf
-    - talhelper-bin
-    - talosctl
-    - terraform
-    - tpi
-    - tree
-    - ttf-firacode-nerd
-    - ttf-meslo-nerd
-    - udiskie
-    - unrar
+    - python-boto3
     - uv
-    - uwsm
-    - vde2
-    - vesktop-bin
-    - vesktop-bin-debug
-    - vim
-    - virtualbox-guest-iso
-    - viu
-    - vlc
-    - vulkan-intel
-    - waybar
-    - wev
-    - wf-recorder
-    - wget
-    - whois
-    - wireguard-tools
-    - wireless_tools
-    - wl-clipboard
-    - wlogout
-    - wlr-randr
-    - wofi
+    - luarocks
+    - luajit-tiktoken-bin
+    - graphviz
+    - mkcert
     - wscat
-    - xdg-desktop-portal-hyprland
-    - xdg-utils
-    - xf86-video-amdgpu
-    - xf86-video-ati
-    - xf86-video-nouveau
-    - xf86-video-vmware
-    - xorg-xhost
-    - xournalpp
-    - yay-bin
-    - yubico-authenticator-bin
-    - yubikey-manager
-    - zapzap
+    - lazysql
+    - sqlitebrowser
+    - doxx
+    - jsonnet-bundler-bin
+
+    # --- containers / kubernetes
+    - docker
+    - docker-buildx
+    - docker-compose
+    - kubectl
+    - kubectx
+    - krew
+    - k9s
+    - helm
+    - kustomize
+    - argocd
+    - kubent-bin
+    - minikube
+    - chart-testing
+    - talosctl
+    - talhelper-bin
+    - tpi
+
+    # --- cloud / iac
+    - opentofu
+    - terraform
+    - ansible
+    - aws-cli
+    - python-awscli-plugin-endpoint
+
+    # --- desktop apps
     - zen-browser-bin
-    - zram-generator
-    - zsh
+    - libreoffice-fresh
+    - xournalpp
+    - vlc
+    - mpv
+    - qbittorrent
+    - remmina
+    - rpi-imager
+    - slack-desktop
+    - vesktop-bin
+    - zapzap
