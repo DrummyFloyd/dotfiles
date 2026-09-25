@@ -21,6 +21,7 @@ scriptContents = true
 
 [data]
 non_root_user = "{{ .chezmoi.username }}"
+non_root_home = "{{ .chezmoi.homeDir }}"
 {{ $chezmoiData | toToml }}
 
 {{- if .isWsl -}}

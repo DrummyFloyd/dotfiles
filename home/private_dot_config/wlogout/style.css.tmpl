@@ -28,49 +28,49 @@ button:hover {
 }
 
 #lock {
-  background-image: image(url("/home/jmonnet/.config/wlogout/icons/lock.png"));
+  background-image: image(url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/lock.png"));
   background-size: 15%;
 }
 #lock:focus,
 #lock:hover {
   background-image: image(
-    url("/home/jmonnet/.config/wlogout/icons/lock-hover.png")
+    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/lock-hover.png")
   );
 }
 
 #logout {
   background-image: image(
-    url("/home/jmonnet/.config/wlogout/icons/logout.png")
+    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/logout.png")
   );
   background-size: 14%;
 }
 #logout:focus,
 #logout:hover {
   background-image: image(
-    url("/home/jmonnet/.config/wlogout/icons/logout-hover.png")
+    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/logout-hover.png")
   );
 }
 
 #shutdown {
-  background-image: image(url("/home/jmonnet/.config/wlogout/icons/power.png"));
+  background-image: image(url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/power.png"));
   background-size: 14%;
 }
 #shutdown:focus,
 #shutdown:hover {
   background-image: image(
-    url("/home/jmonnet/.config/wlogout/icons/power-hover.png")
+    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/power-hover.png")
   );
 }
 
 #reboot {
   background-image: image(
-    url("/home/jmonnet/.config/wlogout/icons/restart.png")
+    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/restart.png")
   );
   background-size: 14%;
 }
 #reboot:focus,
 #reboot:hover {
   background-image: image(
-    url("/home/jmonnet/.config/wlogout/icons/restart-hover.png")
+    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/restart-hover.png")
   );
 }

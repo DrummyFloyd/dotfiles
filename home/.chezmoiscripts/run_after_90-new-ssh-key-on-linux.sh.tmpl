@@ -6,7 +6,7 @@
 {{ template "utils" }}
 
 {{ if and .isWork .work.generateWorkSshKey }}
-NEW_SSH_KEY_PATH="/home/{{ .chezmoi.username }}/.ssh/id_ed25519"
+NEW_SSH_KEY_PATH="{{ .chezmoi.homeDir }}/.ssh/id_ed25519"
 
 if [ ! -f "$NEW_SSH_KEY_PATH" ]; then
   log_task "Generating new SSH key to $NEW_SSH_KEY_PATH"

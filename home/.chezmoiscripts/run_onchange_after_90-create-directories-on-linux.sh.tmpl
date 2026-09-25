@@ -13,8 +13,8 @@ DIRS_TO_CREATE="Personal OSS/Github OSS/Gitlab"
 
 # check if directories exist
 for dir in $DIRS_TO_CREATE; do
-    if [ ! -d "/home/{{ .chezmoi.username }}/Documents/$dir" ]; then
-      log_task "Creating directory /home/{{ .chezmoi.username }}/Documents/$dir"
-      mkdir -p "/home/{{ .chezmoi.username }}/Documents/$dir"
+    if [ ! -d "{{ .chezmoi.homeDir }}/Documents/$dir" ]; then
+      log_task "Creating directory {{ .chezmoi.homeDir }}/Documents/$dir"
+      mkdir -p "{{ .chezmoi.homeDir }}/Documents/$dir"
     fi
 done
