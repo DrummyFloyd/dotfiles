@@ -14,6 +14,16 @@ This dotfiles repository configure personnal and work environment:
 
 This dotfiles are custommized, this is shared for informational purposes only. Use at your own risk.
 
+## Install
+
+On a fresh machine:
+
+```sh
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply DrummyFloyd
+```
+
+Or from a local clone: `./install.sh`.
+
 ## Arch packages
 
 `home/.chezmoidata/arch/pacman.yaml` is curated by hand, `chezmoi apply` installs what is missing.
