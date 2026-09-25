@@ -13,3 +13,14 @@ This dotfiles repository configure personnal and work environment:
 ## WARNING
 
 This dotfiles are custommized, this is shared for informational purposes only. Use at your own risk.
+
+## Arch packages
+
+`home/.chezmoidata/arch/pacman.yaml` is curated by hand, `chezmoi apply` installs what is missing.
+
+Run `pkg-drift` to compare it with the system:
+
+- installed explicitly but not declared: add it to `pacman.yaml`, or uninstall it
+- declared but not installed: install it, or drop it from `pacman.yaml`
+
+Packages kept on purpose on a single machine go in `~/.config/pkg-drift/ignore` (one per line, not managed by chezmoi).
