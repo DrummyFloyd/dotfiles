@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
-set -eu
+# read-source-state.pre hook: make sure what templates need (git, rbw...) is
+# available before chezmoi renders anything. It runs on every chezmoi command,
+# so each check must be cheap when there is nothing to do.
 
-OS_NAME=$(grep "^ID=" /etc/os-release | cut -d= -f2)
+# shellcheck source=../.chezmoitemplates/utils
+source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
 
-INSTALL_PATH="/usr/bin"
+# shellcheck disable=SC1091
+OS_ID=$(. /etc/os-release && echo "${ID}")
 
-UBUNTU_DEBIAN_PACKAGES=(
+UBUNTU_PACKAGES=(
   curl
   git
   gpg
@@ -18,99 +22,83 @@ ARCH_PACKAGES=(
   rbw
 )
 
-missing_packages=()
+WORK_DIR=""
+trap 'rm -rf "${WORK_DIR}"' EXIT
 
-install_yay() {
-  # Install yay if not already installed
-  if ! command -v yay &>/dev/null; then
-
-    log_task "yay could not be found, installing..."
-    sudo pacman -S --noconfirm base-devel
-    git clone https://aur.archlinux.org/yay-bin.git
-    cd yay-bin || exit
-    makepkg -si --noconfirm
-    cd .. || exit
-    rm -rf yay-bin
-  fi
-}
-
-check_install_rbw_bin() {
-  if ! command -v rbw &>/dev/null; then
-    log_task "rbw could not be found, installing..."
-    VERSION=$(curl -s https://api.github.com/repos/doy/rbw/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')
-    curl -Lo rbw.tar.gz "https://github.com/doy/rbw/releases/download/${VERSION}/rbw_${VERSION}_linux_amd64.tar.gz"
-    # Extract the archive
-    mkdir -p /tmp/rbw-"${VERSION}"
-    tar xf rbw.tar.gz --directory=/tmp/rbw-"${VERSION}"/
-
-    # Install the binary
-    if uname -a | grep -q "arch"; then
-      INSTALL_PATH="/usr/bin"
-    fi
-    sudo mv /tmp/rbw-*/rbw "${INSTALL_PATH}"/
-    sudo mv /tmp/rbw-*/rbw-agent "${INSTALL_PATH}"/
-
-    # Cleanup
-    rm -rf rbw.tar.gz /tmp/rbw-*
-  fi
-}
-
-check_apt_package() {
-  for package in "${UBUNTU_DEBIAN_PACKAGES[@]}"; do
-    if ! command -v "${package}" >/dev/null; then
-      missing_packages+=("${package}")
+install_missing_apt_packages() {
+  local missing=()
+  for pkg in "${UBUNTU_PACKAGES[@]}"; do
+    if ! dpkg-query -W -f='${db:Status-Abbrev}' "${pkg}" 2>/dev/null | grep -q '^ii'; then
+      missing+=("${pkg}")
     fi
   done
+
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    log_task "Installing missing packages: ${missing[*]}"
+    sudo apt-get update
+    # INFO: through env, sudo resets the caller environment
+    sudo env DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing[@]}"
+  fi
 }
 
-check_pacman_package() {
-  local output
-  set +e
-  output=$(sudo pacman -Q "${ARCH_PACKAGES[@]}" 2>&1)
-  set -e
-  while IFS= read -r line; do
-    if [[ "$line" == *"error: package"* ]]; then
-      # Extract package name from error message
-      local pkg_name
-      pkg_name=$(echo "$line" | sed -e "s/error: package '\(.*\)' was not found/\1/")
-      missing_packages+=("$pkg_name")
-    fi
-  done <<<"$output"
-  # missing_packages=$(echo "$output" | grep "error: package" | sed -e "s/error: package '\(.*\)' was not found/\1/" | tr '\n' ' ' | sed 's/ $//')
+install_missing_pacman_packages() {
+  local missing
+  # INFO: pacman -T prints unsatisfied targets only, exits 127 when some are missing
+  mapfile -t missing < <(pacman -T "${ARCH_PACKAGES[@]}" || true)
+
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    log_task "Installing missing packages: ${missing[*]}"
+    sudo pacman -Syu --needed "${missing[@]}"
+  fi
 }
 
-case "$OS_NAME" in
-  "ubuntu" | "debian")
-    check_apt_package
-    if [[ ${#missing_packages[@]} -eq 0 ]]; then
-      exit 0
-    fi
+install_yay() {
+  if command -v yay &>/dev/null; then
+    return
+  fi
 
-    # shellcheck source=../.chezmoitemplates/utils
-    source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
+  log_task "yay could not be found, installing..."
+  sudo pacman -S --needed --noconfirm base-devel git
+  WORK_DIR=$(mktemp -d)
+  git clone --depth 1 https://aur.archlinux.org/yay-bin.git "${WORK_DIR}/yay-bin"
+  (cd "${WORK_DIR}/yay-bin" && makepkg -si --noconfirm)
+}
 
-    log_info "Os detected: ${OS_NAME}"
-    log_task "Installing missing packages: ${missing_packages[*]}"
-    DEBIAN_FRONTEND=noninteractive sudo apt update && sudo apt install "${missing_packages[@]}" --yes
-    check_install_rbw_bin
+# INFO: bootstrap copy in /usr/local/bin (in default PATH, not owned by dpkg),
+# replaced by mise (github:doy/rbw) then removed by
+# run_after_99-prune-non-mise-rbw-on-ubuntu
+install_rbw_bootstrap() {
+  if command -v rbw &>/dev/null; then
+    return
+  fi
+
+  if [[ "$(uname -m)" != "x86_64" ]]; then
+    error "rbw: upstream only ships linux x86_64 binaries, install it manually"
+  fi
+
+  local tag archive
+  # INFO: latest tag from the release redirect, no GitHub API rate limit
+  tag=$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/doy/rbw/releases/latest)
+  tag=${tag##*/}
+  archive="rbw_${tag}_linux_amd64.tar.gz"
+
+  log_task "rbw could not be found, installing ${tag} to /usr/local/bin..."
+  WORK_DIR=$(mktemp -d)
+  curl -fsSL -o "${WORK_DIR}/${archive}" "https://github.com/doy/rbw/releases/download/${tag}/${archive}"
+  tar -xzf "${WORK_DIR}/${archive}" -C "${WORK_DIR}"
+  sudo install -m 0755 "${WORK_DIR}/rbw" "${WORK_DIR}/rbw-agent" /usr/local/bin/
+}
+
+case "${OS_ID}" in
+  ubuntu | debian)
+    install_missing_apt_packages
+    install_rbw_bootstrap
     ;;
-  "arch")
-    check_pacman_package
-    if [[ ${#missing_packages[@]} -eq 0 ]]; then
-      exit 0
-    fi
-
-    # shellcheck source=../.chezmoitemplates/utils
-    source "${CHEZMOI_SOURCE_DIR?}/.chezmoitemplates/utils"
-
-    log_info "Os detected: ${OS_NAME}"
-    log_task "Installing missing packages: ${missing_packages[*]}"
-
-    sudo pacman -Syu "${missing_packages[@]}"
+  arch)
+    install_missing_pacman_packages
     install_yay
     ;;
   *)
-    log_error "unsupported OS"
-    exit 1
+    error "Unsupported OS: ${OS_ID}"
     ;;
 esac
