@@ -1,159 +1,170 @@
 # organize configuration file
 # https://organize.readthedocs.io
+#
+# Only the root of ~/Downloads is sorted, by kind (not by extension).
+# Hand-made subfolders are never touched. Anything left at the root for more
+# than 7 days lands in Misc/, so rare extensions don't need their own folder.
 
 rules:
-  - name: "Delete Duplicate"
-    locations:
-      - ~/Downloads/
-    subfolders: true
+  # --- sort by kind
+  - name: "Documents"
+    locations: &downloads ~/Downloads/
     filters:
-      - duplicate
-      - name
+      - extension: [pdf, doc, docx, odt, rtf, txt, md, xls, xlsx, ods, csv, ppt, pptx, odp]
     actions:
-      - delete
+      - move: ~/Downloads/Documents/
 
-  - name: "Finds Yaml/Jsonfiles"
-    locations:
-      - ~/Downloads/
+  - name: "Books"
+    locations: *downloads
     filters:
-      - extension:
-          - yaml
-          - yml
-          - json
+      - extension: [epub, mobi, azw3, m4b]
     actions:
-      - echo: "Found Y(a)ml"
-      - move: ~/Downloads/Yaml
+      - move: ~/Downloads/Books/
 
-  - name: "Finds Sounds"
-    locations:
-      - ~/Downloads/
+  - name: "Images"
+    locations: *downloads
     filters:
-      - extension:
-          - mp3
-          - wav
+      - extension: [jpg, jpeg, png, gif, webp, svg, heic, dng, psd]
     actions:
-      - echo: "Found Sonds"
-      - move: ~/Downloads/Sounds
+      - move: ~/Downloads/Images/
 
-  - name: "Finds all patches"
-    locations:
-      - ~/Downloads/
+  - name: "Audio"
+    locations: *downloads
     filters:
-      - extension:
-          - patch
-          - diff
+      - extension: [mp3, wav, flac, ogg, aac, m4a, wma, mid]
     actions:
-      - echo: "Found Patch"
-      - move: ~/Downloads/Patch
+      - move: ~/Downloads/Audio/
 
-  - name: "Finds PDF Files"
-    locations:
-      - ~/Downloads/
+  - name: "Videos"
+    locations: *downloads
     filters:
-      - extension: pdf
+      - extension: [mp4, mkv, mov, avi, webm]
     actions:
-      - echo: "Found PDF"
-      - move: ~/Downloads/PDF
-
-  - name: "Finds Videos Files"
-    locations:
-      - ~/Downloads/
-    filters:
-      - extension:
-          - mp4
-          - mkv
-    actions:
-      - echo: "Found "
       - move: ~/Videos/
 
-  - name: "Finds ISO Files"
-    locations:
-      - ~/Downloads/
+  # INFO: extension filter only sees the last suffix, tar.gz matches gz
+  - name: "Archives"
+    locations: *downloads
     filters:
-      - extension: iso
+      - extension: [zip, rar, 7z, tar, gz, tgz, xz, bz2, zst]
     actions:
-      - echo: "Found ISO"
-      - move: ~/Downloads/ISO
+      - move: ~/Downloads/Archives/
 
-  - name: "Finds Images Files"
-    locations:
-      - ~/Downloads/
+  - name: "Dev"
+    locations: *downloads
     filters:
-      - extension:
-          - jpg
-          - jpeg
-          - png
-          - svg
-          - gif
-          - webp
+      - extension: [yaml, yml, json, toml, xml, sh, py, ipynb, patch, diff]
     actions:
-      - echo: "Found Imgaes"
-      - move: ~/Downloads/Images
+      - move: ~/Downloads/Dev/
 
-  - name: "Finds Scripts"
-    locations:
-      - ~/Downloads/
+  - name: "3D"
+    locations: *downloads
     filters:
-      - extension:
-          - py
-          - sh
+      - extension: [stl, 3mf, stp, step, obj]
     actions:
-      - echo: "Found Scripts"
-      - move: ~/Downloads/Scripts
+      - move: ~/Downloads/3D/
 
-  - name: "Finds Archives"
-    locations:
-      - ~/Downloads/
+  - name: "Installers"
+    locations: *downloads
     filters:
-      - extension:
-          - zip
-          - tar
-          - tar.gz
-          - gz
-          - rar
+      - extension: [exe, msi, deb, rpm, appimage]
     actions:
-      - echo: "Found Archives"
-      - move: ~/Downloads/Archives
-  - name: "Finds Torrents"
-    locations:
-      - ~/Downloads/
-    filters:
-      - extension:
-          - torrent
-    actions:
-      - echo: "Found Torrents"
-      - move: ~/Downloads/Torrents
+      - move: ~/Downloads/Installers/
 
-  - name: "Move screenCapture to Pictures/screenCapture"
+  - name: "Fonts"
+    locations: *downloads
+    filters:
+      - extension: [ttf, otf, woff, woff2]
+    actions:
+      - move: ~/Downloads/Fonts/
+
+  - name: "Disk images"
+    locations: *downloads
+    filters:
+      - extension: [iso, img]
+    actions:
+      - move: ~/Downloads/ISO/
+
+  - name: "Torrents"
+    locations: *downloads
+    filters:
+      - extension: torrent
+    actions:
+      - move: ~/Downloads/Torrents/
+
+  # --- catch-all: root is a landing zone, leftovers go to Misc after 7 days
+  - name: "Misc"
     locations:
-      - ~/Pictures
+      - path: ~/Downloads/
+        exclude_files: [".*"]
+    filters:
+      - not extension: [part, crdownload, tmp]
+      - lastmodified:
+          days: 7
+    actions:
+      - move: ~/Downloads/Misc/
+
+  # --- purge what is easy to download again
+  - name: "Trash old torrents"
+    locations: ~/Downloads/Torrents/
+    filters:
+      - lastmodified:
+          days: 30
+    actions:
+      - trash
+
+  - name: "Trash old disk images"
+    locations: ~/Downloads/ISO/
+    filters:
+      - lastmodified:
+          days: 90
+    actions:
+      - trash
+
+  # INFO: only folders managed above, never hand-made ones (projects, archives)
+  - name: "Trash duplicates"
+    locations:
+      - ~/Downloads/Documents/
+      - ~/Downloads/Books/
+      - ~/Downloads/Images/
+      - ~/Downloads/Audio/
+      - ~/Downloads/Archives/
+      - ~/Downloads/Dev/
+      - ~/Downloads/Installers/
+      - ~/Downloads/Misc/
+    filters:
+      - duplicate:
+          detect_original_by: created
+    actions:
+      - trash
+
+  # --- screenshots
+  - name: "Move grim captures to Pictures/screenCapture"
+    locations: ~/Pictures
     filters:
       - name:
           contains: grim
     actions:
-      - move: ~/Pictures/screenCapture
+      - move: ~/Pictures/screenCapture/
 
-  - name: "Delete old screenCapture (grim)"
-    locations:
-      - ~/Pictures/screenCapture
+  - name: "Delete old grim captures"
+    locations: ~/Pictures/screenCapture
     filters:
       - created:
           months: 2
     actions:
       - delete
 
-  - name: "Move screenCapture to Pictures/codeSnap"
-    locations:
-      - ~/Pictures
+  - name: "Move CodeSnap captures to Pictures/codeSnap"
+    locations: ~/Pictures
     filters:
       - name:
           contains: CodeSnap
     actions:
-      - move: ~/Pictures/codeSnap
+      - move: ~/Pictures/codeSnap/
 
-  - name: "Delete old screenCapture (codeSnap)"
-    locations:
-      - ~/Pictures/codeSnap
+  - name: "Delete old CodeSnap captures"
+    locations: ~/Pictures/codeSnap
     filters:
       - created:
           months: 2
