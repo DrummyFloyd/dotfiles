@@ -5,9 +5,17 @@
 
 {{ template "utils" }}
 
-
-rbw_executable=$(which rbw)
-if [[ "${rbw_executable}" != *"/mise/"* ]]; then
-  log_task "Uninstalling rbw(-agent) not installed by mise: ${rbw_executable}"
-  sudo rm -rf "${rbw_executable}" "${rbw_executable}-agent"
+# INFO: rbw is bootstrapped in /usr/local/bin (/usr/bin by older versions of
+# the prerequisite hook) until mise installs github:doy/rbw. Only remove it
+# once mise's rbw wins in PATH, so templates keep working meanwhile.
+current_rbw=$(command -v rbw || true)
+if [[ "${current_rbw}" != *"/mise/"* ]]; then
+  exit 0
 fi
+
+for bin in /usr/local/bin/rbw /usr/bin/rbw; do
+  if [[ -x "${bin}" ]] && ! dpkg -S "${bin}" &>/dev/null; then
+    log_task "Removing bootstrap ${bin}(-agent), rbw is now managed by mise"
+    sudo rm -f "${bin}" "${bin}-agent"
+  fi
+done
