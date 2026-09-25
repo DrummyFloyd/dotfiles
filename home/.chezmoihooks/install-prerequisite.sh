@@ -89,14 +89,43 @@ install_rbw_bootstrap() {
   sudo install -m 0755 "${WORK_DIR}/rbw" "${WORK_DIR}/rbw-agent" /usr/local/bin/
 }
 
+# INFO: templates call rbw as soon as they are rendered, configure it here so
+# the bootstrap does not depend on ~/.config/rbw/config.json being applied
+# before them. Args come from the chezmoi config (bitwarden email, server).
+# Each key is checked on its own so a partial configuration gets fixed.
+rbw_config_ensure() {
+  local key="$1" value="$2"
+  if ! grep -qF "\"${key}\": \"${value}\"" <<<"${rbw_config}"; then
+    log_task "Setting rbw ${key}"
+    rbw config set "${key}" "${value}"
+  fi
+}
+
+configure_rbw() {
+  local email="${1:-}" server="${2:-}" rbw_config
+  if [[ -z "${email}" ]]; then
+    return
+  fi
+
+  # INFO: fails on a fresh machine as long as no config file exists
+  rbw_config=$(rbw config show 2>/dev/null || true)
+  rbw_config_ensure email "${email}"
+  if [[ -n "${server}" ]]; then
+    rbw_config_ensure base_url "${server}"
+  fi
+  rbw_config_ensure pinentry pinentry-tty
+}
+
 case "${OS_ID}" in
   ubuntu | debian)
     install_missing_apt_packages
     install_rbw_bootstrap
+    configure_rbw "$@"
     ;;
   arch)
     install_missing_pacman_packages
     install_yay
+    configure_rbw "$@"
     ;;
   *)
     error "Unsupported OS: ${OS_ID}"

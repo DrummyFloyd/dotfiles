@@ -21,6 +21,8 @@
 {{- /* TEMPLATE */ -}}
 [hooks.read-source-state.pre]
     command = "{{ .chezmoi.workingTree }}/home/.chezmoihooks/install-prerequisite.sh"
+    # INFO: lets the hook configure rbw before any template calls it
+    args = [{{ $bitwardenEmail | quote }}, {{ $bitwardenServer | quote }}]
 
 [merge]
   command = "nvim"
