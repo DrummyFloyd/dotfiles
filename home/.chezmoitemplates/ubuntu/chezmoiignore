@@ -41,6 +41,7 @@ etc/wsl.conf
   "wlogout/private_icons"
   "wofi"
   "yay"
+  "ZapZap"
 }}
 {{ range $listToIgnore }}
 .config/{{ . }}/
