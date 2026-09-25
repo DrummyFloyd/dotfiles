@@ -1,0 +1,8 @@
+# Python CLI tools installed with `uv tool install` (bins in ~/.local/bin).
+# Occasional tools are run on demand with `uvx <tool>` instead.
+uvTools:
+  - organize-tool
+  - pre-commit
+  - tldr
+  - trash-cli
+  - ydiff

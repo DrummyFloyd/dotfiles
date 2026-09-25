@@ -24,5 +24,3 @@ if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
   log_task "Installing missing packages: ${MISSING_PACKAGES[*]}"
   sudo apt update && sudo apt install -y "${MISSING_PACKAGES[@]}"
 fi
-
-{{ template "install_pipx" .ubuntu.pipx }}

@@ -1,0 +1,30 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/usr/bin/env bash
+
+{{ template "utils" }}
+
+UV_TOOLS=(
+{{- range .uvTools }}
+  {{ . | quote }}
+{{- end }}
+)
+
+# INFO: on first bootstrap mise shims are not in PATH yet
+uv_bin=$(command -v uv || mise which uv)
+
+MISSING_UV_TOOLS=()
+INSTALLED_UV_TOOLS=$("${uv_bin}" tool list 2>/dev/null | awk '!/^- / { print $1 }')
+for tool in "${UV_TOOLS[@]}"; do
+  if ! grep -qxF "${tool}" <<<"${INSTALLED_UV_TOOLS}"; then
+    MISSING_UV_TOOLS+=("${tool}")
+  fi
+done
+
+if [[ ${#MISSING_UV_TOOLS[@]} -gt 0 ]]; then
+  log_task "Installing missing uv tools: ${MISSING_UV_TOOLS[*]}"
+  for tool in "${MISSING_UV_TOOLS[@]}"; do
+    "${uv_bin}" tool install "${tool}"
+  done
+fi

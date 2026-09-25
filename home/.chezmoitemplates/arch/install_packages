@@ -15,5 +15,3 @@ if [[ ${#MISSING_PACKAGES[@]} -gt 0 ]]; then
   log_task "Installing packages: ${MISSING_PACKAGES[*]}"
   yay -S --needed --noconfirm "${MISSING_PACKAGES[@]}"
 fi
-
-{{ template "install_pipx" .arch.pipx }}

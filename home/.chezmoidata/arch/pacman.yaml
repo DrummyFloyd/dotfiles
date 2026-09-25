@@ -153,7 +153,6 @@ arch:
     - musl
     - python
     - python-pip
-    - python-pipx
     - python-pynvim
     - python-virtualenv
     - python-boto3
