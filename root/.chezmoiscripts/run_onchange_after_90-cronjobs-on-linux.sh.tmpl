@@ -7,30 +7,24 @@
 
 {{ template "utils" }}
 
-USER={{ .non_root_user }}
+CRON_USER={{ .non_root_user | quote }}
+BEGIN_MARK="# BEGIN chezmoi managed"
+END_MARK="# END chezmoi managed"
 
-CRONJOBS="""
-{{ template "cronjobs" .   }}
-"""
-{{- if .isArch }}
-CRONJOBS_PATH=/var/spool/cron
-{{- else if .isUbuntu }}
-CRONJOBS_PATH=/var/spool/cron/crontabs
-{{- end }}
+CRONJOBS=$(cat <<'CRON'
+{{ template "cronjobs" . }}
+CRON
+)
 
-CRONJOB_FILE_PATH="${CRONJOBS_PATH}/${USER}"
+current=$(sudo crontab -u "${CRON_USER}" -l 2>/dev/null || true)
 
-if [ ! -d ${CRONJOBS_PATH} ]; then
-  log_task "Create cronjobs directory at ${CRONJOBS_PATH} ..."
-  sudo mkdir -p ${CRONJOBS_PATH}
-fi
-
-if [ ! -f ${CRONJOB_FILE_PATH} ]; then
-  log_task "Create cronjobs file at ${CRONJOBS_PATH} ..."
-  sudo touch ${CRONJOB_FILE_PATH}
-fi
-
-if ! grep -q "${CRONJOBS}" ${CRONJOB_FILE_PATH} 2>/dev/null; then
-  log_task "Adding cronjobs to ${CRONJOB_FILE_PATH} ..."
-  echo "${CRONJOBS}" | sudo tee -a ${CRONJOB_FILE_PATH} > /dev/null
-fi
+# INFO: keep user's own jobs, replace the managed block and drop legacy
+# unmarked copies of managed lines
+log_task "Installing cronjobs for ${CRON_USER}"
+{
+  sed "/^${BEGIN_MARK}\$/,/^${END_MARK}\$/d" <<<"${current}" |
+    grep -vxF -f <(grep -v '^$' <<<"${CRONJOBS}") || true
+  echo "${BEGIN_MARK}"
+  echo "${CRONJOBS}"
+  echo "${END_MARK}"
+} | sed '/./,$!d' | sudo crontab -u "${CRON_USER}" -
