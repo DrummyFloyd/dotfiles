@@ -11,6 +11,11 @@ UNWANTED_PACKAGES=(
 {{- end }}
 )
 
+# INFO: pacman -Qq without args lists every installed package
+if [[ ${#UNWANTED_PACKAGES[@]} -eq 0 ]]; then
+  exit 0
+fi
+
 # INFO: keep exact names only, pacman -Qq silently skips missing ones
 mapfile -t PACKAGES_TO_REMOVE < <(
   pacman -Qq "${UNWANTED_PACKAGES[@]}" 2>/dev/null |
