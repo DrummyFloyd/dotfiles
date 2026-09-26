@@ -44,6 +44,11 @@
 
 [gpg]
 	program = /usr/bin/gpg
+	format = ssh
+
+[gpg "ssh"]
+	program = {{ .chezmoi.homeDir }}/.local/bin/scripts/rbw-ssh-keygen
+	allowedSignersFile = {{ .chezmoi.homeDir }}/.config/gitconfig/allowed_signers
 
 [url "git@gitlab.com:"]
   insteadOf = https://gitlab.com/

@@ -4,7 +4,7 @@
 [user]
   name = {{ .personal.username }}
   email = {{ .personal.email }}
-  signingkey = 20AC86EE49130589
+  signingkey = {{ .chezmoi.homeDir }}/.ssh/rbw/personal.pub
 
 [commit]
 	gpgsign = true

@@ -4,10 +4,10 @@
 [user]
   name = {{ .work.username }}
   email = {{ .work.email }}
+  signingkey = {{ if .work.sshKeyProvided }}{{ .work.sshKeyPath }}{{ else }}{{ .chezmoi.homeDir }}/.ssh/rbw/work.pub{{ end }}
 
-# INFO: override personal identity, no gpg on work env most of the time
 [commit]
-  gpgsign = false
+  gpgsign = true
 
 [core]
 {{- if .work.sshKeyProvided }}
