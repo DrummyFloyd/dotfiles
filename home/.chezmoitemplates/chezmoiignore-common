@@ -13,7 +13,6 @@
 {{ end}}
 
 {{ if not .isWork }}
-.chezmoiscripts/90-new-ssh-key-on-linux.sh
 .config/gitconfig/work
 {{ end}}
 
