@@ -2,4 +2,5 @@ Host core-si
   Hostname {{ (rbwFields "personalSshKeys").siCore.value }}
   user ubuntu
   Port 22
-  IdentityFile ~/.ssh/id_ed25519_personal
+  IdentityAgent ${XDG_RUNTIME_DIR}/rbw/ssh-agent-socket
+  IdentityFile ~/.ssh/rbw/personal.pub

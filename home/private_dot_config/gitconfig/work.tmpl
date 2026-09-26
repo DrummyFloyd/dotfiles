@@ -10,4 +10,8 @@
   gpgsign = false
 
 [core]
-  sshCommand = ssh -i ~/.ssh/id_ed25519 -F /dev/null
+{{- if .work.sshKeyProvided }}
+  sshCommand = ssh -F /dev/null -o IdentitiesOnly=yes -i {{ .work.sshKeyPath }}
+{{- else }}
+  sshCommand = ssh -F /dev/null -o IdentitiesOnly=yes -o IdentityAgent=${XDG_RUNTIME_DIR}/rbw/ssh-agent-socket -i ~/.ssh/rbw/work.pub
+{{- end }}

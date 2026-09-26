@@ -2,15 +2,19 @@
 Include extras/*
 Include personal/*
 
+# INFO: SSH_AUTH_SOCK stays on the system agent, rbw is only reached through
+# IdentityAgent. rbw serves every SSH key item of the vault, IdentitiesOnly
+# plus the IdentityFile public key pick the one offered.
 Host *
     ServerAliveInterval 60
     ServerAliveCountMax 3
-
-# Common configurations
-AddKeysToAgent yes
-ForwardAgent yes
-IdentitiesOnly yes
-
-{{ if .isPersonal }}
-IdentityFile ~/.ssh/id_ed25519_personal
+    AddKeysToAgent yes
+    IdentitiesOnly yes
+    ForwardAgent no
+{{- if and .isWork .work.sshKeyProvided }}
+    IdentityAgent SSH_AUTH_SOCK
+    IdentityFile {{ .work.sshKeyPath }}
+{{- else if or .isWork .isPersonal }}
+    IdentityAgent ${XDG_RUNTIME_DIR}/rbw/ssh-agent-socket
+    IdentityFile ~/.ssh/rbw/{{ if .isWork }}work{{ else }}personal{{ end }}.pub
 {{- end }}

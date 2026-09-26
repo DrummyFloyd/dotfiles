@@ -10,7 +10,7 @@
 	gpgsign = true
 
 [core]
-  sshCommand = ssh -i ~/.ssh/id_ed25519_personal -F /dev/null
+  sshCommand = ssh -F /dev/null -o IdentitiesOnly=yes -o IdentityAgent=${XDG_RUNTIME_DIR}/rbw/ssh-agent-socket -i ~/.ssh/rbw/personal.pub
 
 [includeIf "gitdir:~/Documents/OSS/Github/**"]
   path = oss.github
