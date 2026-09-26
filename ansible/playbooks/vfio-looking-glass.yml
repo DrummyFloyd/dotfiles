@@ -1,0 +1,6 @@
+---
+- name: Configure a VFIO host with Looking Glass
+  hosts: vfio_hosts
+  roles:
+    - role: vfio_preflight
+      tags: [preflight]
