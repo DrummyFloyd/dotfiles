@@ -30,7 +30,7 @@ Bind.leader_cmd(
 	"uwsm app -- zen-browser --private-window || uwsm app -- firefox --private-window",
 	"Browser (private window)"
 )
-Bind.leader_cmd("D", "uwsm app -- $(wofi --show drun --define=drun-print_desktop_file=true)", "App launcher")
+Bind.leader_cmd("D", "rofi -show drun -run-command 'uwsm app -- {cmd}'", "App launcher")
 Bind.leader_cmd("M", "wlogout --protocol layer-shell -b 2", "Logout menu")
 
 -- ############################## Window focus ############################
