@@ -1,0 +1,26 @@
+{{- /*
+  Zen enterprise policies. Extensions listed here are reinstalled if missing
+  (they can be disabled, not removed); others install normally from Zen.
+  Keys are the add-on ids, as on addons.mozilla.org; values are for reading.
+*/ -}}
+{{- $extensions := dict
+  "uBlock0@raymondhill.net" "uBlock Origin"
+  "{446900e4-71c2-419f-a6a7-df9c091e268b}" "Bitwarden"
+  "{d7742d87-e61d-4b78-b8a1-b469842139fa}" "Vimium"
+  "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" "Refined GitHub"
+  "jid1-ZAdIEUB7XOzOJw@jetpack" "DuckDuckGo Privacy Essentials"
+  "firefox@ghostery.com" "Ghostery"
+  "idcac-pub@guus.ninja" "I still don't care about cookies"
+  "@react-devtools" "React Developer Tools"
+  "qui@s0up4200" "qui"
+-}}
+{{- $settings := dict -}}
+{{- range $id, $_ := $extensions -}}
+{{-   $_ := set $settings $id (dict
+        "installation_mode" "normal_installed"
+        "install_url" (printf "https://addons.mozilla.org/firefox/downloads/latest/%s/latest.xpi" $id)) -}}
+{{- end -}}
+{{- dict "policies" (dict
+      "DisableAppUpdate" true
+      "DefaultSerialGuardSetting" 3
+      "ExtensionSettings" $settings) | toPrettyJson "  " }}
