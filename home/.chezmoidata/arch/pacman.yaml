@@ -73,6 +73,7 @@ arch:
     - qt6ct
     - waybar
     - rofi
+    - matugen
     - wlogout
     - dunst
     - udiskie
