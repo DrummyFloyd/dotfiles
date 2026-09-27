@@ -1,7 +1,7 @@
 return {
 
   -- set colorscheme
-  { "LazyVim/LazyVim", opts = { colorscreme = "tokyonight" } },
+  { "LazyVim/LazyVim", opts = { colorscheme = "tokyonight" } },
 
   -- new colorscheme installed & conifgured
   { "ellisonleao/gruvbox.nvim" },
