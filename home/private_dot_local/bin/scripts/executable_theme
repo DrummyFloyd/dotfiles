@@ -28,6 +28,8 @@ MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 WALLPAPER="$(dirname "$(readlink -f "$0")")/wallpaper"
 DEFAULT_STYLE="galet"
 DEFAULT_PALETTE="default"
+# Held while rendering and reloading, so pickers and wallpaper changes queue up.
+LOCK="${XDG_RUNTIME_DIR:-/tmp}/theme.lock"
 # Last entry highlighted in a picker; previews only apply once it settles.
 PREVIEW_TOKEN="${XDG_RUNTIME_DIR:-/tmp}/theme-preview"
 PREVIEW_DELAY=0.3
@@ -48,6 +50,12 @@ Usage: $(basename "$0") <command>
   freeze [name]         Save the auto palette (name: the wallpaper's)
   ensure                Render the saved theme, or the default one
 EOF
+}
+
+# Wait for any other render to finish; released when this script exits.
+lock() {
+  exec 9>"$LOCK"
+  flock 9
 }
 
 active_style() {
@@ -250,6 +258,7 @@ reload() {
 
 # Render, remember and show a combination.
 activate() {
+  lock
   if [[ "$2" == auto ]]; then
     generate_auto
   fi
@@ -282,6 +291,12 @@ preview() {
   local kind="$1" name="$2"
   echo "$kind $name" >"$PREVIEW_TOKEN"
   sleep "$PREVIEW_DELAY"
+  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" != "$kind $name" ]]; then
+    return 0
+  fi
+  # A previous preview may still be rendering; skip if the highlight moved on
+  # while waiting for it.
+  lock
   if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" != "$kind $name" ]]; then
     return 0
   fi
@@ -324,6 +339,7 @@ menu() {
   if [[ -z "$choice" ]]; then
     # Previews only rendered; put the saved theme back.
     if [[ -e "$PREVIEW_TOKEN.shown" ]]; then
+      lock
       render "$(active_style)" "$(active_palette)"
       reload
     fi
@@ -338,6 +354,7 @@ menu() {
 # Wallpaper changed: recolour when the palette follows it.
 refresh() {
   local image="${1:-$("$WALLPAPER" current)}"
+  lock
   if [[ "$(active_palette)" != auto || "$(cat "$AUTO_DIR/key" 2>/dev/null)" == "$(auto_key "$image")" ]]; then
     return 0
   fi
@@ -377,6 +394,7 @@ case "${1:-}" in
   refresh) refresh "${2:-}" ;;
   freeze) freeze "${2:-}" ;;
   ensure)
+    lock
     if [[ "$(active_palette)" == auto ]]; then
       generate_auto || true
     fi
