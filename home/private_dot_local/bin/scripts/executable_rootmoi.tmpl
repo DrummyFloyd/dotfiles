@@ -21,6 +21,11 @@ fi
 # shellcheck disable=SC2016
 mkdir -p '{{ $configDir }}' '{{ $cacheDir }}'
 
+# Pass PATH explicitly, as sudo resets it to secure_path. We do not use sudo's
+# --preserve-env option because the sudo function bypasses sudo when already
+# root.
+env_args=(env "PATH=${PATH}")
+
 sudo exec "${env_args[@]}" \
   "${executable}" "$@" \
   --config='{{ $configFile }}' \
