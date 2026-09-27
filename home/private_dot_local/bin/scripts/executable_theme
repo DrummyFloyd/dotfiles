@@ -61,7 +61,9 @@ reload() {
     return
   fi
 
-  hyprctl reload >/dev/null
+  # Only re-apply the theme look: a full `hyprctl reload` re-enables monitors
+  # turned off at runtime and makes Hyprland 0.56 crash on the next monitor change.
+  hyprctl eval "dofile(os.getenv('HOME') .. '/.config/hypr/config/theme.lua')" >/dev/null
   # waybar segfaults on a SIGUSR2 reload when the module layout changes,
   # so restart it the way config/autostart.lua starts it.
   pkill -x waybar || true
