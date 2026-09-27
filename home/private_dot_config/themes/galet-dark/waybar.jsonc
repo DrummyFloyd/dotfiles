@@ -1,0 +1,67 @@
+// Galet (dark): three flat islands, icons in the muted tone.
+{
+  "height": 24,
+  "margin-top": 6,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 6,
+  "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+  "modules-center": ["clock"],
+  "modules-right": ["group/system", "tray"],
+  "group/system": {
+    "orientation": "inherit",
+    "modules": ["custom/updates", "pulseaudio", "backlight", "cpu", "battery"],
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+  },
+  "hyprland/submap": {
+    "format": "{}",
+  },
+  "clock": {
+    "interval": 60,
+    "format": "<span size='7pt'><span color='#e3a441'>●</span><span color='#d9703a'>●</span><span color='#b9523a'>●</span></span>  {:%H:%M  <span color='#9a8a7a'>%a %d %b</span>}",
+    "calendar": {
+      "format": {
+        "months": "<span color='#eadfcd'><b>{}</b></span>",
+        "days": "<span color='#9a8a7a'>{}</span>",
+        "weeks": "<span color='#4a3f37'>W{}</span>",
+        "weekdays": "<span color='#e3a441'><b>{}</b></span>",
+        "today": "<span color='#d9703a'><b><u>{}</u></b></span>",
+      },
+    },
+  },
+  "custom/updates": {
+    "format": "{}",
+  },
+  "pulseaudio": {
+    "format": "<span color='#9a8a7a'>{icon}</span> {volume}%",
+    "format-bluetooth": "<span color='#9a8a7a'>{icon}</span> {volume}%",
+    "format-bluetooth-muted": "<span color='#9a8a7a'>󰝟</span> muted",
+    "format-muted": "<span color='#9a8a7a'>󰝟</span> muted",
+    "format-icons": {
+      "headphone": "󰋋",
+      "headset": "󰋎",
+      "default": ["󰕿", "󰖀", "󰕾"],
+    },
+  },
+  "backlight": {
+    "format": "<span color='#9a8a7a'>{icon}</span> {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+  },
+  "cpu": {
+    "interval": 10,
+    "format": "<span color='#9a8a7a'>󰻠</span> {usage}%",
+  },
+  "battery": {
+    "format": "<span color='#9a8a7a'>{icon}</span> {capacity}%",
+    "format-charging": "<span color='#9a8a7a'>󰂄</span> {capacity}%",
+    "format-plugged": "<span color='#9a8a7a'>󰚥</span> {capacity}%",
+    "format-alt": "{time}",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+  },
+  "tray": {
+    "icon-size": 14,
+    "spacing": 8,
+  },
+}

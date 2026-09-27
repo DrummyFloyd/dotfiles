@@ -1,0 +1,120 @@
+@import "colors.css";
+
+* {
+  font-family: "FiraCode Nerd Font";
+  font-size: 12px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+  background-image: none;
+}
+
+window#waybar {
+  background: transparent;
+}
+
+tooltip {
+  background: @surface;
+  border-radius: 12px;
+}
+
+tooltip label {
+  color: @text;
+}
+
+/* Islands */
+#workspaces,
+#submap,
+#clock,
+#system,
+#tray {
+  background: @surface;
+  color: @text;
+  border-radius: 12px;
+  padding: 0 11px;
+}
+
+/* Workspaces: dots, the active one shows its number */
+#workspaces {
+  padding: 0 6px;
+}
+
+#workspaces button {
+  min-width: 6px;
+  padding: 0;
+  margin: 9px 3px;
+  border-radius: 3px;
+  background: @dot;
+  transition: all 200ms ease;
+}
+
+#workspaces button label {
+  font-size: 1px;
+  color: transparent;
+}
+
+#workspaces button:hover {
+  background: @text-mute;
+}
+
+#workspaces button.active {
+  padding: 0 8px;
+  margin: 4px 3px;
+  border-radius: 8px;
+  background: @accent;
+}
+
+#workspaces button.active label {
+  font-size: 11px;
+  font-weight: bold;
+  color: @on-accent;
+}
+
+#workspaces button.urgent {
+  background: @warn;
+}
+
+#submap {
+  background: @accent;
+  color: @on-accent;
+}
+
+/* System island */
+#custom-updates,
+#pulseaudio,
+#backlight,
+#cpu,
+#battery {
+  padding: 0 6px;
+}
+
+#custom-updates {
+  color: @warn;
+}
+
+#pulseaudio.muted {
+  color: @text-mute;
+}
+
+#battery.warning:not(.charging) {
+  color: @warn;
+}
+
+#battery.critical:not(.charging) {
+  color: @crit;
+}
+
+/* Tray */
+#tray > .needs-attention {
+  background: @warn;
+  border-radius: 6px;
+}
+
+#tray menu {
+  background: @surface;
+  color: @text;
+  border-radius: 10px;
+  padding: 6px;
+}

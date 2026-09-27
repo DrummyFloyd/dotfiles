@@ -11,7 +11,7 @@ set -euo pipefail
 
 THEMES_DIR="$HOME/.config/themes"
 CURRENT="$THEMES_DIR/current"
-DEFAULT_THEME="pastel"
+DEFAULT_THEME="galet-dark"
 
 usage() {
   cat <<EOF

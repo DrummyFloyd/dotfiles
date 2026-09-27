@@ -1,0 +1,56 @@
+@import "colors.css";
+
+* {
+  font-family: "FiraCode Nerd Font";
+  font-size: 14px;
+}
+
+window {
+  background-color: transparent;
+}
+
+#outer-box {
+  background-color: @surface;
+  border-radius: 24px;
+  padding: 8px;
+}
+
+#input {
+  background-color: @surface-raised;
+  background-image: none;
+  color: @text;
+  border: none;
+  border-radius: 23px;
+  box-shadow: none;
+  padding: 10px 16px;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+#input image {
+  color: @text-mute;
+}
+
+#inner-box,
+#scroll {
+  background-color: transparent;
+}
+
+#entry {
+  padding: 6px 14px;
+  border-radius: 18px;
+  outline: none;
+}
+
+#entry:selected {
+  background-color: @surface-raised;
+}
+
+#text {
+  color: @text;
+  margin-left: 10px;
+}
+
+#entry:selected #text {
+  color: @warn;
+}
