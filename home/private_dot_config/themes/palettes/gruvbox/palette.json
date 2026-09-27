@@ -1,4 +1,7 @@
 {
+  "nvim": {
+    "colorscheme": "gruvbox"
+  },
   "palette": {
     "surface": "#282828",
     "surface_raised": "#3c3836",

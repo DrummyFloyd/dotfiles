@@ -1,4 +1,7 @@
 {
+  "nvim": {
+    "colorscheme": "tokyonight-night"
+  },
   "palette": {
     "surface": "#1a1b26",
     "surface_raised": "#292e42",

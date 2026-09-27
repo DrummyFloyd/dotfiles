@@ -164,6 +164,23 @@ render() {
   if [[ -d "$dir/backgrounds" ]]; then
     ln -s "$dir/backgrounds" "$CURRENT/backgrounds"
   fi
+
+  write_nvim "$palette" "$dir/palette.json"
+}
+
+# nvim reads (and watches) this file from lua/plugins/colorscheme.lua: a palette
+# may name a native colorscheme, otherwise nvim builds one from the palette.
+write_nvim() {
+  local follow=false fallback
+  if follows nvim "$1"; then
+    follow=true
+  fi
+  fallback="$(setting nvim fallback)"
+  [[ "$fallback" != null ]] || fallback=tokyonight
+
+  jq --argjson follow "$follow" --arg fallback "$fallback" \
+    '{follow: $follow, fallback: $fallback, colorscheme: .nvim.colorscheme, palette: .palette}' \
+    "$2" >"$CURRENT/nvim.json"
 }
 
 notify() {
