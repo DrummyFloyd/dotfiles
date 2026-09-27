@@ -48,7 +48,7 @@ Create `palettes/<name>/palette.json` (copy `styles/galet/palette.json`):
 ```
 
 - `nvim.colorscheme` is optional: without it nvim builds a scheme from the palette.
-- Wallpapers in `palettes/<name>/backgrounds/` are listed first in the picker.
+- Wallpapers in `palettes/<name>/backgrounds/` are added to the picker.
 
 ## Palette from a wallpaper
 

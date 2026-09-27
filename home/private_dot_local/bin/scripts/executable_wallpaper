@@ -45,15 +45,16 @@ Usage: $(basename "$0") <command>
 EOF
 }
 
-# Full paths, theme wallpapers first; a theme one hides a global one of the same name.
+# Full paths, in alphabetical order of file name; a theme wallpaper hides a
+# global one of the same name.
 list() {
   local dir
   for dir in "$THEME_DIR" "$GLOBAL_DIR"; do
     if [[ -d "$dir" ]]; then
       find -L "$dir" -maxdepth 1 -type f \
-        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | sort
+        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \)
     fi
-  done | awk -F/ '!seen[$NF]++'
+  done | awk -F/ '!seen[$NF]++ { print $NF "\t" $0 }' | sort -f | cut -f2-
 }
 
 current() {
