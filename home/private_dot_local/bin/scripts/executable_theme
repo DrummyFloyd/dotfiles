@@ -93,7 +93,6 @@ palette_dir() {
   esac
 }
 
-# Recompute the auto palette, unless it already comes from this wallpaper.
 # Which image colour seeds the auto palette, from settings.json: "dominant"
 # (the most present one), or a matugen --prefer value such as "saturation".
 # auto.wallpapers overrides it per wallpaper file name.
@@ -109,9 +108,16 @@ auto_key() {
   echo "$1 $(auto_rule "$1") $(cat "$MATUGEN_CONFIG" "${MATUGEN_CONFIG%/*}/templates/auto.json" | sha1sum | cut -c1-12)"
 }
 
+# Whether the auto palette already comes from this wallpaper.
+auto_is_from() {
+  [[ "$(cat "$AUTO_DIR/key" 2>/dev/null)" == "$(auto_key "$1")" ]]
+}
+
+# Recompute the auto palette from a wallpaper (default: the current one),
+# unless it already comes from it.
 generate_auto() {
   local image="${1:-$("$WALLPAPER" current)}" rule seed
-  if [[ ! -f "$image" || "$(cat "$AUTO_DIR/key" 2>/dev/null)" == "$(auto_key "$image")" ]]; then
+  if [[ ! -f "$image" ]] || auto_is_from "$image"; then
     return 0
   fi
 
@@ -152,17 +158,18 @@ add_templates() {
   done
 }
 
-# Render the style and the apps with the palette into $CURRENT.
+# Render the style and the apps with the palette into $CURRENT. The auto
+# palette is first brought up to date with the wallpaper (default: the current one).
 render() {
-  local style="$1" palette="$2" dir config out app file name
+  local style="$1" palette="$2" image="${3:-}" dir config out app file name
   local off=() styled=()
   dir="$(palette_dir "$style" "$palette")"
   if [[ ! -d "$STYLES_DIR/$style" ]]; then
     echo "Unknown style: $style" >&2
     return 1
   fi
-  if [[ "$palette" == auto && ! -f "$dir/palette.json" ]]; then
-    generate_auto
+  if [[ "$palette" == auto ]]; then
+    generate_auto "$image"
   fi
   if [[ ! -f "$dir/palette.json" ]]; then
     echo "Unknown palette: $palette" >&2
@@ -279,9 +286,6 @@ reload() {
 # Render, remember and show a combination.
 activate() {
   lock
-  if [[ "$2" == auto ]]; then
-    generate_auto
-  fi
   render "$1" "$2"
   mkdir -p "$STATE_DIR"
   echo "$1" >"$STATE_DIR/style"
@@ -329,9 +333,6 @@ preview() {
       ;;
     palette)
       palettes | grep -xF -- "$name" >/dev/null || return 0
-      if [[ "$name" == auto ]]; then
-        generate_auto
-      fi
       render "$(active_style)" "$name"
       ;;
   esac
@@ -375,12 +376,11 @@ menu() {
 refresh() {
   local image="${1:-$("$WALLPAPER" current)}"
   lock
-  if [[ "$(active_palette)" != auto || "$(cat "$AUTO_DIR/key" 2>/dev/null)" == "$(auto_key "$image")" ]]; then
+  if [[ "$(active_palette)" != auto ]] || auto_is_from "$image"; then
     return 0
   fi
 
-  generate_auto "$image"
-  render "$(active_style)" auto
+  render "$(active_style)" auto "$image"
   reload
 }
 
@@ -415,9 +415,6 @@ case "${1:-}" in
   freeze) freeze "${2:-}" ;;
   ensure)
     lock
-    if [[ "$(active_palette)" == auto ]]; then
-      generate_auto || true
-    fi
     render "$(active_style)" "$(active_palette)" || render "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
     ;;
   *)
