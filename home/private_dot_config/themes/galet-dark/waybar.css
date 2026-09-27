@@ -2,7 +2,7 @@
 
 * {
   font-family: "FiraCode Nerd Font";
-  font-size: 12px;
+  font-size: 13px;
   min-height: 0;
   border: none;
   border-radius: 0;
@@ -32,48 +32,55 @@ tooltip label {
 #tray {
   background: @surface;
   color: @text;
-  border-radius: 12px;
-  padding: 0 11px;
+  border-radius: 15px;
+  padding: 0 13px;
 }
 
-/* Workspaces: dots, the active one shows its number */
+/* Workspaces: muted numbers, the active one in an accent pill */
 #workspaces {
-  padding: 0 6px;
+  padding: 0 5px;
 }
 
 #workspaces button {
-  min-width: 6px;
-  padding: 0;
-  margin: 9px 3px;
-  border-radius: 3px;
-  background: @dot;
+  padding: 0 8px;
+  margin: 5px 1px;
+  border-radius: 10px;
+  background: transparent;
   transition: all 200ms ease;
 }
 
 #workspaces button label {
-  font-size: 1px;
-  color: transparent;
+  color: @text-mute;
 }
 
 #workspaces button:hover {
-  background: @text-mute;
+  background: @surface-raised;
+}
+
+#workspaces button:hover label {
+  color: @text;
 }
 
 #workspaces button.active {
-  padding: 0 8px;
-  margin: 4px 3px;
-  border-radius: 8px;
+  padding: 0 11px;
   background: @accent;
 }
 
 #workspaces button.active label {
-  font-size: 11px;
   font-weight: bold;
   color: @on-accent;
 }
 
+#workspaces button.empty label {
+  color: @dot;
+}
+
 #workspaces button.urgent {
   background: @warn;
+}
+
+#workspaces button.urgent label {
+  color: @on-accent;
 }
 
 #submap {
@@ -87,7 +94,7 @@ tooltip label {
 #backlight,
 #cpu,
 #battery {
-  padding: 0 6px;
+  padding: 0 7px;
 }
 
 #custom-updates {
