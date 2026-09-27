@@ -169,7 +169,8 @@ activate() {
 with_style() {
   local palette
   palette="$(active_palette)"
-  if ! palettes "$1" | grep -qxF -- "$palette"; then
+  # grep -q would stop reading early and fail the pipeline (pipefail).
+  if ! palettes "$1" | grep -xF -- "$palette" >/dev/null; then
     palette="$DEFAULT_PALETTE"
   fi
   echo "$1 $palette"
@@ -197,7 +198,7 @@ preview() {
       render $(with_style "$name")
       ;;
     palette)
-      palettes | grep -qxF -- "$name" || return 0
+      palettes | grep -xF -- "$name" >/dev/null || return 0
       if [[ "$name" == auto ]]; then
         generate_auto
       fi
