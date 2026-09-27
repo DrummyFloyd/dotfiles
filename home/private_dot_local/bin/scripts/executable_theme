@@ -5,7 +5,7 @@
 #   ~/.config/themes/styles/<style>/     templates (waybar, rofi, hyprland…) using
 #                                        palette roles such as {{palette.accent}},
 #                                        plus palette.json, the style's "default"
-#   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/
+#   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/ and upstream/
 #   auto                                 palette matugen computes from the wallpaper
 #   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty, ghostty, gtk, dunst, zen…)
 #   ~/.config/themes/settings.json       per app: follow the theme, and the auto palette
@@ -88,7 +88,7 @@ palettes() {
   } | sort
 }
 
-# Directory holding a palette's palette.json and optional backgrounds/.
+# Directory holding a palette's palette.json and optional backgrounds/ and upstream/.
 palette_dir() {
   case "$2" in
     default) echo "$STYLES_DIR/$1" ;;
@@ -216,6 +216,13 @@ render() {
   # An app keeping its own theme gets empty files: its config still includes them.
   for name in "${off[@]}"; do
     : >"$out/$name"
+  done
+
+  # A palette may ship an app's upstream theme in upstream/: it replaces the
+  # rendered file of the same name, unless the app keeps its own theme.
+  for file in "$dir/upstream"/*; do
+    [[ " ${off[*]} " == *" ${file##*/} "* ]] && continue
+    cp "$file" "$out/${file##*/}"
   done
 
   if [[ -d "$dir/backgrounds" ]]; then

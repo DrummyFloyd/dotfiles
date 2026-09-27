@@ -1,0 +1,14 @@
+{{- /*
+  vim:ft=toml.gotmpl:
+*/ -}}
+{{- if .isArch }}
+# Upstream app themes of the palettes, used instead of the palette colours.
+[".config/themes/palettes/tokyonight/upstream/kitty.conf"]
+  type = "file"
+  url = "https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/kitty/tokyonight_storm.conf"
+  refresh = 0
+[".config/themes/palettes/gruvbox/upstream/kitty.conf"]
+  type = "file"
+  url = "https://raw.githubusercontent.com/kovidgoyal/kitty-themes/master/themes/gruvbox-dark.conf"
+  refresh = 0
+{{- end }}
