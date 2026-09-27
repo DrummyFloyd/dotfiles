@@ -34,3 +34,7 @@ Run `pkg-drift` to compare it with the system:
 - declared but not installed: install it, or drop it from `pacman.yaml`
 
 Packages kept on purpose on a single machine go in `~/.config/pkg-drift/ignore` (one per line, not managed by chezmoi).
+
+## Desktop theming
+
+Styles, palettes (fixed or from the wallpaper with matugen) and the apps that follow them (personal Arch only): see [home/private_dot_config/themes/README.md](home/private_dot_config/themes/README.md).
