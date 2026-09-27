@@ -348,9 +348,11 @@ menu() {
   row="$("${kind}s" | grep -nxF -- "$active" | cut -d: -f1 || true)"
   rm -f "$PREVIEW_TOKEN.shown"
 
+  # rofi pastes {entry} as is, then splits the command like a shell: double
+  # quotes keep names with spaces or ' whole (only " and \ would break them).
   choice="$("${kind}s" | rofi -dmenu -i -p "$kind" \
     -selected-row "$((${row:-1} - 1))" \
-    -on-selection-changed "$0 preview $kind '{entry}'")" || true
+    -on-selection-changed "$0 preview $kind \"{entry}\"")" || true
 
   # Cancel any preview still waiting to fire.
   : >"$PREVIEW_TOKEN"

@@ -102,12 +102,13 @@ pick() {
   previous="$(current)"
   row="$(list | grep -nxF -- "$previous" | cut -d: -f1 || true)"
 
+  # {entry} in double quotes: see the theme script's menu.
   choice="$(
     list | while read -r path; do
       printf '%s\0icon\x1f%s\n' "${path##*/}" "$path"
     done | rofi -dmenu -i -p wallpaper \
       -selected-row "$((${row:-1} - 1))" \
-      -on-selection-changed "$0 preview '{entry}'" \
+      -on-selection-changed "$0 preview \"{entry}\"" \
       -theme-str "$LAYOUT"
   )" || true
 
