@@ -1,8 +1,5 @@
 #!/bin/bash
 iDIR="$HOME/.config/icons"
-# Read by hypr/config/monitors.lua so a config reload keeps the choice;
-# per Hyprland instance, and cleared by reloadHyprland.
-STATE="${XDG_RUNTIME_DIR}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/main-monitor"
 
 monitors="$(hyprctl monitors -j | jq -r '.[] | "󰍹 id: \(.id) - \(.name)"')
 󰍺 all monitors - all"
@@ -24,10 +21,10 @@ check_if_only_one_monitor() {
 }
 
 disable_monitor() {
-  mkdir -p "$(dirname "${STATE}")"
   if [[ "${1}" == "all" ]]; then
-    : >"${STATE}"
     # A reload re-applies every monitor spec from the machine profile.
+    # Disabling a monitor after a reload crashes Hyprland 0.56.2, so the
+    # choice made here is not kept across reloads.
     hyprctl reload >/dev/null
     notify_user "All monitors enabled"
     return
@@ -42,7 +39,6 @@ disable_monitor() {
       [ -z "${monitor}" ] && continue
       hyprctl eval "hl.monitor({ output = \"${monitor}\", disabled = true })"
     done <<<"${disabled_monitor}"
-    echo "${1}" >"${STATE}"
     notify_user "Monitor Dropped: ${disabled_monitor//$'\n'/ }"
     notify_user "Main Monitor: ${selected_monitor}"
     # INFO: Restart dunst to fix the issue with the notification

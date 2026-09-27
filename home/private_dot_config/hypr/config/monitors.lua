@@ -69,33 +69,6 @@ local function apply_rules()
 	end
 end
 
---- Monitor chosen with mainMonitorSwitch (leader+P), saved so a config reload
---- keeps it. It lives in this Hyprland instance's runtime directory, so a new
---- session starts with every monitor; reloadHyprland (leader+SHIFT+R) clears it.
-local MAIN_MONITOR = ("%s/hypr/%s/main-monitor"):format(
-	os.getenv("XDG_RUNTIME_DIR") or "",
-	os.getenv("HYPRLAND_INSTANCE_SIGNATURE") or ""
-)
-
---- Disables every other monitor while the saved main one is connected.
-local function keep_main_monitor()
-	local file = io.open(MAIN_MONITOR, "r")
-	if not file then
-		return
-	end
-	local main = file:read("*l")
-	file:close()
-	if not main or main == "" or not monitor_name(main) then
-		return
-	end
-
-	for _, monitor in ipairs(hl.get_monitors()) do
-		if monitor.name ~= main then
-			hl.monitor({ output = monitor.name, disabled = true })
-		end
-	end
-end
-
 --- Applies every monitor spec, then the workspace rules that go with them.
 --- Replayed on hotplug.
 local function apply()
@@ -103,7 +76,6 @@ local function apply()
 		hl.monitor((split(entry)))
 	end
 
-	keep_main_monitor()
 	apply_rules()
 end
 

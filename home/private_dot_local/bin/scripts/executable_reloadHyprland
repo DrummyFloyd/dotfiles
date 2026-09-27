@@ -6,11 +6,4 @@ notify_user() {
   notify-send -u low -i "${iDIR}/hyprland.png" "${1}"
 }
 
-# Forget the monitor kept alone by mainMonitorSwitch, so the reload turns
-# every monitor back on.
-main_monitor="${XDG_RUNTIME_DIR}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/main-monitor"
-if [[ -f "${main_monitor}" ]]; then
-  : >"${main_monitor}"
-fi
-
 hyprctl reload && notify_user "Config Reloaded"
