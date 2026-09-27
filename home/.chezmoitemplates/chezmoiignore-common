@@ -12,20 +12,6 @@
 .config/gitconfig/oss.gitlab
 {{ end}}
 
-{{ if not (and .isPersonal .isArch) }}
-# Desktop theming (styles, palettes, matugen, pickers): personal Arch only.
-{{- range list "themes" "matugen" "rofi" "gtk-3.0" "gtk-4.0" "zen" }}
-.config/{{ . }}/
-.config/{{ . }}/**
-{{- end }}
-.config/dunst/dunstrc.d/
-.config/dunst/dunstrc.d/**
-.local/bin/scripts/theme
-.local/bin/scripts/wallpaper
-.chezmoiscripts/92-ensure-look-on-arch.sh
-.chezmoiscripts/93-link-zen-profile-on-arch.sh
-{{ end }}
-
 {{ if not .isWork }}
 .chezmoiscripts/90-new-ssh-key-on-linux.sh
 .config/gitconfig/work

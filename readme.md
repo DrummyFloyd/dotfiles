@@ -37,4 +37,4 @@ Packages kept on purpose on a single machine go in `~/.config/pkg-drift/ignore` 
 
 ## Desktop theming
 
-Styles, palettes (fixed or from the wallpaper with matugen) and the apps that follow them (personal Arch only): see [home/private_dot_config/themes/README.md](home/private_dot_config/themes/README.md).
+Styles, palettes (fixed or from the wallpaper with matugen) and the apps that follow them (Arch only): see [home/private_dot_config/themes/README.md](home/private_dot_config/themes/README.md).

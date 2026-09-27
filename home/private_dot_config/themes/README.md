@@ -1,6 +1,6 @@
 # Desktop theming
 
-Personal Arch machines only (see `.chezmoitemplates/chezmoiignore-common`).
+Arch only, like the rest of the Hyprland desktop (Ubuntu ignores it, see `.chezmoitemplates/ubuntu/chezmoiignore`).
 
 A theme is a **style** (shapes) rendered with a **palette** (colours):
 

@@ -3,9 +3,3 @@
 {{ else if .isArch }}
 {{ template "arch/chezmoiignore" . }}
 {{ end }}
-
-{{ if not (and .isPersonal .isArch) }}
-# Zen browser policies (extensions): personal Arch only
-etc/zen/
-etc/zen/**
-{{ end }}

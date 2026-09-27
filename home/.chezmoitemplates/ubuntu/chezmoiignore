@@ -11,6 +11,12 @@
 .local/bin/scripts/mainMonitorSwitch
 .local/bin/scripts/reloadHyprland
 .local/bin/scripts/xdg-portal-hyprland
+# Desktop theming pickers
+.local/bin/scripts/theme
+.local/bin/scripts/wallpaper
+# Zen browser policies (extensions)
+etc/zen/
+etc/zen/**
 
 etc/pacman.d/**
 etc/pacman.d/
@@ -37,10 +43,15 @@ etc/wsl.conf
 {{- $listToIgnore := list
   "dunst"
   "fcitx5"
+  "gtk-3.0"
+  "gtk-4.0"
   "hypr"
   "hypr/hyprlock"
   "icons"
+  "matugen"
   "pacman"
+  "rofi"
+  "themes"
   "uwsm"
   "waybar"
   "waybar/private_components"
@@ -48,6 +59,7 @@ etc/wsl.conf
   "wlogout/private_icons"
   "yay"
   "ZapZap"
+  "zen"
 }}
 {{ range $listToIgnore }}
 .config/{{ . }}/
