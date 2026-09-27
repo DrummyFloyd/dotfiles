@@ -14,6 +14,7 @@
 # ~/.config/themes/current/, the directory every app config reads.
 
 set -euo pipefail
+shopt -s nullglob
 
 THEMES_DIR="$HOME/.config/themes"
 STYLES_DIR="$THEMES_DIR/styles"
@@ -138,22 +139,22 @@ follows() {
     [[ "$palette" != auto || "$(setting "$app" follow_auto)" != false ]]
 }
 
-# Add the templates of a directory to a matugen config, except the file names
-# given after it.
+# Add the templates of a directory to a matugen config, rendered into out,
+# except the file names given after it.
 add_templates() {
-  local config="$1" dir="$2" file
-  shift 2
+  local config="$1" out="$2" dir="$3" file
+  shift 3
   for file in "$dir"/*; do
     [[ "${file##*/}" == palette.json ]] && continue
     [[ " $* " == *" ${file##*/} "* ]] && continue
     printf '[templates."%s"]\ninput_path = "%s"\noutput_path = "%s"\n\n' \
-      "${file##*/}" "$file" "$CURRENT/${file##*/}" >>"$config"
+      "${file##*/}" "$file" "$out/${file##*/}" >>"$config"
   done
 }
 
 # Render the style and the apps with the palette into $CURRENT.
 render() {
-  local style="$1" palette="$2" dir config app file name
+  local style="$1" palette="$2" dir config out app file name
   local off=() styled=()
   dir="$(palette_dir "$style" "$palette")"
   if [[ ! -d "$STYLES_DIR/$style" ]]; then
@@ -168,6 +169,10 @@ render() {
     return 1
   fi
 
+  # Rendered aside then moved in, so apps never read a half-written current/
+  # and a failed render leaves the previous theme in place. Same filesystem as
+  # current/, so each move is an atomic rename.
+  out="$(mktemp -d "$THEMES_DIR/.render.XXXXXX")"
   config="$(mktemp --suffix .toml)"
   printf '[config]\n\n' >"$config"
   # apps/ holds the default files of each app; a style may replace one with a
@@ -183,31 +188,46 @@ render() {
     styled+=("${file##*/}")
   done
 
-  add_templates "$config" "$STYLES_DIR/$style" "${off[@]}"
+  add_templates "$config" "$out" "$STYLES_DIR/$style" "${off[@]}"
   for app in "$APPS_DIR"/*/; do
-    add_templates "$config" "$app" "${off[@]}" "${styled[@]}"
+    add_templates "$config" "$out" "$app" "${off[@]}" "${styled[@]}"
   done
+
+  if ! matugen color hex "#000000" --config "$config" \
+    --import-json "$dir/palette.json" --quiet </dev/null; then
+    rm -rf "$out" "$config"
+    echo "Rendering $style/$palette failed" >&2
+    return 1
+  fi
+  rm "$config"
+
+  # An app keeping its own theme gets empty files: its config still includes them.
+  for name in "${off[@]}"; do
+    : >"$out/$name"
+  done
+
+  if [[ -d "$dir/backgrounds" ]]; then
+    ln -s "$dir/backgrounds" "$out/backgrounds"
+  fi
+
+  write_nvim "$palette" "$dir/palette.json" "$out/nvim.json"
 
   # current used to be a symlink to a theme directory.
   if [[ -L "$CURRENT" ]]; then
     rm "$CURRENT"
   fi
   mkdir -p "$CURRENT"
-  find "$CURRENT" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-  matugen color hex "#000000" --config "$config" \
-    --import-json "$dir/palette.json" --quiet </dev/null
-  rm "$config"
-
-  # An app keeping its own theme gets empty files: its config still includes them.
-  for name in "${off[@]}"; do
-    : >"$CURRENT/$name"
+  # Drop what the new theme no longer has, then rename each file over the old
+  # one (-T: replace the backgrounds link itself, not move into its target).
+  for file in "$CURRENT"/*; do
+    if [[ ! -e "$out/${file##*/}" && ! -L "$out/${file##*/}" ]]; then
+      rm -rf "$file"
+    fi
   done
-
-  if [[ -d "$dir/backgrounds" ]]; then
-    ln -s "$dir/backgrounds" "$CURRENT/backgrounds"
-  fi
-
-  write_nvim "$palette" "$dir/palette.json"
+  for file in "$out"/*; do
+    mv -fT "$file" "$CURRENT/${file##*/}"
+  done
+  rmdir "$out"
 }
 
 # nvim reads (and watches) this file from lua/plugins/colorscheme.lua: a palette
@@ -222,7 +242,7 @@ write_nvim() {
 
   jq --argjson follow "$follow" --arg fallback "$fallback" \
     '{follow: $follow, fallback: $fallback, colorscheme: .nvim.colorscheme, palette: .palette}' \
-    "$2" >"$CURRENT/nvim.json"
+    "$2" >"$3"
 }
 
 notify() {
