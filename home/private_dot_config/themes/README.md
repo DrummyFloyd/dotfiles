@@ -66,6 +66,7 @@ In `hyprland.lua` use `{{palette.accent | replace: "#", ""}}` for `rgba(...)`. T
 | waybar, rofi, Hyprland | `styles/<style>/` | reloaded on switch |
 | kitty | `apps/kitty/kitty.conf` | reloaded on switch |
 | GTK (nautilus, pavucontrol…) | `apps/gtk/gtk.css` | open apps may need a restart |
+| dunst | `apps/dunst/dunst.conf` | reloaded on switch |
 | Zen | `apps/zen/zen.css` | applied at Zen startup |
 | nvim | `current/nvim.json` | running instances follow |
 

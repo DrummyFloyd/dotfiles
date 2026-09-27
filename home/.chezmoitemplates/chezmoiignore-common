@@ -18,6 +18,8 @@
 .config/{{ . }}/
 .config/{{ . }}/**
 {{- end }}
+.config/dunst/dunstrc.d/
+.config/dunst/dunstrc.d/**
 .local/bin/scripts/theme
 .local/bin/scripts/wallpaper
 .chezmoiscripts/92-ensure-look-on-arch.sh

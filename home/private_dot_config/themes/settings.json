@@ -1,6 +1,7 @@
 {
   "kitty": { "follow": true, "follow_auto": true },
   "gtk": { "follow": true, "follow_auto": true },
+  "dunst": { "follow": true, "follow_auto": true },
   "zen": { "follow": true, "follow_auto": true },
   "nvim": { "follow": true, "follow_auto": false, "fallback": "tokyonight" },
   "auto": { "prefer": "dominant", "wallpapers": {} }
