@@ -13,6 +13,8 @@
 # We remove chezmoi as part of the installation, so this handles it
 if [[ -f '{{ .chezmoi.executable }}' ]]; then
   executable='{{ .chezmoi.executable }}'
+else
+  executable=$(command -v chezmoi) || error "chezmoi not found in PATH"
 fi
 
 # Ensure the folders are created, because otherwise they will be created as
