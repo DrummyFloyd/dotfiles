@@ -1,6 +1,13 @@
 /* The look comes from the active theme, see ~/.local/bin/scripts/theme */
 configuration {
   show-icons: true;
+
+  /* Ctrl+J / Ctrl+K move through the list, so they no longer accept the
+   * entry or cut to the end of the line. */
+  kb-row-down: "Down,Control+n,Control+j";
+  kb-row-up: "Up,Control+p,Control+k";
+  kb-accept-entry: "Control+m,Return,KP_Enter";
+  kb-remove-to-eol: "";
 }
 
 @theme "{{ .chezmoi.homeDir }}/.local/state/theme/current/rofi.rasi"
