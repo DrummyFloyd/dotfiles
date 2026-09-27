@@ -31,7 +31,7 @@ tooltip label {
 #clock,
 #system,
 #tray {
-  background: @surface;
+  background: @surface-raised;
   color: @text;
   border-radius: 15px;
   padding: 0 13px;
@@ -55,7 +55,7 @@ tooltip label {
 }
 
 #workspaces button:hover {
-  background: @surface-raised;
+  background: alpha(@text, 0.12);
 }
 
 #workspaces button:hover label {
