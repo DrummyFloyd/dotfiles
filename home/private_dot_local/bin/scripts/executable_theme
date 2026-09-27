@@ -1,53 +1,133 @@
 #!/usr/bin/env bash
 #
-# Switch the desktop theme.
+# Switch the desktop theme: a style rendered with a palette.
 #
-# A theme is a directory ~/.config/themes/<name>/ providing any of:
-#   waybar.jsonc  waybar.css  rofi.rasi  hyprland.lua
-# ~/.config/themes/current is a symlink to the active one; every app config
-# reads its theme file through it.
+#   ~/.config/themes/styles/<style>/     templates (waybar, rofi, hyprland…) using
+#                                        palette roles such as {{palette.accent}},
+#                                        plus palette.json, the style's "default"
+#   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/
+#   auto                                 palette matugen computes from the wallpaper
 #
-# A theme with templates in ~/.config/matugen/templates/<name>/ follows the
-# wallpaper: matugen renders its files from the current wallpaper.
+# matugen renders the style with the palette into ~/.config/themes/current/,
+# the directory every app config reads.
 
 set -euo pipefail
 
 THEMES_DIR="$HOME/.config/themes"
+STYLES_DIR="$THEMES_DIR/styles"
+PALETTES_DIR="$THEMES_DIR/palettes"
 CURRENT="$THEMES_DIR/current"
-DEFAULT_THEME="galet-dark"
-# Last theme highlighted in the picker; previews only apply once it settles.
+# Matches the output_path of ~/.config/matugen/config.toml.
+STATE_DIR="$HOME/.local/state/theme"
+AUTO_DIR="$STATE_DIR/auto"
+MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
+WALLPAPER="$(dirname "$(readlink -f "$0")")/wallpaper"
+DEFAULT_STYLE="galet"
+DEFAULT_PALETTE="default"
+# Last entry highlighted in a picker; previews only apply once it settles.
 PREVIEW_TOKEN="${XDG_RUNTIME_DIR:-/tmp}/theme-preview"
 PREVIEW_DELAY=0.3
-MATUGEN_DIR="$HOME/.config/matugen"
-MATUGEN_TEMPLATES="$MATUGEN_DIR/templates"
-# Wallpaper the generated colours come from, to skip regenerating them.
-COLORS_SOURCE="${XDG_RUNTIME_DIR:-/tmp}/theme-colors-source"
-WALLPAPER="$(dirname "$(readlink -f "$0")")/wallpaper"
 
 usage() {
   cat <<EOF
 Usage: $(basename "$0") <command>
 
-  list            List available themes
-  current         Print the active theme
-  set <name>      Activate a theme
-  next | prev     Cycle through themes
-  default         Activate the default theme ($DEFAULT_THEME)
-  preview <name>  Show a theme without notifying (debounced)
-  generate [img]  Render the wallpaper-coloured themes (default: current wallpaper)
-  refresh [img]   Regenerate and reload if the active theme follows the wallpaper
-  menu            Browse with rofi: highlight previews, Enter keeps, Esc reverts
-  ensure          Point to the default theme if none is active
+  current               Print the active style/palette
+  styles | palettes     List the styles, or the palettes for the active style
+  set <style> <palette> Activate a combination
+  style <name>          Change the style, keep the palette
+  palette <name>        Change the palette, keep the style
+  default               Activate $DEFAULT_STYLE/$DEFAULT_PALETTE
+  menu style|palette    Browse with rofi: highlight previews, Enter keeps, Esc reverts
+  preview style|palette <name>  Show without notifying (debounced)
+  refresh [image]       Recolour from the wallpaper if the palette is auto
+  freeze [name]         Save the auto palette (name: the wallpaper's)
+  ensure                Render the saved theme, or the default one
 EOF
 }
 
-list() {
-  find "$THEMES_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+active_style() {
+  cat "$STATE_DIR/style" 2>/dev/null || echo "$DEFAULT_STYLE"
 }
 
-current() {
-  if [[ -d "$CURRENT" ]]; then
-    basename "$(readlink "$CURRENT")"
+active_palette() {
+  cat "$STATE_DIR/palette" 2>/dev/null || echo "$DEFAULT_PALETTE"
+}
+
+styles() {
+  find "$STYLES_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+# Palettes usable with a style: its own default, the shared ones, auto.
+palettes() {
+  local style="${1:-$(active_style)}"
+  if [[ -f "$STYLES_DIR/$style/palette.json" ]]; then
+    echo default
+  fi
+  find "$PALETTES_DIR" -mindepth 2 -maxdepth 2 -name palette.json -printf '%h\n' |
+    xargs -r -n1 basename | sort
+  if command -v matugen >/dev/null; then
+    echo auto
+  fi
+}
+
+# Directory holding a palette's palette.json and optional backgrounds/.
+palette_dir() {
+  case "$2" in
+    default) echo "$STYLES_DIR/$1" ;;
+    auto) echo "$AUTO_DIR" ;;
+    *) echo "$PALETTES_DIR/$2" ;;
+  esac
+}
+
+# Recompute the auto palette, unless it already comes from this wallpaper.
+generate_auto() {
+  local image="${1:-$("$WALLPAPER" current)}"
+  if [[ ! -f "$image" || "$(cat "$AUTO_DIR/source" 2>/dev/null)" == "$image" ]]; then
+    return 0
+  fi
+
+  matugen image "$image" --config "$MATUGEN_CONFIG" \
+    --mode dark --prefer saturation --quiet </dev/null
+  echo "$image" >"$AUTO_DIR/source"
+}
+
+# Render every file of the style with the palette into $CURRENT.
+render() {
+  local style="$1" palette="$2" dir config file
+  dir="$(palette_dir "$style" "$palette")"
+  if [[ ! -d "$STYLES_DIR/$style" ]]; then
+    echo "Unknown style: $style" >&2
+    exit 1
+  fi
+  if [[ "$palette" == auto && ! -f "$dir/palette.json" ]]; then
+    generate_auto
+  fi
+  if [[ ! -f "$dir/palette.json" ]]; then
+    echo "Unknown palette: $palette" >&2
+    exit 1
+  fi
+
+  config="$(mktemp --suffix .toml)"
+  printf '[config]\n\n' >"$config"
+  for file in "$STYLES_DIR/$style"/*; do
+    [[ "${file##*/}" == palette.json ]] && continue
+    printf '[templates."%s"]\ninput_path = "%s"\noutput_path = "%s"\n\n' \
+      "${file##*/}" "$file" "$CURRENT/${file##*/}" >>"$config"
+  done
+
+  # current used to be a symlink to a theme directory.
+  if [[ -L "$CURRENT" ]]; then
+    rm "$CURRENT"
+  fi
+  mkdir -p "$CURRENT"
+  find "$CURRENT" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+  matugen color hex "#000000" --config "$config" \
+    --import-json "$dir/palette.json" --quiet </dev/null
+  rm "$config"
+
+  if [[ -d "$dir/backgrounds" ]]; then
+    ln -s "$dir/backgrounds" "$CURRENT/backgrounds"
   fi
 }
 
@@ -73,114 +153,138 @@ reload() {
   hyprctl eval 'hl.exec_cmd("uwsm app -- waybar")' >/dev/null
 }
 
-set_theme() {
-  local name="$1"
-
-  if [[ ! -d "$THEMES_DIR/$name" ]]; then
-    echo "Unknown theme: $name" >&2
-    exit 1
-  fi
-
-  activate "$name"
-  notify "$name"
-}
-
-follows_wallpaper() {
-  [[ -d "$MATUGEN_TEMPLATES/$1" ]]
-}
-
-generate() {
-  local image="${1:-$("$WALLPAPER" current)}"
-  if ! command -v matugen >/dev/null || [[ ! -f "$image" ]]; then
-    return 1
-  fi
-
-  matugen image "$image" --config "$MATUGEN_DIR/config.toml" \
-    --mode dark --prefer saturation --quiet </dev/null
-  echo "$image" >"$COLORS_SOURCE"
-}
-
-# Regenerate only when the wallpaper differs from the one last used.
-refresh() {
-  local image="${1:-$("$WALLPAPER" current)}"
-  if ! follows_wallpaper "$(current)" || [[ "$(cat "$COLORS_SOURCE" 2>/dev/null)" == "$image" ]]; then
-    return 0
-  fi
-
-  if generate "$image"; then
-    reload
-  fi
-}
-
+# Render, remember and show a combination.
 activate() {
-  if follows_wallpaper "$1" && [[ "$(cat "$COLORS_SOURCE" 2>/dev/null)" != "$("$WALLPAPER" current)" ]]; then
-    generate || true
+  if [[ "$2" == auto ]]; then
+    generate_auto
   fi
-  ln -sfn "$1" "$CURRENT"
+  render "$1" "$2"
+  mkdir -p "$STATE_DIR"
+  echo "$1" >"$STATE_DIR/style"
+  echo "$2" >"$STATE_DIR/palette"
   reload
 }
 
-# Called by rofi on every highlight: reloading Hyprland and waybar is slow,
+# A style change keeps the palette when the new style can use it.
+with_style() {
+  local palette
+  palette="$(active_palette)"
+  if ! palettes "$1" | grep -qxF -- "$palette"; then
+    palette="$DEFAULT_PALETTE"
+  fi
+  echo "$1 $palette"
+}
+
+set_theme() {
+  activate "$1" "$2"
+  notify "$1/$2"
+}
+
+# Called by rofi on every highlight: rendering and restarting waybar is slow,
 # so only the entry still highlighted after PREVIEW_DELAY is applied.
 preview() {
-  local name="$1"
-  [[ -d "$THEMES_DIR/$name" ]] || return 0
-
-  echo "$name" >"$PREVIEW_TOKEN"
+  local kind="$1" name="$2"
+  echo "$kind $name" >"$PREVIEW_TOKEN"
   sleep "$PREVIEW_DELAY"
-  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" == "$name" && "$(current)" != "$name" ]]; then
-    activate "$name"
+  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" != "$kind $name" ]]; then
+    return 0
   fi
+
+  case "$kind" in
+    style)
+      [[ "$name" != "$(active_style)" ]] || return 0
+      # shellcheck disable=SC2046
+      render $(with_style "$name")
+      ;;
+    palette)
+      palettes | grep -qxF -- "$name" || return 0
+      if [[ "$name" == auto ]]; then
+        generate_auto
+      fi
+      render "$(active_style)" "$name"
+      ;;
+  esac
+  touch "$PREVIEW_TOKEN.shown"
+  reload
 }
 
 menu() {
-  local previous choice row
-  previous="$(current)"
-  row="$(list | grep -nxF -- "$previous" | cut -d: -f1 || true)"
+  local kind="$1" active choice row
+  case "$kind" in
+    style) active="$(active_style)" ;;
+    palette) active="$(active_palette)" ;;
+    *) usage; exit 1 ;;
+  esac
+  row="$("${kind}s" | grep -nxF -- "$active" | cut -d: -f1 || true)"
+  rm -f "$PREVIEW_TOKEN.shown"
 
-  choice="$(list | rofi -dmenu -i -p theme \
+  choice="$("${kind}s" | rofi -dmenu -i -p "$kind" \
     -selected-row "$((${row:-1} - 1))" \
-    -on-selection-changed "$0 preview '{entry}'")" || true
+    -on-selection-changed "$0 preview $kind '{entry}'")" || true
 
   # Cancel any preview still waiting to fire.
   : >"$PREVIEW_TOKEN"
 
-  if [[ -n "$choice" ]]; then
-    set_theme "$choice"
-  elif [[ -n "$previous" && "$(current)" != "$previous" ]]; then
-    activate "$previous"
+  if [[ -z "$choice" ]]; then
+    # Previews only rendered; put the saved theme back.
+    if [[ -e "$PREVIEW_TOKEN.shown" ]]; then
+      render "$(active_style)" "$(active_palette)"
+      reload
+    fi
+  elif [[ "$kind" == style ]]; then
+    # shellcheck disable=SC2046
+    set_theme $(with_style "$choice")
+  else
+    set_theme "$(active_style)" "$choice"
   fi
 }
 
-cycle() {
-  local step="$1" themes active i
-  mapfile -t themes < <(list)
-  active="$(current)"
+# Wallpaper changed: recolour when the palette follows it.
+refresh() {
+  local image="${1:-$("$WALLPAPER" current)}"
+  if [[ "$(active_palette)" != auto || "$(cat "$AUTO_DIR/source" 2>/dev/null)" == "$image" ]]; then
+    return 0
+  fi
 
-  for i in "${!themes[@]}"; do
-    if [[ "${themes[$i]}" == "$active" ]]; then
-      set_theme "${themes[$(((i + step + ${#themes[@]}) % ${#themes[@]}))]}"
-      return
-    fi
-  done
-  set_theme "${themes[0]}"
+  generate_auto "$image"
+  render "$(active_style)" auto
+  reload
+}
+
+# Keep the auto palette as palettes/<name>/, with the wallpaper it came from.
+freeze() {
+  local source name
+  source="$(cat "$AUTO_DIR/source" 2>/dev/null || true)"
+  if [[ ! -f "$AUTO_DIR/palette.json" || -z "$source" ]]; then
+    echo "No auto palette yet: pick the auto palette first" >&2
+    exit 1
+  fi
+  name="${1:-$(basename "${source%.*}")}"
+
+  mkdir -p "$PALETTES_DIR/$name/backgrounds"
+  cp "$AUTO_DIR/palette.json" "$PALETTES_DIR/$name/palette.json"
+  ln -sfn "$source" "$PALETTES_DIR/$name/backgrounds/${source##*/}"
+  echo "Saved $PALETTES_DIR/$name (add it to chezmoi to keep it)"
 }
 
 case "${1:-}" in
-  list) list ;;
-  current) current ;;
-  set) set_theme "${2:?theme name required}" ;;
-  next) cycle 1 ;;
-  prev) cycle -1 ;;
-  default) set_theme "$DEFAULT_THEME" ;;
-  preview) preview "${2:?theme name required}" ;;
-  generate) generate "${2:-}" ;;
+  current) echo "$(active_style)/$(active_palette)" ;;
+  styles) styles ;;
+  palettes) palettes ;;
+  set) set_theme "${2:?style required}" "${3:?palette required}" ;;
+  # shellcheck disable=SC2046
+  style) set_theme $(with_style "${2:?style required}") ;;
+  palette) set_theme "$(active_style)" "${2:?palette required}" ;;
+  default) set_theme "$DEFAULT_STYLE" "$DEFAULT_PALETTE" ;;
+  menu) menu "${2:?style or palette required}" ;;
+  preview) preview "${2:?style or palette required}" "${3:?name required}" ;;
   refresh) refresh "${2:-}" ;;
-  menu) menu ;;
+  freeze) freeze "${2:-}" ;;
   ensure)
-    if [[ ! -d "$CURRENT" && -d "$THEMES_DIR/$DEFAULT_THEME" ]]; then
-      ln -sfn "$DEFAULT_THEME" "$CURRENT"
+    if [[ "$(active_palette)" == auto ]]; then
+      generate_auto || true
     fi
+    render "$(active_style)" "$(active_palette)" || render "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
     ;;
   *)
     usage

@@ -1,0 +1,10 @@
+/* Galet colours, filled from the active palette by the theme script. */
+@define-color surface {{palette.surface}};
+@define-color surface-raised {{palette.surface_raised}};
+@define-color text {{palette.text}};
+@define-color text-mute {{palette.text_mute}};
+@define-color dot {{palette.outline}};
+@define-color accent {{palette.accent}};
+@define-color warn {{palette.warn}};
+@define-color crit {{palette.crit}};
+@define-color on-accent {{palette.on_accent}};

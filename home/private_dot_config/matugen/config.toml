@@ -1,21 +1,9 @@
-# Colours generated from the wallpaper for the themes that follow it.
-# Run by ~/.local/bin/scripts/theme; a theme follows the wallpaper when it has
-# a directory under templates/.
+# The "auto" theme palette: matugen turns the wallpaper colours into the same
+# roles as the other palettes (see ~/.config/themes/palettes/). Run by
+# ~/.local/bin/scripts/theme, which then renders the active style with it.
 
 [config]
 
-[templates.galet-auto-colors]
-input_path = "./templates/galet-auto/colors.css"
-output_path = "~/.config/themes/galet-auto/colors.css"
-
-[templates.galet-auto-waybar]
-input_path = "./templates/galet-auto/waybar.jsonc"
-output_path = "~/.config/themes/galet-auto/waybar.jsonc"
-
-[templates.galet-auto-rofi]
-input_path = "./templates/galet-auto/rofi.rasi"
-output_path = "~/.config/themes/galet-auto/rofi.rasi"
-
-[templates.galet-auto-hyprland]
-input_path = "./templates/galet-auto/hyprland.lua"
-output_path = "~/.config/themes/galet-auto/hyprland.lua"
+[templates.auto-palette]
+input_path = "./templates/auto.json"
+output_path = "~/.local/state/theme/auto/palette.json"

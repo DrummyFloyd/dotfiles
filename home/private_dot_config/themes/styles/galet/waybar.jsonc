@@ -1,0 +1,67 @@
+// Galet: three flat islands, icons in the muted tone; colours from the palette.
+{
+  "height": 30,
+  "margin-top": 7,
+  "margin-left": 10,
+  "margin-right": 10,
+  "spacing": 6,
+  "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+  "modules-center": ["clock"],
+  "modules-right": ["group/system", "tray"],
+  "group/system": {
+    "orientation": "inherit",
+    "modules": ["custom/updates", "pulseaudio", "backlight", "cpu", "battery"],
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+  },
+  "hyprland/submap": {
+    "format": "{}",
+  },
+  "clock": {
+    "interval": 60,
+    "format": "<span size='8pt'><span color='{{palette.accent}}'>●</span><span color='{{palette.accent2}}'>●</span><span color='{{palette.accent3}}'>●</span></span>  {:%H:%M  <span color='{{palette.text_mute}}'>%a %d %b</span>}",
+    "calendar": {
+      "format": {
+        "months": "<span color='{{palette.text}}'><b>{}</b></span>",
+        "days": "<span color='{{palette.text_mute}}'>{}</span>",
+        "weeks": "<span color='{{palette.outline}}'>W{}</span>",
+        "weekdays": "<span color='{{palette.accent}}'><b>{}</b></span>",
+        "today": "<span color='{{palette.accent2}}'><b><u>{}</u></b></span>",
+      },
+    },
+  },
+  "custom/updates": {
+    "format": "{}",
+  },
+  "pulseaudio": {
+    "format": "<span color='{{palette.text_mute}}'>{icon}</span> {volume}%",
+    "format-bluetooth": "<span color='{{palette.text_mute}}'>{icon}</span> {volume}%",
+    "format-bluetooth-muted": "<span color='{{palette.text_mute}}'>󰝟</span> muted",
+    "format-muted": "<span color='{{palette.text_mute}}'>󰝟</span> muted",
+    "format-icons": {
+      "headphone": "󰋋",
+      "headset": "󰋎",
+      "default": ["󰕿", "󰖀", "󰕾"],
+    },
+  },
+  "backlight": {
+    "format": "<span color='{{palette.text_mute}}'>{icon}</span> {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+  },
+  "cpu": {
+    "interval": 10,
+    "format": "<span color='{{palette.text_mute}}'>󰻠</span> {usage}%",
+  },
+  "battery": {
+    "format": "<span color='{{palette.text_mute}}'>{icon}</span> {capacity}%",
+    "format-charging": "<span color='{{palette.text_mute}}'>󰂄</span> {capacity}%",
+    "format-plugged": "<span color='{{palette.text_mute}}'>󰚥</span> {capacity}%",
+    "format-alt": "{time}",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+  },
+  "tray": {
+    "icon-size": 16,
+    "spacing": 10,
+  },
+}

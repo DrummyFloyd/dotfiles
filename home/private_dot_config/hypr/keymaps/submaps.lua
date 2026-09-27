@@ -44,7 +44,7 @@ hl.define_submap("Workspace Switch", function()
 end)
 
 -- ################################# Look #################################
--- W / T open a rofi picker that previews live; each one exits the mode.
+-- S / P / W open a rofi picker that previews live; each one exits the mode.
 
 --- @param cmd string
 --- @return fun()
@@ -59,7 +59,8 @@ Bind.key("ALT + T", hl.dsp.submap("Look"), "Look mode")
 
 hl.define_submap("Look", function()
 	local scripts = require("config").scripts
+	Bind.key("S", exec_and_exit(scripts .. "/theme menu style"), "Pick a style")
+	Bind.key("P", exec_and_exit(scripts .. "/theme menu palette"), "Pick a palette")
 	Bind.key("W", exec_and_exit(scripts .. "/wallpaper pick"), "Pick a wallpaper")
-	Bind.key("T", exec_and_exit(scripts .. "/theme menu"), "Pick a theme")
 	Bind.key("ESCAPE", hl.dsp.submap("reset"), "Exit mode")
 end)

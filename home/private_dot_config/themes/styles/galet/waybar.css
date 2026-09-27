@@ -1,4 +1,5 @@
-/* Galet shapes for waybar, coloured by @define-color tokens (see colors.css). */
+/* Galet shapes for waybar, coloured by the @define-color roles of colors.css. */
+@import "colors.css";
 
 * {
   font-family: "FiraCode Nerd Font";

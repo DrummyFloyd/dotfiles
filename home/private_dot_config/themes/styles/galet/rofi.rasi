@@ -1,10 +1,10 @@
-/* Galet (dark) for rofi: flat, rounded, same tones as waybar.css. */
+/* Galet for rofi: flat, rounded; colours from the palette. */
 * {
-  surface: #2b2420;
-  surface-raised: #3a312b;
-  text: #eadfcd;
-  text-mute: #9a8a7a;
-  warn: #d9703a;
+  surface: {{palette.surface}};
+  surface-raised: {{palette.surface_raised}};
+  text: {{palette.text}};
+  text-mute: {{palette.text_mute}};
+  warn: {{palette.warn}};
 
   font: "FiraCode Nerd Font 12";
   background-color: transparent;
