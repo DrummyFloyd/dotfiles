@@ -4,6 +4,17 @@
 
 [config]
 
+# Terminal colours for the auto palette: matugen harmonizes these hues with the
+# wallpaper instead of deriving every colour from it, so red and green stay
+# apart (shell syntax highlighting, diffs).
+[config.custom_colors]
+red = "#e06c75"
+green = "#98c379"
+yellow = "#e5c07b"
+blue = "#61afef"
+magenta = "#c678dd"
+cyan = "#56b6c2"
+
 [templates.auto-palette]
 input_path = "./templates/auto.json"
 output_path = "~/.local/state/theme/auto/palette.json"
