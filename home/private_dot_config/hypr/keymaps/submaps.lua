@@ -45,6 +45,7 @@ end)
 
 -- ################################ Theme #################################
 -- N / P cycle and stay in the mode to preview; D and M apply then exit.
+-- A notification lists the themes with the active one highlighted.
 
 local THEME = require("config").scripts .. "/theme"
 
@@ -57,7 +58,10 @@ local function exec_and_exit(cmd)
 	end
 end
 
-Bind.key("ALT + T", hl.dsp.submap("Theme"), "Theme mode")
+Bind.key("ALT + T", function()
+	hl.dispatch(hl.dsp.submap("Theme"))
+	hl.exec_cmd(THEME .. " show")
+end, "Theme mode")
 
 hl.define_submap("Theme", function()
 	Bind.cmd("N", THEME .. " next", "Next theme")

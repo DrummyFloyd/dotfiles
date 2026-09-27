@@ -23,6 +23,7 @@ Usage: $(basename "$0") <command>
   next | prev   Cycle through themes
   default       Activate the default theme ($DEFAULT_THEME)
   menu          Pick a theme with wofi
+  show          Notify the available themes, the active one highlighted
   ensure        Point to the default theme if none is active
 EOF
 }
@@ -37,9 +38,23 @@ current() {
   fi
 }
 
-notify() {
-  notify-send -u low -i "$HOME/.config/icons/hyprland.png" \
-    -h string:x-canonical-private-synchronous:theme "Theme: $1"
+# One notification, replaced on every change, so the Hyprland submap
+# always shows which theme is active and which keys do what.
+show() {
+  local active theme body=""
+  active="$(current)"
+
+  while read -r theme; do
+    if [[ "$theme" == "$active" ]]; then
+      body+="● <b>$theme</b>\n"
+    else
+      body+="○ $theme\n"
+    fi
+  done < <(list)
+  body+="\n<i>N next · P prev · D default · M menu · Esc quit</i>"
+
+  notify-send -u low -t 8000 -i "$HOME/.config/icons/hyprland.png" \
+    -h string:x-canonical-private-synchronous:theme "Theme" "$(printf '%b' "$body")"
 }
 
 reload() {
@@ -59,7 +74,7 @@ set_theme() {
 
   ln -sfn "$name" "$CURRENT"
   reload
-  notify "$name"
+  show
 }
 
 cycle() {
@@ -83,6 +98,7 @@ case "${1:-}" in
   next) cycle 1 ;;
   prev) cycle -1 ;;
   default) set_theme "$DEFAULT_THEME" ;;
+  show) show ;;
   menu)
     choice="$(list | wofi --dmenu --prompt theme)" || exit 0
     set_theme "$choice"
