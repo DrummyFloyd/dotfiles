@@ -150,14 +150,14 @@ render() {
   dir="$(palette_dir "$style" "$palette")"
   if [[ ! -d "$STYLES_DIR/$style" ]]; then
     echo "Unknown style: $style" >&2
-    exit 1
+    return 1
   fi
   if [[ "$palette" == auto && ! -f "$dir/palette.json" ]]; then
     generate_auto
   fi
   if [[ ! -f "$dir/palette.json" ]]; then
     echo "Unknown palette: $palette" >&2
-    exit 1
+    return 1
   fi
 
   config="$(mktemp --suffix .toml)"
