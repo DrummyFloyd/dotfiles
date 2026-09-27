@@ -14,7 +14,6 @@ ubuntu:
     - google-chrome-stable
     - gpg
     - jq
-    - kitty
     - mise
     - pcscd
     - python3
@@ -32,3 +31,6 @@ ubuntu:
     - yubico-piv-tool
     - yubikey-manager
     - zsh
+  # Desktop Ubuntu only, not WSL
+  aptNoWsl:
+    - kitty

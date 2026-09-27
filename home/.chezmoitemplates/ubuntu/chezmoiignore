@@ -31,6 +31,8 @@ etc/wsl.conf
 
 {{ if .isWsl }}
 .local/share/applications/**
+.config/kitty/
+.config/kitty/**
 {{ if not .wsl.isWindowsAdmin  }}
 .chezmoiscripts/*-on-windows.sh
 {{ end }}

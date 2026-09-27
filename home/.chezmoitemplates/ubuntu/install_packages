@@ -9,6 +9,10 @@ PACKAGES=(
 {{- range .ubuntu.aptWsl }}
   {{ . | quote }}
 {{- end }}
+{{- else }}
+{{- range .ubuntu.aptNoWsl }}
+  {{ . | quote }}
+{{- end }}
 {{- end }}
 )
 
