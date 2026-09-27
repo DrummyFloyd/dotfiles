@@ -13,7 +13,12 @@
     "modules": ["custom/updates", "pulseaudio", "backlight", "cpu", "battery"],
   },
   "hyprland/workspaces": {
-    "format": "{name}",
+    // Names without an icon (every workspace but 9 and 10) show as is.
+    "format": "{icon}",
+    "format-icons": {
+      "9": "",
+      "10": "󰖣",
+    },
   },
   "hyprland/submap": {
     "format": "{}",
