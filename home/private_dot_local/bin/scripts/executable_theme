@@ -72,17 +72,20 @@ styles() {
   find "$STYLES_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
 }
 
-# Palettes usable with a style: its own default, the shared ones, auto.
+# Palettes usable with a style, in alphabetical order: its own default, the
+# shared ones, auto.
 palettes() {
   local style="${1:-$(active_style)}"
-  if [[ -f "$STYLES_DIR/$style/palette.json" ]]; then
-    echo default
-  fi
-  find "$PALETTES_DIR" -mindepth 2 -maxdepth 2 -name palette.json -printf '%h\n' |
-    sed 's|.*/||' | sort
-  if command -v matugen >/dev/null; then
-    echo auto
-  fi
+  {
+    if [[ -f "$STYLES_DIR/$style/palette.json" ]]; then
+      echo default
+    fi
+    find "$PALETTES_DIR" -mindepth 2 -maxdepth 2 -name palette.json -printf '%h\n' |
+      sed 's|.*/||'
+    if command -v matugen >/dev/null; then
+      echo auto
+    fi
+  } | sort
 }
 
 # Directory holding a palette's palette.json and optional backgrounds/.
