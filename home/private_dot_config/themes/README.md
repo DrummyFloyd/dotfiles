@@ -83,4 +83,4 @@ Files in `apps/` are defaults: a style replaces one by shipping a file of the sa
 
 ## Known issue
 
-Hyprland 0.56 can crash when a monitor is disabled (`leader+P`) right after a full config reload (`leader+SHIFT+R`, or `chezmoi apply` touching hypr files). Switching themes doesn't trigger a full reload.
+Hyprland 0.56 can crash when a monitor is disabled (`leader+P`) right after a full config reload (`leader+SHIFT+R`, `leader+P` → *all monitors*, or `chezmoi apply` touching hypr files). Switching themes doesn't trigger a full reload.
