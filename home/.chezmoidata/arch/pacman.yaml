@@ -74,6 +74,7 @@ arch:
     - waybar
     - rofi
     - matugen
+    - adw-gtk-theme
     - wlogout
     - dunst
     - udiskie
