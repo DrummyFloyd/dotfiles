@@ -1,5 +1,5 @@
 /* Linked into the Zen profile by the chezmoi script 93-link-zen-profile.
- * zen-palette.css points to the colours rendered by the theme script
- * (~/.config/themes/current/zen.css); it sits both next to this file and next
- * to its link in the profile, as Zen may resolve the link before the import. */
+ * Zen follows that link before resolving the import, so zen-palette.css is
+ * taken from next to this file: a link to the colours rendered by the theme
+ * script (~/.config/themes/current/zen.css). */
 @import "zen-palette.css";
