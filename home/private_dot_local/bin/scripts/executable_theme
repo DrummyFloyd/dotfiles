@@ -79,7 +79,7 @@ palettes() {
     echo default
   fi
   find "$PALETTES_DIR" -mindepth 2 -maxdepth 2 -name palette.json -printf '%h\n' |
-    xargs -r -n1 basename | sort
+    sed 's|.*/||' | sort
   if command -v matugen >/dev/null; then
     echo auto
   fi
