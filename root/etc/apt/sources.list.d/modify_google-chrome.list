@@ -1,0 +1,5 @@
+{{- /* chezmoi:modify-template */ -}}
+
+{{- /* Owned by the google-chrome package, which rewrites it but honors
+       comments: comment it out and use google-chrome-custom.list instead */ -}}
+{{- ensureLinePrefix "#" "# " .chezmoi.stdin -}}
