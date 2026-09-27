@@ -18,7 +18,7 @@ A theme is a **style** (shapes) rendered with a **palette** (colours):
 theme set galet gruvbox     # style + palette
 theme palette auto          # keep the style
 theme current               # galet/gruvbox
-wallpaper set ~/Pictures/Backgrounds/wano-tree.jpg
+wallpaper set ~/Pictures/Backgrounds/onepiece-grafiti.jpg
 ```
 
 ## Add a palette

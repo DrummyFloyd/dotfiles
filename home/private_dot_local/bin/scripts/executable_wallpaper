@@ -15,7 +15,7 @@ GLOBAL_DIR="$HOME/Pictures/Backgrounds"
 PALETTES_DIR="$HOME/.config/themes/palettes"
 STATE_DIR="$HOME/.local/state/wallpaper"
 CURRENT="$STATE_DIR/current"
-DEFAULT_WALLPAPER="$GLOBAL_DIR/wano-tree.jpg"
+DEFAULT_WALLPAPER="$PALETTES_DIR/tokyonight/backgrounds/wano-tree.jpg"
 THEME="$(dirname "$(readlink -f "$0")")/theme"
 # Last wallpaper highlighted in the picker, or "closed" once the picker is done;
 # recolouring waits until it settles.

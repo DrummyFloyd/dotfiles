@@ -24,3 +24,6 @@
 
 # generated theme files moved to ~/.local/state/theme/current
 .config/themes/current
+
+# wallpapers moved to a palette's backgrounds/
+Pictures/Backgrounds/wano-tree.jpg
