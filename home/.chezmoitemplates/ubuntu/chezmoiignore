@@ -35,6 +35,7 @@ etc/wsl.conf
   "hypr/hyprlock"
   "icons"
   "pacman"
+  "rofi"
   "themes"
   "uwsm"
   "waybar"

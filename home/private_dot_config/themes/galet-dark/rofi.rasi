@@ -1,0 +1,64 @@
+/* Galet (dark) for rofi: same shapes as wofi.css. */
+* {
+  surface: #2b2420;
+  surface-raised: #3a312b;
+  text: #eadfcd;
+  text-mute: #9a8a7a;
+  warn: #d9703a;
+
+  font: "FiraCode Nerd Font 12";
+  background-color: transparent;
+  text-color: @text;
+}
+
+window {
+  width: 540px;
+  padding: 8px;
+  border-radius: 24px;
+  background-color: @surface;
+}
+
+mainbox {
+  spacing: 6px;
+  children: [inputbar, listview];
+}
+
+inputbar {
+  padding: 10px 16px;
+  spacing: 10px;
+  border-radius: 23px;
+  background-color: @surface-raised;
+  children: [prompt, entry];
+}
+
+prompt {
+  text-color: @text-mute;
+}
+
+listview {
+  lines: 7;
+  spacing: 2px;
+  scrollbar: false;
+  fixed-height: false;
+}
+
+element {
+  padding: 6px 14px;
+  spacing: 10px;
+  border-radius: 18px;
+}
+
+element selected {
+  background-color: @surface-raised;
+  text-color: @warn;
+}
+
+element-icon,
+element-text {
+  background-color: inherit;
+  text-color: inherit;
+}
+
+element-icon {
+  size: 22px;
+}
