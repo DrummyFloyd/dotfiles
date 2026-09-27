@@ -12,18 +12,22 @@ set -euo pipefail
 THEMES_DIR="$HOME/.config/themes"
 CURRENT="$THEMES_DIR/current"
 DEFAULT_THEME="galet-dark"
+# Last theme highlighted in the picker; previews only apply once it settles.
+PREVIEW_TOKEN="${XDG_RUNTIME_DIR:-/tmp}/theme-preview"
+PREVIEW_DELAY=0.3
 
 usage() {
   cat <<EOF
 Usage: $(basename "$0") <command>
 
-  list          List available themes
-  current       Print the active theme
-  set <name>    Activate a theme
-  next | prev   Cycle through themes
-  default       Activate the default theme ($DEFAULT_THEME)
-  menu          Pick a theme with wofi
-  ensure        Point to the default theme if none is active
+  list            List available themes
+  current         Print the active theme
+  set <name>      Activate a theme
+  next | prev     Cycle through themes
+  default         Activate the default theme ($DEFAULT_THEME)
+  preview <name>  Show a theme without notifying (debounced)
+  menu            Browse with rofi: highlight previews, Enter keeps, Esc reverts
+  ensure          Point to the default theme if none is active
 EOF
 }
 
@@ -57,9 +61,45 @@ set_theme() {
     exit 1
   fi
 
-  ln -sfn "$name" "$CURRENT"
-  reload
+  activate "$name"
   notify "$name"
+}
+
+activate() {
+  ln -sfn "$1" "$CURRENT"
+  reload
+}
+
+# Called by rofi on every highlight: reloading Hyprland and waybar is slow,
+# so only the entry still highlighted after PREVIEW_DELAY is applied.
+preview() {
+  local name="$1"
+  [[ -d "$THEMES_DIR/$name" ]] || return 0
+
+  echo "$name" >"$PREVIEW_TOKEN"
+  sleep "$PREVIEW_DELAY"
+  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" == "$name" && "$(current)" != "$name" ]]; then
+    activate "$name"
+  fi
+}
+
+menu() {
+  local previous choice row
+  previous="$(current)"
+  row="$(list | grep -nxF -- "$previous" | cut -d: -f1 || true)"
+
+  choice="$(list | rofi -dmenu -i -p theme \
+    -selected-row "$((${row:-1} - 1))" \
+    -on-selection-changed "$0 preview '{entry}'")" || true
+
+  # Cancel any preview still waiting to fire.
+  : >"$PREVIEW_TOKEN"
+
+  if [[ -n "$choice" ]]; then
+    set_theme "$choice"
+  elif [[ -n "$previous" && "$(current)" != "$previous" ]]; then
+    activate "$previous"
+  fi
 }
 
 cycle() {
@@ -83,10 +123,8 @@ case "${1:-}" in
   next) cycle 1 ;;
   prev) cycle -1 ;;
   default) set_theme "$DEFAULT_THEME" ;;
-  menu)
-    choice="$(list | wofi --dmenu --prompt "theme: $(current)")" || exit 0
-    set_theme "$choice"
-    ;;
+  preview) preview "${2:?theme name required}" ;;
+  menu) menu ;;
   ensure)
     if [[ ! -d "$CURRENT" && -d "$THEMES_DIR/$DEFAULT_THEME" ]]; then
       ln -sfn "$DEFAULT_THEME" "$CURRENT"
