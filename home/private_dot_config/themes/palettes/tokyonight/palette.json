@@ -1,0 +1,31 @@
+{
+  "palette": {
+    "surface": "#1a1b26",
+    "surface_raised": "#292e42",
+    "text": "#c0caf5",
+    "text_mute": "#737aa2",
+    "outline": "#3b4261",
+    "accent": "#7aa2f7",
+    "accent2": "#bb9af7",
+    "accent3": "#7dcfff",
+    "warn": "#ff9e64",
+    "crit": "#f7768e",
+    "on_accent": "#1a1b26",
+    "term0": "#15161e",
+    "term1": "#f7768e",
+    "term2": "#9ece6a",
+    "term3": "#e0af68",
+    "term4": "#7aa2f7",
+    "term5": "#bb9af7",
+    "term6": "#7dcfff",
+    "term7": "#a9b1d6",
+    "term8": "#414868",
+    "term9": "#f7768e",
+    "term10": "#9ece6a",
+    "term11": "#e0af68",
+    "term12": "#7aa2f7",
+    "term13": "#bb9af7",
+    "term14": "#7dcfff",
+    "term15": "#c0caf5"
+  }
+}
