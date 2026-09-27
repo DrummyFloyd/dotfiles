@@ -22,6 +22,9 @@ exclude = ['dirs', 'scripts']
 reverse = false
 scriptContents = true
 
+[status]
+exclude = ["always"]
+
 [data]
 non_root_user = "{{ .chezmoi.username }}"
 non_root_home = "{{ .chezmoi.homeDir }}"
