@@ -10,14 +10,34 @@
 
 local THEME = os.getenv("HOME") .. "/.local/state/theme/current/hyprland.lua"
 
+--- Every option a theme may set; colours are Hyprland's own defaults.
 local DEFAULTS = {
 	general = {
 		border_size = 3,
+		col = {
+			active_border = "rgba(ffffffff)",
+			inactive_border = "rgba(444444ff)",
+		},
 	},
 	decoration = {
 		rounding = 0,
 		shadow = {
 			enabled = true,
+			range = 4,
+			render_power = 3,
+			color = "rgba(1a1a1aee)",
+		},
+	},
+	group = {
+		col = {
+			border_active = "rgba(ffff0066)",
+			border_inactive = "rgba(77770066)",
+		},
+		groupbar = {
+			col = {
+				active = "rgba(ffff0066)",
+				inactive = "rgba(77770066)",
+			},
 		},
 	},
 }
