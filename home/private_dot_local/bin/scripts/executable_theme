@@ -49,6 +49,7 @@ Usage: $(basename "$0") <command>
   preview style|palette <name>  Show without notifying (debounced)
   refresh [image]       Recolour from the wallpaper if the palette is auto
   freeze [name]         Save the auto palette (name: the wallpaper's)
+  check                 Check every palette defines the roles the templates use
   ensure                Render and reload the saved theme, or the default one
 EOF
 }
@@ -400,6 +401,33 @@ refresh() {
   reload
 }
 
+# Every palette (the styles' defaults, the shared ones, and the matugen template
+# of the auto one) must define each {{palette.<role>}} the templates use.
+check() {
+  local roles file keys missing status=0
+  roles="$(grep -rhoE '\{\{ *palette\.[a-z0-9_]+' "$STYLES_DIR" "$APPS_DIR" |
+    sed -E 's/.*palette\.//' | sort -u)"
+
+  for file in "$STYLES_DIR"/*/palette.json "$PALETTES_DIR"/*/palette.json \
+    "${MATUGEN_CONFIG%/*}/templates/auto.json"; do
+    if ! keys="$(jq -r '.palette | keys[]' "$file" 2>/dev/null | sort)"; then
+      echo "$file: not a palette JSON file" >&2
+      status=1
+      continue
+    fi
+    missing="$(comm -23 <(echo "$roles") <(echo "$keys") | paste -sd' ')"
+    if [[ -n "$missing" ]]; then
+      echo "$file: missing $missing" >&2
+      status=1
+    fi
+  done
+
+  if ((status == 0)); then
+    echo "Every palette defines the $(wc -l <<<"$roles") roles the templates use"
+  fi
+  return "$status"
+}
+
 # Keep the auto palette as palettes/<name>/, with the wallpaper it came from.
 freeze() {
   local source name
@@ -429,6 +457,7 @@ case "${1:-}" in
   preview) preview "${2:?style or palette required}" "${3:?name required}" ;;
   refresh) refresh "${2:-}" ;;
   freeze) freeze "${2:-}" ;;
+  check) check ;;
   ensure) ensure ;;
   *)
     usage
