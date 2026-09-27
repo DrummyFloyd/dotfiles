@@ -27,3 +27,6 @@
 
 # wallpapers moved to a palette's backgrounds/
 Pictures/Backgrounds/wano-tree.jpg
+
+# Zen imports the palette by absolute path
+.config/zen/chrome/zen-palette.css

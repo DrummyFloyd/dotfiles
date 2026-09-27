@@ -1,0 +1,4 @@
+/* Linked into the Zen profile by the chezmoi script 93-link-zen-profile.
+ * Imports the colours rendered by the theme script by absolute path, so it
+ * doesn't depend on whether Zen resolves the link before the import. */
+@import url("file://{{ .chezmoi.homeDir }}/.local/state/theme/current/zen.css");
