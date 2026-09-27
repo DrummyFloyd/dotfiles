@@ -7,7 +7,7 @@
 #                                        plus palette.json, the style's "default"
 #   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/
 #   auto                                 palette matugen computes from the wallpaper
-#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty, gtk…)
+#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty, gtk, zen…)
 #   ~/.config/themes/settings.json       per app: follow the theme, and the auto palette
 #
 # matugen renders the style and the apps with the palette into

@@ -47,6 +47,7 @@ etc/wsl.conf
   "wlogout"
   "wlogout/private_icons"
   "yay"
+  "zen"
   "ZapZap"
 }}
 {{ range $listToIgnore }}

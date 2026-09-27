@@ -1,0 +1,32 @@
+/* Zen colours from the active theme palette, rendered by the theme script and
+ * imported by ~/.config/zen/chrome/userChrome.css, which Zen reads at startup.
+ * Turn off in ~/.config/themes/settings.json.
+ * Zen derives most of its colours from --zen-primary-color and
+ * --zen-branding-bg; its workspace gradient sets some of these inline, hence
+ * !important. */
+
+:root {
+  --zen-primary-color: {{palette.accent}} !important;
+  --zen-branding-bg: {{palette.surface}} !important;
+
+  --zen-colors-primary: {{palette.surface_raised}} !important;
+  --zen-colors-secondary: {{palette.surface_raised}} !important;
+  --zen-colors-tertiary: {{palette.surface}} !important;
+  --zen-colors-hover-bg: {{palette.surface_raised}} !important;
+  --zen-colors-border: {{palette.outline}} !important;
+  --zen-colors-input-bg: {{palette.surface}} !important;
+  --zen-colors-primary-foreground: {{palette.text}} !important;
+
+  --zen-main-browser-background: {{palette.surface}} !important;
+  --zen-main-browser-background-toolbar: {{palette.surface}} !important;
+  --zen-urlbar-background: {{palette.surface_raised}} !important;
+  --zen-dialog-background: {{palette.surface}} !important;
+
+  --toolbox-textcolor: {{palette.text}} !important;
+  --toolbar-color: {{palette.text}} !important;
+}
+
+#zen-browser-background,
+#zen-toolbar-background {
+  background: {{palette.surface}} !important;
+}

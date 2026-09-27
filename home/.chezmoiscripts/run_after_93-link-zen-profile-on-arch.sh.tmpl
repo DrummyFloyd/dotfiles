@@ -1,0 +1,28 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+# Zen keeps its profile under a random name; link the managed files into the
+# one it opens for this install ([Install<hash>] Default= in profiles.ini).
+PROFILES="{{ .chezmoi.homeDir }}/.zen/profiles.ini"
+if [[ ! -f "${PROFILES}" ]]; then
+  exit 0
+fi
+
+profile="$(awk -F= '
+  /^\[Install{{ mozillaInstallHash "/opt/zen-browser-bin" }}\]/ { section = 1; next }
+  /^\[/ { section = 0 }
+  section && $1 == "Default" { print $2 }
+' "${PROFILES}")"
+if [[ -z "${profile}" ]]; then
+  exit 0
+fi
+
+dir="{{ .chezmoi.homeDir }}/.zen/${profile}"
+mkdir -p "${dir}/chrome"
+ln -sfn "{{ .chezmoi.homeDir }}/.config/zen/user.js" "${dir}/user.js"
+ln -sfn "{{ .chezmoi.homeDir }}/.config/zen/chrome/userChrome.css" "${dir}/chrome/userChrome.css"
+ln -sfn "{{ .chezmoi.homeDir }}/.config/themes/current/zen.css" "${dir}/chrome/zen-palette.css"
