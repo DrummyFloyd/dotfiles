@@ -14,13 +14,14 @@ STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/wallpaper"
 CURRENT="$STATE_DIR/current"
 DEFAULT_WALLPAPER="$GLOBAL_DIR/onepiece-grafiti.jpg"
 
-# Thumbnail strip at the bottom of the screen, so the preview stays visible.
-GRID='
-window { width: 90%; location: south; anchor: south; y-offset: -20px; }
-listview { columns: 5; lines: 1; flow: horizontal; }
-element { orientation: vertical; padding: 8px; }
-element-icon { size: 12em; }
-element-text { horizontal-align: 0.5; }
+# Centered window: names on the left, the highlighted wallpaper large on the right.
+LAYOUT='
+window { width: 1100px; location: center; anchor: center; }
+mainbox { children: [inputbar, panes]; }
+panes { orientation: horizontal; spacing: 12px; children: [listview, icon-current-entry]; }
+listview { lines: 12; columns: 1; }
+element { children: [element-text]; }
+icon-current-entry { size: 34em; expand: true; }
 '
 
 usage() {
@@ -86,7 +87,7 @@ pick() {
     done | rofi -dmenu -i -p wallpaper \
       -selected-row "$((${row:-1} - 1))" \
       -on-selection-changed "$0 preview '{entry}'" \
-      -theme-str "$GRID"
+      -theme-str "$LAYOUT"
   )" || true
 
   if [[ -n "$choice" ]]; then
