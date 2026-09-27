@@ -5,6 +5,7 @@
 .chezmoiscripts/*-on-arch.sh
 .local/bin/scripts/pkg-drift
 .local/bin/scripts/theme
+.local/bin/scripts/wallpaper
 
 etc/pacman.d/**
 etc/pacman.d/

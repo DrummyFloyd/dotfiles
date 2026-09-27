@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+#
+# Pick and apply the desktop wallpaper through hyprpaper IPC.
+#
+# Wallpapers come from the active theme (~/.config/themes/current/backgrounds/)
+# then from ~/Pictures/Backgrounds. The chosen one is kept as the symlink
+# ~/.local/state/wallpaper/current, which hyprpaper.conf loads at startup.
+
+set -euo pipefail
+
+THEME_DIR="$HOME/.config/themes/current/backgrounds"
+GLOBAL_DIR="$HOME/Pictures/Backgrounds"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/wallpaper"
+CURRENT="$STATE_DIR/current"
+DEFAULT_WALLPAPER="$GLOBAL_DIR/onepiece-grafiti.jpg"
+
+# Thumbnail strip at the bottom of the screen, so the preview stays visible.
+GRID='
+window { width: 90%; location: south; anchor: south; y-offset: -20px; }
+listview { columns: 5; lines: 1; flow: horizontal; }
+element { orientation: vertical; padding: 8px; }
+element-icon { size: 12em; }
+element-text { horizontal-align: 0.5; }
+'
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") <command>
+
+  list            List available wallpapers
+  current         Print the active wallpaper
+  set <path>      Apply and keep a wallpaper
+  preview <name>  Show a wallpaper without keeping it
+  pick            Browse with rofi: highlight previews, Enter keeps, Esc reverts
+  ensure          Point to the default wallpaper if none is set
+EOF
+}
+
+# Full paths, theme wallpapers first; a theme one hides a global one of the same name.
+list() {
+  local dir
+  for dir in "$THEME_DIR" "$GLOBAL_DIR"; do
+    if [[ -d "$dir" ]]; then
+      find -L "$dir" -maxdepth 1 -type f \
+        \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) | sort
+    fi
+  done | awk -F/ '!seen[$NF]++'
+}
+
+current() {
+  readlink -f "$CURRENT" || true
+}
+
+# rofi entries show file names; map one back to its path.
+resolve() {
+  list | awk -F/ -v name="$1" '$NF == name { print; exit }'
+}
+
+# Show a wallpaper on every monitor, without keeping it.
+apply() {
+  local monitor
+  for monitor in $(hyprctl monitors -j | jq -r '.[].name'); do
+    hyprctl hyprpaper wallpaper "$monitor,$1,cover" >/dev/null
+  done
+}
+
+set_wallpaper() {
+  if [[ ! -f "$1" ]]; then
+    echo "Unknown wallpaper: $1" >&2
+    exit 1
+  fi
+
+  mkdir -p "$STATE_DIR"
+  ln -sfn "$1" "$CURRENT"
+  apply "$1"
+}
+
+pick() {
+  local previous choice row
+  previous="$(current)"
+  row="$(list | grep -nxF -- "$previous" | cut -d: -f1 || true)"
+
+  choice="$(
+    list | while read -r path; do
+      printf '%s\0icon\x1f%s\n' "${path##*/}" "$path"
+    done | rofi -dmenu -i -p wallpaper \
+      -selected-row "$((${row:-1} - 1))" \
+      -on-selection-changed "$0 preview '{entry}'" \
+      -theme-str "$GRID"
+  )" || true
+
+  if [[ -n "$choice" ]]; then
+    set_wallpaper "$(resolve "$choice")"
+  elif [[ -n "$previous" ]]; then
+    # Let a preview still in flight land before reverting over it.
+    sleep 0.2
+    apply "$previous"
+  fi
+}
+
+case "${1:-}" in
+  list) list ;;
+  current) current ;;
+  set) set_wallpaper "${2:?wallpaper path required}" ;;
+  preview)
+    path="$(resolve "${2:?wallpaper name required}")"
+    if [[ -n "$path" ]]; then
+      apply "$path"
+    fi
+    ;;
+  pick) pick ;;
+  ensure)
+    if [[ ! -e "$CURRENT" && -f "$DEFAULT_WALLPAPER" ]]; then
+      mkdir -p "$STATE_DIR"
+      ln -sfn "$DEFAULT_WALLPAPER" "$CURRENT"
+    fi
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac
