@@ -35,6 +35,7 @@ etc/wsl.conf
   "hypr"
   "hypr/hyprlock"
   "icons"
+  "matugen"
   "pacman"
   "rofi"
   "themes"
