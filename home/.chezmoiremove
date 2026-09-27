@@ -1,4 +1,4 @@
-# waybar components moved to .config/themes/pastel/waybar/
+# waybar look moved to ~/.config/themes/styles/
 .config/waybar/components/backlight.css
 .config/waybar/components/battery.css
 .config/waybar/components/button.css
@@ -12,9 +12,11 @@
 .config/waybar/components/windows-waybar.css
 .config/waybar/components/memory.css
 .config/waybar/default-values.css
+
+# wofi replaced by rofi
 .config/wofi
-.config/themes/galet-dark/wofi.css
-.config/themes/pastel/wofi.css
+
+# themes replaced by styles and palettes
 .config/themes/pastel
 .config/themes/galet-dark
 .config/themes/galet-auto
