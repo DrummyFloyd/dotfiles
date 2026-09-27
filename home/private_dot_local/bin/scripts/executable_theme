@@ -282,13 +282,27 @@ reload() {
 }
 
 # Render, remember and show a combination.
-activate() {
-  lock
-  render "$1" "$2"
+save() {
   mkdir -p "$STATE_DIR"
   echo "$1" >"$STATE_DIR/style"
   echo "$2" >"$STATE_DIR/palette"
+}
+
+activate() {
+  lock
+  render "$1" "$2"
+  save "$1" "$2"
   reload
+}
+
+# Render the saved theme; if it is gone, switch to the default one for good.
+ensure() {
+  lock
+  if ! render "$(active_style)" "$(active_palette)"; then
+    echo "Switching to $DEFAULT_STYLE/$DEFAULT_PALETTE" >&2
+    render "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
+    save "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
+  fi
 }
 
 # A style change keeps the palette when the new style can use it.
@@ -413,10 +427,7 @@ case "${1:-}" in
   preview) preview "${2:?style or palette required}" "${3:?name required}" ;;
   refresh) refresh "${2:-}" ;;
   freeze) freeze "${2:-}" ;;
-  ensure)
-    lock
-    render "$(active_style)" "$(active_palette)" || render "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
-    ;;
+  ensure) ensure ;;
   *)
     usage
     exit 1
