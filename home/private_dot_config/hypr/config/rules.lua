@@ -121,3 +121,8 @@ hl.window_rule({
 	match = { class = "^(com.rtosta.zapzap)$" },
 	workspace = "10 silent",
 })
+
+-- Named after their app: waybar shows workspace names, so these two read as
+-- icons instead of numbers. Binds still target them by number.
+hl.workspace_rule({ workspace = "9", default_name = "" })
+hl.workspace_rule({ workspace = "10", default_name = "󰖣" })
