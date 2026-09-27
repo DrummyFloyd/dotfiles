@@ -15,8 +15,11 @@ STATE_DIR="$HOME/.local/state/wallpaper"
 CURRENT="$STATE_DIR/current"
 DEFAULT_WALLPAPER="$GLOBAL_DIR/onepiece-grafiti.jpg"
 THEME="$(dirname "$(readlink -f "$0")")/theme"
-# Last wallpaper highlighted in the picker; recolouring waits until it settles.
+# Last wallpaper highlighted in the picker, or "closed" once the picker is done;
+# recolouring waits until it settles.
 PREVIEW_TOKEN="${XDG_RUNTIME_DIR:-/tmp}/wallpaper-preview"
+# Held to show a wallpaper, so previews and the picker's final choice apply in order.
+LOCK="${XDG_RUNTIME_DIR:-/tmp}/wallpaper.lock"
 PREVIEW_DELAY=0.3
 
 # Centered window: names on the left, the highlighted wallpaper large on the right.
@@ -57,6 +60,14 @@ current() {
   readlink -f "$CURRENT" || true
 }
 
+# Run a function holding the lock.
+locked() {
+  (
+    flock 8
+    "$@"
+  ) 8>"$LOCK"
+}
+
 # rofi entries show file names; map one back to its path.
 resolve() {
   list | awk -F/ -v name="$1" '$NF == name { print; exit }'
@@ -82,6 +93,20 @@ set_wallpaper() {
   "$THEME" refresh "$1"
 }
 
+# The highlighted wallpaper, unless the picker has closed meanwhile.
+show_preview() {
+  [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" != closed ]] || return 1
+  echo "$1" >"$PREVIEW_TOKEN"
+  apply "$1"
+}
+
+# Its colours, if it is still the highlighted one.
+recolour_preview() {
+  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" == "$1" ]]; then
+    "$THEME" refresh "$1"
+  fi
+}
+
 # Called by rofi on every highlight: the wallpaper changes at once, the theme
 # colours (a waybar restart) only once the highlight settles.
 preview() {
@@ -89,11 +114,21 @@ preview() {
   path="$(resolve "$1")"
   [[ -n "$path" ]] || return 0
 
-  apply "$path"
-  echo "$path" >"$PREVIEW_TOKEN"
+  locked show_preview "$path" || return 0
   sleep "$PREVIEW_DELAY"
-  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" == "$path" ]]; then
-    "$THEME" refresh "$path"
+  locked recolour_preview "$path"
+}
+
+# Keep the picked wallpaper, or put the previous one back. Previews still
+# running find the picker closed and leave it alone.
+finish_pick() {
+  local choice="$1" previous="$2"
+  echo closed >"$PREVIEW_TOKEN"
+  if [[ -n "$choice" ]]; then
+    set_wallpaper "$(resolve "$choice")"
+  elif [[ -n "$previous" ]]; then
+    apply "$previous"
+    "$THEME" refresh "$previous"
   fi
 }
 
@@ -101,6 +136,7 @@ pick() {
   local previous choice row
   previous="$(current)"
   row="$(list | grep -nxF -- "$previous" | cut -d: -f1 || true)"
+  : >"$PREVIEW_TOKEN"
 
   # {entry} in double quotes: see the theme script's menu.
   choice="$(
@@ -112,23 +148,13 @@ pick() {
       -theme-str "$LAYOUT"
   )" || true
 
-  # Cancel any recolouring still waiting to fire.
-  : >"$PREVIEW_TOKEN"
-
-  if [[ -n "$choice" ]]; then
-    set_wallpaper "$(resolve "$choice")"
-  elif [[ -n "$previous" ]]; then
-    # Let a preview still in flight land before reverting over it.
-    sleep 0.2
-    apply "$previous"
-    "$THEME" refresh "$previous"
-  fi
+  locked finish_pick "$choice" "$previous"
 }
 
 case "${1:-}" in
   list) list ;;
   current) current ;;
-  set) set_wallpaper "${2:?wallpaper path required}" ;;
+  set) locked set_wallpaper "${2:?wallpaper path required}" ;;
   preview) preview "${2:?wallpaper name required}" ;;
   pick) pick ;;
   ensure)
