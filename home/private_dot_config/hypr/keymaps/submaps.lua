@@ -21,9 +21,9 @@ local function mode(title, keys)
 	return ("<b>%s</b>   %s"):format(title, table.concat(parts, "<span alpha='35%'>  ·  </span>"))
 end
 
-local RESIZE = mode("Resize", { { "H J K L", "taille" }, { "Tab", "fenêtre suivante" }, { "Esc", "quitter" } })
-local WORKSPACE = mode("Workspace", { { "H", "écran ←" }, { "L", "écran →" }, { "Esc", "quitter" } })
-local THEME = mode("Theme", { { "S", "style" }, { "P", "palette" }, { "W", "wallpaper" }, { "Esc", "quitter" } })
+local RESIZE = mode("Resize", { { "H J K L", "resize" }, { "Tab", "next window" }, { "Esc", "exit" } })
+local WORKSPACE = mode("Workspace", { { "H", "monitor ←" }, { "L", "monitor →" }, { "Esc", "exit" } })
+local THEME = mode("Theme", { { "S", "style" }, { "P", "palette" }, { "W", "wallpaper" }, { "Esc", "exit" } })
 
 -- ########################## Submap announcement #########################
 -- Replaces the submapNotif script, which kept a socat listener on socket2
