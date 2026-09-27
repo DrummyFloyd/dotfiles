@@ -49,7 +49,7 @@ Usage: $(basename "$0") <command>
   preview style|palette <name>  Show without notifying (debounced)
   refresh [image]       Recolour from the wallpaper if the palette is auto
   freeze [name]         Save the auto palette (name: the wallpaper's)
-  ensure                Render the saved theme, or the default one
+  ensure                Render and reload the saved theme, or the default one
 EOF
 }
 
@@ -295,7 +295,8 @@ activate() {
   reload
 }
 
-# Render the saved theme; if it is gone, switch to the default one for good.
+# Render the saved theme and reload the apps; if it is gone, switch to the
+# default one for good.
 ensure() {
   lock
   if ! render "$(active_style)" "$(active_palette)"; then
@@ -303,6 +304,7 @@ ensure() {
     render "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
     save "$DEFAULT_STYLE" "$DEFAULT_PALETTE"
   fi
+  reload
 }
 
 # A style change keeps the palette when the new style can use it.

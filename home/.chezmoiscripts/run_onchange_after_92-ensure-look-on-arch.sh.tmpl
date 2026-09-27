@@ -1,0 +1,22 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+# Re-render the theme when its templates, palettes, settings or scripts change.
+{{- range list "private_dot_config/themes/**" "private_dot_config/matugen/**" "private_dot_local/bin/scripts/executable_theme" "private_dot_local/bin/scripts/executable_wallpaper" }}
+{{-   range (glob (joinPath $.chezmoi.sourceDir .)) }}
+{{-     if and (not (stat .).isDir) (ne (base .) "README.md") }}
+# {{ . | trimPrefix $.chezmoi.sourceDir }}: {{ include . | sha256sum }}
+{{-     end }}
+{{-   end }}
+{{- end }}
+
+{{ template "utils" }}
+
+# GTK: dark variant of adw-gtk3, coloured by ~/.config/gtk-*/gtk.css.
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
+
+"{{ .chezmoi.homeDir }}/.local/bin/scripts/wallpaper" ensure
+"{{ .chezmoi.homeDir }}/.local/bin/scripts/theme" ensure
