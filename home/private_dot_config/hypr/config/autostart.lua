@@ -9,7 +9,7 @@ return function()
 	-- Make sure the right XDG portal is running
 	hl.exec_cmd(SCRIPTS .. "/xdg-portal-hyprland")
 	hl.exec_cmd("uwsm app -- waybar")
-	hl.exec_cmd("uwsm app -- hyprpaper")
+	hl.exec_cmd(SCRIPTS .. "/wallpaper start")
 	hl.exec_cmd("uwsm app -- dunst")
 	hl.exec_cmd("uwsm app -- udiskie -an")
 	hl.exec_cmd("uwsm app -- nm-applet --indicator")

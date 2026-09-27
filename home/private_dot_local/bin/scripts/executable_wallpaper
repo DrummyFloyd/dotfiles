@@ -5,7 +5,11 @@
 # Wallpapers come from the active theme (~/.local/state/theme/current/backgrounds/)
 # then from ~/Pictures/Backgrounds. The auto palette takes its colours from any
 # wallpaper, so it also lists the wallpapers of every palette. The chosen one is kept as the symlink
-# ~/.local/state/wallpaper/current, which hyprpaper.conf loads at startup.
+# ~/.local/state/wallpaper/current.
+# hyprpaper keeps a wallpaper decoded at full size, so it is shown from a copy
+# shrunk to just cover the monitor, made once per size under ~/.cache/wallpaper/.
+# ~/.local/state/wallpaper/display points to the copy for the largest monitor,
+# which hyprpaper.conf loads at startup.
 # A theme that follows the wallpaper is recoloured along (see the theme script).
 
 set -euo pipefail
@@ -15,6 +19,8 @@ GLOBAL_DIR="$HOME/Pictures/Backgrounds"
 PALETTES_DIR="$HOME/.config/themes/palettes"
 STATE_DIR="$HOME/.local/state/wallpaper"
 CURRENT="$STATE_DIR/current"
+DISPLAY_LINK="$STATE_DIR/display"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/wallpaper"
 DEFAULT_WALLPAPER="$PALETTES_DIR/tokyonight/backgrounds/wano-tree.jpg"
 THEME="$(dirname "$(readlink -f "$0")")/theme"
 # Last wallpaper highlighted in the picker, or "closed" once the picker is done;
@@ -44,6 +50,7 @@ Usage: $(basename "$0") <command>
   preview <name>  Show a wallpaper without keeping it
   pick            Browse with rofi: highlight previews, Enter keeps, Esc reverts
   ensure          Point to the default wallpaper if none is set
+  start           Size the wallpaper for the monitors, then run hyprpaper
 EOF
 }
 
@@ -80,12 +87,49 @@ resolve() {
   list | awk -F/ -v name="$1" '$NF == name { print; exit }'
 }
 
+# Name, width and height in pixels of each monitor, rotation included.
+monitors() {
+  hyprctl monitors -j |
+    jq -r '.[] | [.name] + (if .transform % 2 == 1 then [.height, .width] else [.width, .height] end) | @tsv'
+}
+
+# The wallpaper shrunk to just cover a width x height monitor, made on first
+# use; the wallpaper itself when it is not larger.
+sized() {
+  local path="$1" width="$2" height="$3" image_width image_height name copy
+  read -r image_width image_height < <(magick identify -format '%w %h\n' "$path[0]")
+  if ((image_width <= width || image_height <= height)); then
+    echo "$path"
+    return
+  fi
+
+  name="${path##*/}"
+  copy="$CACHE_DIR/${width}x${height}/${name%.*}.jpg"
+  if [[ ! "$copy" -nt "$path" ]]; then
+    mkdir -p "${copy%/*}"
+    magick "$path[0]" -resize "${width}x${height}^" -quality 90 "$copy.tmp.jpg"
+    mv -f "$copy.tmp.jpg" "$copy"
+  fi
+  echo "$copy"
+}
+
 # Show a wallpaper on every monitor, without keeping it.
 apply() {
-  local monitor
-  for monitor in $(hyprctl monitors -j | jq -r '.[].name'); do
-    hyprctl hyprpaper wallpaper "$monitor,$1,cover" >/dev/null
-  done
+  local name width height
+  while IFS=$'\t' read -r name width height; do
+    hyprctl hyprpaper wallpaper "$name,$(sized "$1" "$width" "$height"),cover" >/dev/null
+  done < <(monitors)
+}
+
+# Point hyprpaper.conf to the copy for the largest monitor.
+link_display() {
+  local width height
+  read -r width height < <(monitors | sort -t$'\t' -k2,2nr -k3,3nr | cut -f2,3 | head -n1)
+  if [[ -n "$width" ]]; then
+    ln -sfn "$(sized "$1" "$width" "$height")" "$DISPLAY_LINK"
+  else
+    ln -sfn "$1" "$DISPLAY_LINK"
+  fi
 }
 
 set_wallpaper() {
@@ -96,6 +140,7 @@ set_wallpaper() {
 
   mkdir -p "$STATE_DIR"
   ln -sfn "$1" "$CURRENT"
+  link_display "$1"
   apply "$1"
   "$THEME" refresh "$1"
 }
@@ -158,17 +203,28 @@ pick() {
   locked finish_pick "$choice" "$previous"
 }
 
+ensure() {
+  if [[ ! -e "$CURRENT" && -f "$DEFAULT_WALLPAPER" ]]; then
+    mkdir -p "$STATE_DIR"
+    ln -sfn "$DEFAULT_WALLPAPER" "$CURRENT"
+  fi
+}
+
 case "${1:-}" in
   list) list ;;
   current) current ;;
   set) locked set_wallpaper "${2:?wallpaper path required}" ;;
   preview) preview "${2:?wallpaper name required}" ;;
   pick) pick ;;
-  ensure)
-    if [[ ! -e "$CURRENT" && -f "$DEFAULT_WALLPAPER" ]]; then
-      mkdir -p "$STATE_DIR"
-      ln -sfn "$DEFAULT_WALLPAPER" "$CURRENT"
+  ensure) ensure ;;
+  start)
+    ensure
+    # The monitors may have changed since the wallpaper was set; hyprpaper
+    # starts anyway if the copy cannot be made.
+    if [[ -f "$CURRENT" ]]; then
+      locked link_display "$(current)" || true
     fi
+    exec uwsm app -- hyprpaper
     ;;
   *)
     usage
