@@ -1,9 +1,9 @@
 --- Hyprland look for the galet-dark theme, loaded by hypr/config/theme.lua.
 return {
 	general = {
-		border_size = 2,
 		col = {
-			active_border = "rgba(e3a441ff)",
+			-- Gradient so the looping borderangle animation shows
+			active_border = { colors = { "rgba(e3a441ff)", "rgba(d9703aff)", "rgba(b9523aff)", "rgba(e3a441ff)" }, angle = 45 },
 			inactive_border = "rgba(4a3f37ff)",
 		},
 	},
@@ -15,7 +15,7 @@ return {
 	},
 	group = {
 		col = {
-			border_active = "rgba(e3a441ff)",
+			border_active = { colors = { "rgba(e3a441ff)", "rgba(d9703aff)", "rgba(b9523aff)", "rgba(e3a441ff)" }, angle = 45 },
 			border_inactive = "rgba(4a3f37ff)",
 		},
 		groupbar = {
