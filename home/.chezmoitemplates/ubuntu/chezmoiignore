@@ -4,6 +4,10 @@
 
 .chezmoiscripts/*-on-arch.sh
 .local/bin/scripts/pkg-drift
+# Hyprland helpers
+.local/bin/scripts/mainMonitorSwitch
+.local/bin/scripts/reloadHyprland
+.local/bin/scripts/xdg-portal-hyprland
 
 etc/pacman.d/**
 etc/pacman.d/
