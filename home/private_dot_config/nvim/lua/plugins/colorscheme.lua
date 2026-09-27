@@ -1,12 +1,12 @@
 --- Colours from the desktop theme (~/.config/themes).
 ---
---- The theme script writes ~/.config/themes/current/nvim.json on every theme
+--- The theme script writes ~/.local/state/theme/current/nvim.json on every theme
 --- change: a palette naming a colorscheme (gruvbox, tokyonight…) uses it, any
 --- other palette (galet default, auto) is applied through mini.base16. When nvim
 --- does not follow the theme (~/.config/themes/settings.json), the fallback
 --- colorscheme is used. Running instances pick changes up on their own.
 
-local THEME_FILE = vim.fn.expand("~/.config/themes/current/nvim.json")
+local THEME_FILE = vim.fn.expand("~/.local/state/theme/current/nvim.json")
 local FALLBACK = "tokyonight"
 
 --- @return table|nil

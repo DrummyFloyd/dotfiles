@@ -11,7 +11,7 @@
 #   ~/.config/themes/settings.json       per app: follow the theme, and the auto palette
 #
 # matugen renders the style and the apps with the palette into
-# ~/.config/themes/current/, the directory every app config reads.
+# ~/.local/state/theme/current/, the directory every app config reads.
 
 set -euo pipefail
 shopt -s nullglob
@@ -21,9 +21,9 @@ STYLES_DIR="$THEMES_DIR/styles"
 PALETTES_DIR="$THEMES_DIR/palettes"
 APPS_DIR="$THEMES_DIR/apps"
 SETTINGS="$THEMES_DIR/settings.json"
-CURRENT="$THEMES_DIR/current"
-# Matches the output_path of ~/.config/matugen/config.toml.
+# Generated files; the auto dir matches the output_path of ~/.config/matugen/config.toml.
 STATE_DIR="$HOME/.local/state/theme"
+CURRENT="$STATE_DIR/current"
 AUTO_DIR="$STATE_DIR/auto"
 MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 WALLPAPER="$(dirname "$(readlink -f "$0")")/wallpaper"
@@ -179,7 +179,8 @@ render() {
   # Rendered aside then moved in, so apps never read a half-written current/
   # and a failed render leaves the previous theme in place. Same filesystem as
   # current/, so each move is an atomic rename.
-  out="$(mktemp -d "$THEMES_DIR/.render.XXXXXX")"
+  mkdir -p "$STATE_DIR"
+  out="$(mktemp -d "$STATE_DIR/.render.XXXXXX")"
   config="$(mktemp --suffix .toml)"
   printf '[config]\n\n' >"$config"
   # apps/ holds the default files of each app; a style may replace one with a
@@ -219,10 +220,6 @@ render() {
 
   write_nvim "$palette" "$dir/palette.json" "$out/nvim.json"
 
-  # current used to be a symlink to a theme directory.
-  if [[ -L "$CURRENT" ]]; then
-    rm "$CURRENT"
-  fi
   mkdir -p "$CURRENT"
   # Drop what the new theme no longer has, then rename each file over the old
   # one (-T: replace the backgrounds link itself, not move into its target).

@@ -1,5 +1,5 @@
 --- Look of the active theme: colours, rounding, shadow.
---- ~/.config/themes/current/hyprland.lua returns a table in hl.config() format;
+--- ~/.local/state/theme/current/hyprland.lua returns a table in hl.config() format;
 --- switch themes with ~/.local/bin/scripts/theme.
 ---
 --- The theme script re-runs this file through `hyprctl eval` instead of a full
@@ -8,7 +8,7 @@
 --- disabled. DEFAULTS resets what a theme may change, so switching themes
 --- never keeps the previous theme's values.
 
-local THEME = os.getenv("HOME") .. "/.config/themes/current/hyprland.lua"
+local THEME = os.getenv("HOME") .. "/.local/state/theme/current/hyprland.lua"
 
 local DEFAULTS = {
 	general = {

@@ -2,16 +2,16 @@
 #
 # Pick and apply the desktop wallpaper through hyprpaper IPC.
 #
-# Wallpapers come from the active theme (~/.config/themes/current/backgrounds/)
+# Wallpapers come from the active theme (~/.local/state/theme/current/backgrounds/)
 # then from ~/Pictures/Backgrounds. The chosen one is kept as the symlink
 # ~/.local/state/wallpaper/current, which hyprpaper.conf loads at startup.
 # A theme that follows the wallpaper is recoloured along (see the theme script).
 
 set -euo pipefail
 
-THEME_DIR="$HOME/.config/themes/current/backgrounds"
+THEME_DIR="$HOME/.local/state/theme/current/backgrounds"
 GLOBAL_DIR="$HOME/Pictures/Backgrounds"
-STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/wallpaper"
+STATE_DIR="$HOME/.local/state/wallpaper"
 CURRENT="$STATE_DIR/current"
 DEFAULT_WALLPAPER="$GLOBAL_DIR/onepiece-grafiti.jpg"
 THEME="$(dirname "$(readlink -f "$0")")/theme"

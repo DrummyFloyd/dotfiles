@@ -1,10 +1,10 @@
 // Behaviour shared by every theme.
-// The look (module layout, formats, icons) lives in ~/.config/themes/current/waybar.jsonc:
+// The look (module layout, formats, icons) lives in ~/.local/state/theme/current/waybar.jsonc:
 // on duplicate keys this file wins, so keep look-related keys out of it.
 {
   "layer": "top",
   "position": "top",
-  "include": ["~/.config/themes/current/waybar.jsonc"],
+  "include": ["~/.local/state/theme/current/waybar.jsonc"],
   "clock": {
     "timezone": "Europe/Paris",
     "tooltip-format": "<tt>{calendar}</tt>",

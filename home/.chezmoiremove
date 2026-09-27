@@ -21,3 +21,6 @@
 .config/themes/galet-dark
 .config/themes/galet-auto
 .config/matugen/templates/galet-auto
+
+# generated theme files moved to ~/.local/state/theme/current
+.config/themes/current
