@@ -1,0 +1,37 @@
+/* GTK colours from the active theme palette, rendered by the theme script and
+ * imported by ~/.config/gtk-3.0/gtk.css (adw-gtk3) and ~/.config/gtk-4.0/gtk.css
+ * (libadwaita). Turn off in ~/.config/themes/settings.json. */
+
+@define-color accent_color {{palette.accent}};
+@define-color accent_bg_color {{palette.accent}};
+@define-color accent_fg_color {{palette.on_accent}};
+
+@define-color destructive_color {{palette.crit}};
+@define-color destructive_bg_color {{palette.crit}};
+@define-color destructive_fg_color {{palette.on_accent}};
+@define-color success_color {{palette.term2}};
+@define-color warning_color {{palette.warn}};
+@define-color error_color {{palette.crit}};
+
+@define-color window_bg_color {{palette.surface}};
+@define-color window_fg_color {{palette.text}};
+@define-color view_bg_color {{palette.surface}};
+@define-color view_fg_color {{palette.text}};
+
+@define-color headerbar_bg_color {{palette.surface_raised}};
+@define-color headerbar_fg_color {{palette.text}};
+@define-color headerbar_backdrop_color @window_bg_color;
+@define-color headerbar_border_color {{palette.outline}};
+
+@define-color sidebar_bg_color {{palette.surface_raised}};
+@define-color sidebar_fg_color {{palette.text}};
+@define-color sidebar_backdrop_color @sidebar_bg_color;
+@define-color secondary_sidebar_bg_color {{palette.surface_raised}};
+@define-color secondary_sidebar_fg_color {{palette.text}};
+
+@define-color card_bg_color {{palette.surface_raised}};
+@define-color card_fg_color {{palette.text}};
+@define-color popover_bg_color {{palette.surface_raised}};
+@define-color popover_fg_color {{palette.text}};
+@define-color dialog_bg_color {{palette.surface_raised}};
+@define-color dialog_fg_color {{palette.text}};

@@ -7,7 +7,7 @@
 #                                        plus palette.json, the style's "default"
 #   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/
 #   auto                                 palette matugen computes from the wallpaper
-#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty…)
+#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty, gtk…)
 #   ~/.config/themes/settings.json       per app: follow the theme, and the auto palette
 #
 # matugen renders the style and the apps with the palette into
@@ -226,6 +226,11 @@ reload() {
   hyprctl eval 'hl.exec_cmd("uwsm app -- waybar")' >/dev/null
   # kitty re-reads its config (and the included colours) on SIGUSR1.
   pkill -USR1 -x kitty || true
+  # GTK apps re-read their style (and gtk.css) when the GTK theme changes.
+  local gtk_theme
+  gtk_theme="$(gsettings get org.gnome.desktop.interface gtk-theme)"
+  gsettings set org.gnome.desktop.interface gtk-theme Adwaita
+  gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 }
 
 # Render, remember and show a combination.
