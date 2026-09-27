@@ -21,6 +21,8 @@ theme current               # galet/gruvbox
 wallpaper set ~/Pictures/Backgrounds/onepiece-grafiti.jpg
 ```
 
+hyprpaper shows a copy of the wallpaper shrunk to cover each monitor, made on its first preview or apply at that size (and at login) in `~/.cache/wallpaper/`. Delete it to reclaim sizes of old monitors.
+
 ## Add a palette
 
 Create `palettes/<name>/palette.json` (copy `styles/galet/palette.json`):
