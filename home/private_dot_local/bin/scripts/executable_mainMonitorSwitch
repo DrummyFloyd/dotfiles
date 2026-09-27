@@ -1,7 +1,8 @@
 #!/bin/bash
 iDIR="$HOME/.config/icons"
-# Read by hypr/config/monitors.lua so a Hyprland reload keeps the choice.
-STATE="${XDG_STATE_HOME:-$HOME/.local/state}/hypr/main-monitor"
+# Read by hypr/config/monitors.lua so a config reload keeps the choice;
+# per Hyprland instance, and cleared by reloadHyprland.
+STATE="${XDG_RUNTIME_DIR}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/main-monitor"
 
 monitors="$(hyprctl monitors -j | jq -r '.[] | "󰍹 id: \(.id) - \(.name)"')
 󰍺 all monitors - all"

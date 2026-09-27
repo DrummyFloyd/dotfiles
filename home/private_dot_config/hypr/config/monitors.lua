@@ -69,8 +69,13 @@ local function apply_rules()
 	end
 end
 
---- Monitor chosen with mainMonitorSwitch (leader+P), saved so a reload keeps it.
-local MAIN_MONITOR = (os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state")) .. "/hypr/main-monitor"
+--- Monitor chosen with mainMonitorSwitch (leader+P), saved so a config reload
+--- keeps it. It lives in this Hyprland instance's runtime directory, so a new
+--- session starts with every monitor; reloadHyprland (leader+SHIFT+R) clears it.
+local MAIN_MONITOR = ("%s/hypr/%s/main-monitor"):format(
+	os.getenv("XDG_RUNTIME_DIR") or "",
+	os.getenv("HYPRLAND_INSTANCE_SIGNATURE") or ""
+)
 
 --- Disables every other monitor while the saved main one is connected.
 local function keep_main_monitor()
