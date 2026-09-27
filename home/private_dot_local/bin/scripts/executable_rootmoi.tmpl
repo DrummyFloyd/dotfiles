@@ -25,8 +25,9 @@ mkdir -p '{{ $configDir }}' '{{ $cacheDir }}'
 
 # Pass PATH explicitly, as sudo resets it to secure_path. We do not use sudo's
 # --preserve-env option because the sudo function bypasses sudo when already
-# root.
-env_args=(env "PATH=${PATH}")
+# root. System directories come first: a user-writable directory of PATH
+# (~/.local/bin…) must not shadow a system command run as root.
+env_args=(env "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}")
 
 sudo exec "${env_args[@]}" \
   "${executable}" "$@" \
