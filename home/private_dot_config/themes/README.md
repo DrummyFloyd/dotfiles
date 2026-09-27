@@ -29,11 +29,20 @@ Create `palettes/<name>/palette.json` (copy `styles/galet/palette.json`):
 {
   "nvim": { "colorscheme": "gruvbox" },
   "palette": {
-    "surface": "#282828", "surface_raised": "#3c3836",
-    "text": "#ebdbb2", "text_mute": "#a89984", "outline": "#504945",
-    "accent": "#fabd2f", "accent2": "#fe8019", "accent3": "#fb4934",
-    "warn": "#fe8019", "crit": "#fb4934", "on_accent": "#282828",
-    "term0": "#282828", "...": "...", "term15": "#ebdbb2"
+    "surface": "#282828",
+    "surface_raised": "#3c3836",
+    "text": "#ebdbb2",
+    "text_mute": "#a89984",
+    "outline": "#504945",
+    "accent": "#fabd2f",
+    "accent2": "#fe8019",
+    "accent3": "#fb4934",
+    "warn": "#fe8019",
+    "crit": "#fb4934",
+    "on_accent": "#282828",
+    "term0": "#282828",
+    "...": "...",
+    "term15": "#ebdbb2"
   }
 }
 ```
@@ -61,14 +70,14 @@ In `hyprland.lua` use `{{palette.accent | replace: "#", ""}}` for `rgba(...)`. T
 
 ## Apps
 
-| App | Template | Notes |
-|---|---|---|
-| waybar, rofi, Hyprland | `styles/<style>/` | reloaded on switch |
-| kitty | `apps/kitty/kitty.conf` | reloaded on switch |
-| GTK (nautilus, pavucontrol…) | `apps/gtk/gtk.css` | open apps may need a restart |
-| dunst | `apps/dunst/dunst.conf` | reloaded on switch |
-| Zen | `apps/zen/zen.css` | applied at Zen startup |
-| nvim | `~/.local/state/theme/current/nvim.json` | running instances follow |
+| App                          | Template                                 | Notes                        |
+| ---------------------------- | ---------------------------------------- | ---------------------------- |
+| waybar, rofi, Hyprland       | `styles/<style>/`                        | reloaded on switch           |
+| kitty                        | `apps/kitty/kitty.conf`                  | reloaded on switch           |
+| GTK (nautilus, pavucontrol…) | `apps/gtk/gtk.css`                       | open apps may need a restart |
+| dunst                        | `apps/dunst/dunst.conf`                  | reloaded on switch           |
+| Zen                          | `apps/zen/zen.css`                       | applied at Zen startup       |
+| nvim                         | `~/.local/state/theme/current/nvim.json` | running instances follow     |
 
 Turn an app off in `settings.json`: `follow` (all palettes) or `follow_auto` (the `auto` palette only). `nvim.fallback` is the colorscheme used when nvim doesn't follow.
 
@@ -83,4 +92,4 @@ Files in `apps/` are defaults: a style replaces one by shipping a file of the sa
 
 ## Known issue
 
-Hyprland 0.56 can crash when a monitor is disabled (`leader+P`) right after a full config reload (`leader+SHIFT+R`, `leader+P` → *all monitors*, or `chezmoi apply` touching hypr files). Switching themes doesn't trigger a full reload.
+Hyprland 0.56 can crash when a monitor is disabled (`leader+P`) right after a full config reload (`leader+SHIFT+R`, `leader+P` → _all monitors_, or `chezmoi apply` touching hypr files). Switching themes doesn't trigger a full reload.
