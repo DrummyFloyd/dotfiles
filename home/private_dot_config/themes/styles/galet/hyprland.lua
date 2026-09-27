@@ -1,11 +1,19 @@
 --- Hyprland look for the galet style, loaded by hypr/config/theme.lua; colours from the palette.
+
+local accent = "rgba({{palette.accent | replace: "#", ""}}ff)"
+local accent2 = "rgba({{palette.accent2 | replace: "#", ""}}ff)"
+local accent3 = "rgba({{palette.accent3 | replace: "#", ""}}ff)"
+local outline = "rgba({{palette.outline | replace: "#", ""}}ff)"
+
+-- Gradient so the looping borderangle animation shows
+local active_border = { colors = { accent, accent2, accent3, accent }, angle = 45 }
+
 return {
 	general = {
 		border_size = 4,
 		col = {
-			-- Gradient so the looping borderangle animation shows
-			active_border = { colors = { "rgba({{palette.accent | replace: "#", ""}}ff)", "rgba({{palette.accent2 | replace: "#", ""}}ff)", "rgba({{palette.accent3 | replace: "#", ""}}ff)", "rgba({{palette.accent | replace: "#", ""}}ff)" }, angle = 45 },
-			inactive_border = "rgba({{palette.outline | replace: "#", ""}}ff)",
+			active_border = active_border,
+			inactive_border = outline,
 		},
 	},
 	decoration = {
@@ -16,13 +24,13 @@ return {
 	},
 	group = {
 		col = {
-			border_active = { colors = { "rgba({{palette.accent | replace: "#", ""}}ff)", "rgba({{palette.accent2 | replace: "#", ""}}ff)", "rgba({{palette.accent3 | replace: "#", ""}}ff)", "rgba({{palette.accent | replace: "#", ""}}ff)" }, angle = 45 },
-			border_inactive = "rgba({{palette.outline | replace: "#", ""}}ff)",
+			border_active = active_border,
+			border_inactive = outline,
 		},
 		groupbar = {
 			col = {
-				active = "rgba({{palette.accent | replace: "#", ""}}ff)",
-				inactive = "rgba({{palette.outline | replace: "#", ""}}ff)",
+				active = accent,
+				inactive = outline,
 			},
 		},
 	},
