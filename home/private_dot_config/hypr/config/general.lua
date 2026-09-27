@@ -1,4 +1,5 @@
 --- Global options: layout, decoration, input, groups, misc.
+--- Colours, rounding and shadow come from the active theme (config/theme.lua).
 --- https://wiki.hypr.land/configuring/core/config-options/
 
 local Config = require("config")
@@ -9,20 +10,10 @@ hl.config({
 		gaps_out = 10,
 		border_size = 3,
 		layout = "master",
-		col = {
-			active_border = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
-			inactive_border = "rgba(595959aa)",
-		},
 	},
 
 	decoration = {
 		inactive_opacity = 0.95,
-		rounding = 5,
-		shadow = {
-			range = 4,
-			render_power = 3,
-			color = "rgba(1a1a1aee)",
-		},
 		blur = {
 			enabled = true,
 			size = 3,
@@ -60,17 +51,9 @@ hl.config({
 	},
 
 	group = {
-		col = {
-			border_active = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
-			border_inactive = "rgba(595959aa)",
-		},
 		groupbar = {
 			font_family = "FiraCode Nerd Font",
 			font_size = 6,
-			col = {
-				active = "rgba(00ff0fff)",
-				inactive = "rgba(f000ffbf)",
-			},
 		},
 	},
 
