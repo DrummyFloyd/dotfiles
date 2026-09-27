@@ -308,15 +308,15 @@ ensure() {
   reload
 }
 
-# A style change keeps the palette when the new style can use it.
-with_style() {
+# Palette to use with a style: the active one when the style can use it.
+style_palette() {
   local palette
   palette="$(active_palette)"
   # grep -q would stop reading early and fail the pipeline (pipefail).
   if ! palettes "$1" | grep -xF -- "$palette" >/dev/null; then
     palette="$DEFAULT_PALETTE"
   fi
-  echo "$1 $palette"
+  echo "$palette"
 }
 
 set_theme() {
@@ -343,8 +343,7 @@ preview() {
   case "$kind" in
     style)
       [[ "$name" != "$(active_style)" ]] || return 0
-      # shellcheck disable=SC2046
-      render $(with_style "$name")
+      render "$name" "$(style_palette "$name")"
       ;;
     palette)
       palettes | grep -xF -- "$name" >/dev/null || return 0
@@ -382,8 +381,7 @@ menu() {
       reload
     fi
   elif [[ "$kind" == style ]]; then
-    # shellcheck disable=SC2046
-    set_theme $(with_style "$choice")
+    set_theme "$choice" "$(style_palette "$choice")"
   else
     set_theme "$(active_style)" "$choice"
   fi
@@ -449,8 +447,7 @@ case "${1:-}" in
   styles) styles ;;
   palettes) palettes ;;
   set) set_theme "${2:?style required}" "${3:?palette required}" ;;
-  # shellcheck disable=SC2046
-  style) set_theme $(with_style "${2:?style required}") ;;
+  style) set_theme "${2:?style required}" "$(style_palette "$2")" ;;
   palette) set_theme "$(active_style)" "${2:?palette required}" ;;
   default) set_theme "$DEFAULT_STYLE" "$DEFAULT_PALETTE" ;;
   menu) menu "${2:?style or palette required}" ;;
