@@ -18,7 +18,6 @@ Bind.leader_key("SHIFT + F", hl.dsp.window.fullscreen({ action = "toggle", mode 
 Bind.leader_cmd("L", "uwsm app -- hyprlock", "Lock screen")
 Bind.leader_cmd("SHIFT + R", SCRIPTS .. "/reloadHyprland", "Reload Hyprland")
 Bind.leader_cmd("P", SCRIPTS .. "/mainMonitorSwitch", "Switch main monitor")
-Bind.cmd("ALT + T", SCRIPTS .. "/theme menu", "Pick a theme")
 
 -- ############################# Applications #############################
 
