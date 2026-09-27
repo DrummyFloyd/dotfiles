@@ -47,10 +47,18 @@ notify() {
 }
 
 reload() {
-  if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
-    hyprctl reload >/dev/null
+  if [[ -z "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+    return
   fi
-  pkill -USR2 -x waybar || true
+
+  hyprctl reload >/dev/null
+  # waybar segfaults on a SIGUSR2 reload when the module layout changes,
+  # so restart it the way config/autostart.lua starts it.
+  pkill -x waybar || true
+  while pgrep -x waybar >/dev/null; do
+    sleep 0.05
+  done
+  hyprctl eval 'hl.exec_cmd("uwsm app -- waybar")' >/dev/null
 }
 
 set_theme() {
