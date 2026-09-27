@@ -4,7 +4,7 @@ iDIR="$HOME/.config/icons"
 monitors=$(hyprctl monitors -j | jq -r '.[] | "󰍹 id: \(.id) - \(.name)"')
 lenght_lines=$(hyprctl monitors -j | jq '. | length')
 
-# show wofi menu
+# show rofi menu
 
 notify_user() {
   notify-send -u low -i "${iDIR}/hyprland.png" "${1}"
@@ -38,9 +38,9 @@ disable_monitor() {
 
 # disable all monitors except the selected one
 check_if_only_one_monitor "${lenght_lines}"
-# used trap to avoid issue on wofi exit
-selected_monitor=$(echo -e "${monitors}" | wofi --show dmenu --lines '$({lenght_lines} + 1)' --prompt "Select Monitor" -W 15% -H 15% --hide-scroll | awk $'{print $NF}')
+# used trap to avoid issue on rofi exit
+selected_monitor=$(echo -e "${monitors}" | rofi -dmenu -p "Select Monitor" -l "$((lenght_lines + 1))" -theme-str 'window { width: 15%; }' | awk $'{print $NF}')
 trap 'disable_monitor "${selected_monitor}"' EXIT
 
-# kill all wofi instances
-pkill wofi
+# kill all rofi instances
+pkill -x rofi
