@@ -23,7 +23,7 @@ end
 
 local RESIZE = mode("Resize", { { "H J K L", "taille" }, { "Tab", "fenêtre suivante" }, { "Esc", "quitter" } })
 local WORKSPACE = mode("Workspace", { { "H", "écran ←" }, { "L", "écran →" }, { "Esc", "quitter" } })
-local LOOK = mode("Look", { { "S", "style" }, { "P", "palette" }, { "W", "fond" }, { "Esc", "quitter" } })
+local THEME = mode("Theme", { { "S", "style" }, { "P", "palette" }, { "W", "wallpaper" }, { "Esc", "quitter" } })
 
 -- ########################## Submap announcement #########################
 -- Replaces the submapNotif script, which kept a socat listener on socket2
@@ -64,24 +64,31 @@ hl.define_submap(WORKSPACE, function()
 	Bind.key("ESCAPE", hl.dsp.submap("reset"), "Exit mode")
 end)
 
--- ################################# Look #################################
--- S / P / W open a rofi picker that previews live; each one exits the mode.
+-- ################################ Theme #################################
+-- S / P / W open a rofi picker that previews live. The mode is left while rofi
+-- is open (its keys would catch what is typed in rofi) and entered again once
+-- rofi closes: Esc closes rofi, a second Esc leaves the mode.
+
+--- Re-enters the theme mode; called through `hyprctl eval` once a picker closes.
+function ThemeMode()
+	hl.dispatch(hl.dsp.submap(THEME))
+end
 
 --- @param cmd string
 --- @return fun()
-local function exec_and_exit(cmd)
+local function pick_then_return(cmd)
 	return function()
 		hl.dispatch(hl.dsp.submap("reset"))
-		hl.exec_cmd(cmd)
+		hl.exec_cmd(cmd .. "; hyprctl eval 'ThemeMode()'")
 	end
 end
 
-Bind.key("ALT + T", hl.dsp.submap(LOOK), "Look mode")
+Bind.key("ALT + T", hl.dsp.submap(THEME), "Theme mode")
 
-hl.define_submap(LOOK, function()
+hl.define_submap(THEME, function()
 	local scripts = require("config").scripts
-	Bind.key("S", exec_and_exit(scripts .. "/theme menu style"), "Pick a style")
-	Bind.key("P", exec_and_exit(scripts .. "/theme menu palette"), "Pick a palette")
-	Bind.key("W", exec_and_exit(scripts .. "/wallpaper pick"), "Pick a wallpaper")
+	Bind.key("S", pick_then_return(scripts .. "/theme menu style"), "Pick a style")
+	Bind.key("P", pick_then_return(scripts .. "/theme menu palette"), "Pick a palette")
+	Bind.key("W", pick_then_return(scripts .. "/wallpaper pick"), "Pick a wallpaper")
 	Bind.key("ESCAPE", hl.dsp.submap("reset"), "Exit mode")
 end)
