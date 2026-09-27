@@ -5,6 +5,7 @@
 # Wallpapers come from the active theme (~/.config/themes/current/backgrounds/)
 # then from ~/Pictures/Backgrounds. The chosen one is kept as the symlink
 # ~/.local/state/wallpaper/current, which hyprpaper.conf loads at startup.
+# A theme that follows the wallpaper is recoloured along (see the theme script).
 
 set -euo pipefail
 
@@ -13,6 +14,10 @@ GLOBAL_DIR="$HOME/Pictures/Backgrounds"
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/wallpaper"
 CURRENT="$STATE_DIR/current"
 DEFAULT_WALLPAPER="$GLOBAL_DIR/onepiece-grafiti.jpg"
+THEME="$(dirname "$(readlink -f "$0")")/theme"
+# Last wallpaper highlighted in the picker; recolouring waits until it settles.
+PREVIEW_TOKEN="${XDG_RUNTIME_DIR:-/tmp}/wallpaper-preview"
+PREVIEW_DELAY=0.3
 
 # Centered window: names on the left, the highlighted wallpaper large on the right.
 LAYOUT='
@@ -74,6 +79,22 @@ set_wallpaper() {
   mkdir -p "$STATE_DIR"
   ln -sfn "$1" "$CURRENT"
   apply "$1"
+  "$THEME" refresh "$1"
+}
+
+# Called by rofi on every highlight: the wallpaper changes at once, the theme
+# colours (a waybar restart) only once the highlight settles.
+preview() {
+  local path
+  path="$(resolve "$1")"
+  [[ -n "$path" ]] || return 0
+
+  apply "$path"
+  echo "$path" >"$PREVIEW_TOKEN"
+  sleep "$PREVIEW_DELAY"
+  if [[ "$(cat "$PREVIEW_TOKEN" 2>/dev/null)" == "$path" ]]; then
+    "$THEME" refresh "$path"
+  fi
 }
 
 pick() {
@@ -90,12 +111,16 @@ pick() {
       -theme-str "$LAYOUT"
   )" || true
 
+  # Cancel any recolouring still waiting to fire.
+  : >"$PREVIEW_TOKEN"
+
   if [[ -n "$choice" ]]; then
     set_wallpaper "$(resolve "$choice")"
   elif [[ -n "$previous" ]]; then
     # Let a preview still in flight land before reverting over it.
     sleep 0.2
     apply "$previous"
+    "$THEME" refresh "$previous"
   fi
 }
 
@@ -103,12 +128,7 @@ case "${1:-}" in
   list) list ;;
   current) current ;;
   set) set_wallpaper "${2:?wallpaper path required}" ;;
-  preview)
-    path="$(resolve "${2:?wallpaper name required}")"
-    if [[ -n "$path" ]]; then
-      apply "$path"
-    fi
-    ;;
+  preview) preview "${2:?wallpaper name required}" ;;
   pick) pick ;;
   ensure)
     if [[ ! -e "$CURRENT" && -f "$DEFAULT_WALLPAPER" ]]; then

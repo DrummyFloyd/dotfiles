@@ -6,6 +6,9 @@
 #   waybar.jsonc  waybar.css  rofi.rasi  hyprland.lua
 # ~/.config/themes/current is a symlink to the active one; every app config
 # reads its theme file through it.
+#
+# A theme with templates in ~/.config/matugen/templates/<name>/ follows the
+# wallpaper: matugen renders its files from the current wallpaper.
 
 set -euo pipefail
 
@@ -15,6 +18,11 @@ DEFAULT_THEME="galet-dark"
 # Last theme highlighted in the picker; previews only apply once it settles.
 PREVIEW_TOKEN="${XDG_RUNTIME_DIR:-/tmp}/theme-preview"
 PREVIEW_DELAY=0.3
+MATUGEN_DIR="$HOME/.config/matugen"
+MATUGEN_TEMPLATES="$MATUGEN_DIR/templates"
+# Wallpaper the generated colours come from, to skip regenerating them.
+COLORS_SOURCE="${XDG_RUNTIME_DIR:-/tmp}/theme-colors-source"
+WALLPAPER="$(dirname "$(readlink -f "$0")")/wallpaper"
 
 usage() {
   cat <<EOF
@@ -26,6 +34,8 @@ Usage: $(basename "$0") <command>
   next | prev     Cycle through themes
   default         Activate the default theme ($DEFAULT_THEME)
   preview <name>  Show a theme without notifying (debounced)
+  generate [img]  Render the wallpaper-coloured themes (default: current wallpaper)
+  refresh [img]   Regenerate and reload if the active theme follows the wallpaper
   menu            Browse with rofi: highlight previews, Enter keeps, Esc reverts
   ensure          Point to the default theme if none is active
 EOF
@@ -73,7 +83,37 @@ set_theme() {
   notify "$name"
 }
 
+follows_wallpaper() {
+  [[ -d "$MATUGEN_TEMPLATES/$1" ]]
+}
+
+generate() {
+  local image="${1:-$("$WALLPAPER" current)}"
+  if ! command -v matugen >/dev/null || [[ ! -f "$image" ]]; then
+    return 1
+  fi
+
+  matugen image "$image" --config "$MATUGEN_DIR/config.toml" \
+    --mode dark --prefer saturation --quiet </dev/null
+  echo "$image" >"$COLORS_SOURCE"
+}
+
+# Regenerate only when the wallpaper differs from the one last used.
+refresh() {
+  local image="${1:-$("$WALLPAPER" current)}"
+  if ! follows_wallpaper "$(current)" || [[ "$(cat "$COLORS_SOURCE" 2>/dev/null)" == "$image" ]]; then
+    return 0
+  fi
+
+  if generate "$image"; then
+    reload
+  fi
+}
+
 activate() {
+  if follows_wallpaper "$1" && [[ "$(cat "$COLORS_SOURCE" 2>/dev/null)" != "$("$WALLPAPER" current)" ]]; then
+    generate || true
+  fi
   ln -sfn "$1" "$CURRENT"
   reload
 }
@@ -132,6 +172,8 @@ case "${1:-}" in
   prev) cycle -1 ;;
   default) set_theme "$DEFAULT_THEME" ;;
   preview) preview "${2:?theme name required}" ;;
+  generate) generate "${2:-}" ;;
+  refresh) refresh "${2:-}" ;;
   menu) menu ;;
   ensure)
     if [[ ! -d "$CURRENT" && -d "$THEMES_DIR/$DEFAULT_THEME" ]]; then

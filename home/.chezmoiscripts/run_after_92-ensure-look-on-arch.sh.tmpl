@@ -5,5 +5,6 @@
 
 {{ template "utils" }}
 
-"{{ .chezmoi.homeDir }}/.local/bin/scripts/theme" ensure
 "{{ .chezmoi.homeDir }}/.local/bin/scripts/wallpaper" ensure
+"{{ .chezmoi.homeDir }}/.local/bin/scripts/theme" generate || true
+"{{ .chezmoi.homeDir }}/.local/bin/scripts/theme" ensure
