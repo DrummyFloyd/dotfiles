@@ -1,9 +1,9 @@
 {
   "nvim": {
-    "colorscheme": "tokyonight-night"
+    "colorscheme": "tokyonight-storm"
   },
   "palette": {
-    "surface": "#1a1b26",
+    "surface": "#24283b",
     "surface_raised": "#292e42",
     "text": "#c0caf5",
     "text_mute": "#737aa2",
@@ -13,8 +13,8 @@
     "accent3": "#7dcfff",
     "warn": "#ff9e64",
     "crit": "#f7768e",
-    "on_accent": "#1a1b26",
-    "term0": "#15161e",
+    "on_accent": "#1f2335",
+    "term0": "#1d202f",
     "term1": "#f7768e",
     "term2": "#9ece6a",
     "term3": "#e0af68",
