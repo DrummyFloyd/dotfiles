@@ -4,8 +4,6 @@
 
 .chezmoiscripts/*-on-arch.sh
 .local/bin/scripts/pkg-drift
-.local/bin/scripts/theme
-.local/bin/scripts/wallpaper
 
 etc/pacman.d/**
 etc/pacman.d/
@@ -32,22 +30,16 @@ etc/wsl.conf
 {{- $listToIgnore := list
   "dunst"
   "fcitx5"
-  "gtk-3.0"
-  "gtk-4.0"
   "hypr"
   "hypr/hyprlock"
   "icons"
-  "matugen"
   "pacman"
-  "rofi"
-  "themes"
   "uwsm"
   "waybar"
   "waybar/private_components"
   "wlogout"
   "wlogout/private_icons"
   "yay"
-  "zen"
   "ZapZap"
 }}
 {{ range $listToIgnore }}

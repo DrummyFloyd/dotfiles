@@ -14,9 +14,12 @@ map alt+tab next_window
 include current-theme.conf
 # END_KITTY_THEME
 
+{{- if and .isPersonal .isArch }}
+
 # Colours of the desktop theme (~/.config/themes); left empty when kitty keeps
 # the theme above (see ~/.config/themes/settings.json).
 include ../themes/current/kitty.conf
+{{- end }}
 
 # moves the window into a new OS window
 map ctrl+shift+d detach_window
