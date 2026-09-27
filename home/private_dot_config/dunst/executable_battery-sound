@@ -1,0 +1,3 @@
+#!/bin/sh
+# Called by the dunst [battery] rule: warning sound for batsignal alerts.
+canberra-gtk-play --id dialog-warning --description batsignal >/dev/null 2>&1 &

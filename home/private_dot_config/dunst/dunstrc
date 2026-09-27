@@ -430,3 +430,8 @@
 #    msg_urgency = critical
 #    fullscreen = show
 
+
+# Battery alerts from batsignal: sound on top of the notification.
+[battery]
+    appname = batsignal
+    script = ~/.config/dunst/battery-sound
