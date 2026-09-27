@@ -3,7 +3,7 @@
 # Switch the desktop theme.
 #
 # A theme is a directory ~/.config/themes/<name>/ providing any of:
-#   waybar.jsonc  waybar.css  wofi.css  hyprland.lua
+#   waybar.jsonc  waybar.css  rofi.rasi  hyprland.lua
 # ~/.config/themes/current is a symlink to the active one; every app config
 # reads its theme file through it.
 

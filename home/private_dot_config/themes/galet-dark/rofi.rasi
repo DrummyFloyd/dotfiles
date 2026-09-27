@@ -1,4 +1,4 @@
-/* Galet (dark) for rofi: same shapes as wofi.css. */
+/* Galet (dark) for rofi: flat, rounded, same tones as waybar.css. */
 * {
   surface: #2b2420;
   surface-raised: #3a312b;

@@ -1,4 +1,4 @@
-/* Pastel for rofi: same Dracula colours as wofi.css. */
+/* Pastel for rofi: the Dracula colours wofi used to have. */
 * {
   bg: #282a36;
   bg-alt: #44475a;

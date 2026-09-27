@@ -1,3 +1,5 @@
 arch:
   # INFO: iptables-nft was merged into iptables (2025), nothing to replace anymore
-  unwantedPackages: []
+  unwantedPackages:
+    # replaced by rofi
+    - wofi

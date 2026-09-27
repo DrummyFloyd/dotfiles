@@ -72,7 +72,6 @@ arch:
     - qt5ct
     - qt6ct
     - waybar
-    - wofi
     - rofi
     - wlogout
     - dunst
