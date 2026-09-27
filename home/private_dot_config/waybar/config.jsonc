@@ -13,12 +13,12 @@
       "mode-mon-col": 3,
       "weeks-pos": "right",
       "on-scroll": 1,
+    },
+    // Over the clock: scroll changes the month shown, right-click month/year.
+    "actions": {
       "on-click-right": "mode",
-      "actions": {
-        "on-click-right": "mode",
-        "on-scroll-up": "shift_up",
-        "on-scroll-down": "shift_down",
-      },
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down",
     },
   },
   "hyprland/workspaces": {
