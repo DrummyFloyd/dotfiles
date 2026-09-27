@@ -79,9 +79,25 @@ local function apply()
 	apply_rules()
 end
 
+--- Delay before replaying the rules after a monitor removal or a workspace move.
+local RULES_DELAY_MS = 500
+
+--- Pending replay, kept so it isn't collected and so bursts of events coalesce.
+local pending_rules
+
+--- Replays the rules once Hyprland has finished moving workspaces off a monitor.
+--- Registering a rule in the middle of it refreshes the layouts while no monitor
+--- may be left (the other one is being re-applied), which crashes Hyprland 0.56.
+local function apply_rules_later()
+	if pending_rules then
+		pending_rules:set_enabled(false)
+	end
+	pending_rules = hl.timer(apply_rules, { timeout = RULES_DELAY_MS, type = "oneshot" })
+end
+
 apply()
 hl.on("monitor.added", apply)
 --- Only the rules are replayed here: re-applying the monitor specs would undo a
 --- monitor that mainMonitorSwitch just disabled.
-hl.on("monitor.removed", apply_rules)
-hl.on("workspace.move_to_monitor", apply_rules)
+hl.on("monitor.removed", apply_rules_later)
+hl.on("workspace.move_to_monitor", apply_rules_later)
