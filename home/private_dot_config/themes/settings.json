@@ -1,4 +1,4 @@
 {
   "kitty": { "follow": true, "follow_auto": true },
-  "nvim": { "follow": true, "follow_auto": true, "fallback": "tokyonight" }
+  "nvim": { "follow": true, "follow_auto": false, "fallback": "tokyonight" }
 }
