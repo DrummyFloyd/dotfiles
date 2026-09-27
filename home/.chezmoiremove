@@ -15,3 +15,7 @@
 .config/wofi
 .config/themes/galet-dark/wofi.css
 .config/themes/pastel/wofi.css
+.config/themes/pastel
+.config/themes/galet-dark
+.config/themes/galet-auto
+.config/matugen/templates/galet-auto
