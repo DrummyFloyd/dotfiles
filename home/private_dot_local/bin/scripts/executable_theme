@@ -130,11 +130,14 @@ follows() {
     [[ "$palette" != auto || "$(setting "$app" follow_auto)" != false ]]
 }
 
-# Add every template of a directory to a matugen config.
+# Add the templates of a directory to a matugen config, except the file names
+# given after it.
 add_templates() {
   local config="$1" dir="$2" file
+  shift 2
   for file in "$dir"/*; do
     [[ "${file##*/}" == palette.json ]] && continue
+    [[ " $* " == *" ${file##*/} "* ]] && continue
     printf '[templates."%s"]\ninput_path = "%s"\noutput_path = "%s"\n\n' \
       "${file##*/}" "$file" "$CURRENT/${file##*/}" >>"$config"
   done
@@ -142,7 +145,8 @@ add_templates() {
 
 # Render the style and the apps with the palette into $CURRENT.
 render() {
-  local style="$1" palette="$2" dir config app file skipped=()
+  local style="$1" palette="$2" dir config app file name
+  local off=() styled=()
   dir="$(palette_dir "$style" "$palette")"
   if [[ ! -d "$STYLES_DIR/$style" ]]; then
     echo "Unknown style: $style" >&2
@@ -158,14 +162,22 @@ render() {
 
   config="$(mktemp --suffix .toml)"
   printf '[config]\n\n' >"$config"
-  add_templates "$config" "$STYLES_DIR/$style"
+  # apps/ holds the default files of each app; a style may replace one with a
+  # file of the same name. An app that doesn't follow the theme gets neither.
   for app in "$APPS_DIR"/*/; do
-    app="$(basename "$app")"
-    if follows "$app" "$palette"; then
-      add_templates "$config" "$APPS_DIR/$app"
-    else
-      skipped+=("$APPS_DIR/$app"/*)
+    if ! follows "$(basename "$app")" "$palette"; then
+      for file in "$app"*; do
+        off+=("${file##*/}")
+      done
     fi
+  done
+  for file in "$STYLES_DIR/$style"/*; do
+    styled+=("${file##*/}")
+  done
+
+  add_templates "$config" "$STYLES_DIR/$style" "${off[@]}"
+  for app in "$APPS_DIR"/*/; do
+    add_templates "$config" "$app" "${off[@]}" "${styled[@]}"
   done
 
   # current used to be a symlink to a theme directory.
@@ -179,8 +191,8 @@ render() {
   rm "$config"
 
   # An app keeping its own theme gets empty files: its config still includes them.
-  for file in "${skipped[@]}"; do
-    : >"$CURRENT/${file##*/}"
+  for name in "${off[@]}"; do
+    : >"$CURRENT/$name"
   done
 
   if [[ -d "$dir/backgrounds" ]]; then

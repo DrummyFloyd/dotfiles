@@ -74,6 +74,8 @@ Turn an app off in `settings.json`: `follow` (all palettes) or `follow_auto` (th
 
 To theme another app, add `apps/<app>/<file>` (rendered to `current/<file>`) and point the app's config at it.
 
+Files in `apps/` are defaults: a style replaces one by shipping a file of the same name (e.g. `styles/<style>/dunst.conf`). An app that doesn't follow the theme gets an empty file either way.
+
 ## Zen
 
 - Colours: `~/.config/zen/` (`user.js`, `chrome/userChrome.css`), linked into the default profile by the `93-link-zen-profile` script.
