@@ -94,9 +94,10 @@ auto_rule() {
     echo dominant
 }
 
-# What the auto palette was computed from: wallpaper and rule.
+# What the auto palette was computed from: wallpaper, rule, and the matugen
+# config and template, so editing them recomputes it too.
 auto_key() {
-  echo "$1 $(auto_rule "$1")"
+  echo "$1 $(auto_rule "$1") $(cat "$MATUGEN_CONFIG" "${MATUGEN_CONFIG%/*}/templates/auto.json" | sha1sum | cut -c1-12)"
 }
 
 generate_auto() {
