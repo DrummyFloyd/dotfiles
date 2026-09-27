@@ -3,7 +3,8 @@
 # Pick and apply the desktop wallpaper through hyprpaper IPC.
 #
 # Wallpapers come from the active theme (~/.local/state/theme/current/backgrounds/)
-# then from ~/Pictures/Backgrounds. The chosen one is kept as the symlink
+# then from ~/Pictures/Backgrounds. The auto palette takes its colours from any
+# wallpaper, so it also lists the wallpapers of every palette. The chosen one is kept as the symlink
 # ~/.local/state/wallpaper/current, which hyprpaper.conf loads at startup.
 # A theme that follows the wallpaper is recoloured along (see the theme script).
 
@@ -11,6 +12,7 @@ set -euo pipefail
 
 THEME_DIR="$HOME/.local/state/theme/current/backgrounds"
 GLOBAL_DIR="$HOME/Pictures/Backgrounds"
+PALETTES_DIR="$HOME/.config/themes/palettes"
 STATE_DIR="$HOME/.local/state/wallpaper"
 CURRENT="$STATE_DIR/current"
 DEFAULT_WALLPAPER="$GLOBAL_DIR/wano-tree.jpg"
@@ -48,8 +50,12 @@ EOF
 # Full paths, in alphabetical order of file name; a theme wallpaper hides a
 # global one of the same name.
 list() {
-  local dir
-  for dir in "$THEME_DIR" "$GLOBAL_DIR"; do
+  local dir dirs=("$THEME_DIR")
+  if [[ "$("$THEME" current)" == */auto ]]; then
+    dirs+=("$PALETTES_DIR"/*/backgrounds)
+  fi
+  dirs+=("$GLOBAL_DIR")
+  for dir in "${dirs[@]}"; do
     if [[ -d "$dir" ]]; then
       find -L "$dir" -maxdepth 1 -type f \
         \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \)
