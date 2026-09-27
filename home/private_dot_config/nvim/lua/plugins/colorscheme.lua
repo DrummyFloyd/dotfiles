@@ -43,6 +43,27 @@ local function base16(p)
   }
 end
 
+--- base16 draws the gutter and indent guides in the comment colour on a raised
+--- background, so they stand out as much as the code. Draw them in the outline
+--- colour on the editor background instead, as the tokyonight family does.
+--- @param p table
+local function tone_down(p)
+  local groups = {
+    LineNr = { fg = p.outline },
+    LineNrAbove = { fg = p.outline },
+    LineNrBelow = { fg = p.outline },
+    CursorLineNr = { fg = p.text_mute },
+    SignColumn = { fg = p.text_mute },
+    FoldColumn = { fg = p.outline },
+    SnacksIndent = { fg = p.outline },
+    SnacksIndentScope = { fg = p.text_mute },
+    MiniIndentscopeSymbol = { fg = p.text_mute },
+  }
+  for group, spec in pairs(groups) do
+    vim.api.nvim_set_hl(0, group, spec)
+  end
+end
+
 local function apply()
   local theme = read_theme()
   if not theme or not theme.follow then
@@ -52,6 +73,7 @@ local function apply()
   else
     vim.cmd("highlight clear")
     require("mini.base16").setup({ palette = base16(theme.palette) })
+    tone_down(theme.palette)
     vim.g.colors_name = "theme"
   end
 end
