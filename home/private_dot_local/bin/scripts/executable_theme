@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+#
+# Switch the desktop theme.
+#
+# A theme is a directory ~/.config/themes/<name>/ providing any of:
+#   waybar.jsonc  waybar.css  wofi.css  hyprland.lua
+# ~/.config/themes/current is a symlink to the active one; every app config
+# reads its theme file through it.
+
+set -euo pipefail
+
+THEMES_DIR="$HOME/.config/themes"
+CURRENT="$THEMES_DIR/current"
+DEFAULT_THEME="pastel"
+
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") <command>
+
+  list          List available themes
+  current       Print the active theme
+  set <name>    Activate a theme
+  next | prev   Cycle through themes
+  default       Activate the default theme ($DEFAULT_THEME)
+  menu          Pick a theme with wofi
+  ensure        Point to the default theme if none is active
+EOF
+}
+
+list() {
+  find "$THEMES_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+current() {
+  if [[ -d "$CURRENT" ]]; then
+    basename "$(readlink "$CURRENT")"
+  fi
+}
+
+notify() {
+  notify-send -u low -i "$HOME/.config/icons/hyprland.png" \
+    -h string:x-canonical-private-synchronous:theme "Theme: $1"
+}
+
+reload() {
+  if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+    hyprctl reload >/dev/null
+  fi
+  pkill -USR2 -x waybar || true
+}
+
+set_theme() {
+  local name="$1"
+
+  if [[ ! -d "$THEMES_DIR/$name" ]]; then
+    echo "Unknown theme: $name" >&2
+    exit 1
+  fi
+
+  ln -sfn "$name" "$CURRENT"
+  reload
+  notify "$name"
+}
+
+cycle() {
+  local step="$1" themes active i
+  mapfile -t themes < <(list)
+  active="$(current)"
+
+  for i in "${!themes[@]}"; do
+    if [[ "${themes[$i]}" == "$active" ]]; then
+      set_theme "${themes[$(((i + step + ${#themes[@]}) % ${#themes[@]}))]}"
+      return
+    fi
+  done
+  set_theme "${themes[0]}"
+}
+
+case "${1:-}" in
+  list) list ;;
+  current) current ;;
+  set) set_theme "${2:?theme name required}" ;;
+  next) cycle 1 ;;
+  prev) cycle -1 ;;
+  default) set_theme "$DEFAULT_THEME" ;;
+  menu)
+    choice="$(list | wofi --dmenu --prompt theme)" || exit 0
+    set_theme "$choice"
+    ;;
+  ensure)
+    if [[ ! -d "$CURRENT" && -d "$THEMES_DIR/$DEFAULT_THEME" ]]; then
+      ln -sfn "$DEFAULT_THEME" "$CURRENT"
+    fi
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac

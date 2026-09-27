@@ -1,0 +1,8 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+{{ template "utils" }}
+
+"{{ .chezmoi.homeDir }}/.local/bin/scripts/theme" ensure

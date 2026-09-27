@@ -4,6 +4,7 @@
 
 .chezmoiscripts/*-on-arch.sh
 .local/bin/scripts/pkg-drift
+.local/bin/scripts/theme
 
 etc/pacman.d/**
 etc/pacman.d/
@@ -34,6 +35,7 @@ etc/wsl.conf
   "hypr/hyprlock"
   "icons"
   "pacman"
+  "themes"
   "uwsm"
   "waybar"
   "waybar/private_components"
