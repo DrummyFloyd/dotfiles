@@ -2,7 +2,7 @@
 ---
 --- The theme script writes ~/.local/state/theme/current/nvim.json on every theme
 --- change: a palette naming a colorscheme (gruvbox, tokyonight…) uses it, any
---- other palette (galet default, auto) is applied through mini.base16. When nvim
+--- other palette (galet default, auto) is applied as a tokyonight style. When nvim
 --- does not follow the theme (~/.config/themes/settings.json), the fallback
 --- colorscheme is used. Running instances pick changes up on their own.
 
@@ -19,49 +19,52 @@ local function read_theme()
   return decoded and theme or nil
 end
 
---- Maps the palette roles to the 16 base16 slots.
+--- Maps the palette roles to the colours of a tokyonight style, so any palette
+--- gets tokyonight's highlight groups: purple keywords, teal members, orange
+--- constants, a quiet gutter… Shades tokyonight has and the palette lacks are
+--- mixed from the palette's colours.
 --- @param p table
 --- @return table
-local function base16(p)
+local function tokyonight_colors(p)
+  local blend = require("tokyonight.util").blend
+  local teal = blend(p.term6, 0.5, p.term2)
   return {
-    base00 = p.surface,
-    base01 = p.surface_raised,
-    base02 = p.outline,
-    base03 = p.text_mute,
-    base04 = p.text_mute,
-    base05 = p.text,
-    base06 = p.text,
-    base07 = p.term15,
-    base08 = p.term1,
-    base09 = p.accent2,
-    base0A = p.term3,
-    base0B = p.term2,
-    base0C = p.term6,
-    base0D = p.term4,
-    base0E = p.term5,
-    base0F = p.accent3,
+    bg = p.surface,
+    bg_dark = blend(p.surface, 0.8, "#000000"),
+    bg_dark1 = blend(p.surface, 0.7, "#000000"),
+    bg_highlight = p.surface_raised,
+    blue = p.term4,
+    blue0 = blend(p.term4, 0.45, p.surface),
+    blue1 = p.term6,
+    blue2 = blend(p.term6, 0.85, p.surface),
+    blue5 = p.accent3,
+    blue6 = blend(p.term6, 0.5, "#ffffff"),
+    blue7 = blend(p.term4, 0.3, p.surface),
+    comment = blend(p.text_mute, 0.75, p.surface),
+    cyan = p.term6,
+    dark3 = blend(p.text_mute, 0.65, p.surface),
+    dark5 = p.text_mute,
+    fg = p.text,
+    fg_dark = blend(p.text, 0.8, p.surface),
+    fg_gutter = p.outline,
+    green = p.term2,
+    green1 = blend(p.term6, 0.6, p.term2),
+    green2 = blend(p.term6, 0.6, p.surface),
+    magenta = p.term5,
+    magenta2 = p.crit,
+    orange = blend(p.term1, 0.5, p.term3),
+    purple = blend(p.term5, 0.8, p.surface),
+    red = p.term1,
+    red1 = p.crit,
+    teal = teal,
+    terminal_black = p.term8,
+    yellow = p.term3,
+    git = {
+      add = blend(p.term6, 0.7, p.surface),
+      change = blend(p.term4, 0.7, p.surface),
+      delete = blend(p.term1, 0.6, p.surface),
+    },
   }
-end
-
---- base16 draws the gutter and indent guides in the comment colour on a raised
---- background, so they stand out as much as the code. Draw them in the outline
---- colour on the editor background instead, as the tokyonight family does.
---- @param p table
-local function tone_down(p)
-  local groups = {
-    LineNr = { fg = p.outline },
-    LineNrAbove = { fg = p.outline },
-    LineNrBelow = { fg = p.outline },
-    CursorLineNr = { fg = p.text_mute },
-    SignColumn = { fg = p.text_mute },
-    FoldColumn = { fg = p.outline },
-    SnacksIndent = { fg = p.outline },
-    SnacksIndentScope = { fg = p.text_mute },
-    MiniIndentscopeSymbol = { fg = p.text_mute },
-  }
-  for group, spec in pairs(groups) do
-    vim.api.nvim_set_hl(0, group, spec)
-  end
 end
 
 local function apply()
@@ -71,9 +74,8 @@ local function apply()
   elseif type(theme.colorscheme) == "string" then
     vim.cmd.colorscheme(theme.colorscheme)
   else
-    vim.cmd("highlight clear")
-    require("mini.base16").setup({ palette = base16(theme.palette) })
-    tone_down(theme.palette)
+    require("tokyonight.colors").styles.theme = tokyonight_colors(theme.palette)
+    require("tokyonight").load({ style = "theme" })
     vim.g.colors_name = "theme"
   end
 end
@@ -107,7 +109,6 @@ return {
     },
   },
 
-  { "nvim-mini/mini.base16", lazy = true },
   { "ellisonleao/gruvbox.nvim", lazy = true },
   { "catppuccin/nvim", name = "catppuccin", lazy = true, opts = { flavour = "macchiato" } },
 }
