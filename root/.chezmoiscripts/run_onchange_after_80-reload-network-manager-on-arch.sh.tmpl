@@ -1,0 +1,16 @@
+{{- /*
+  vim:ft=bash.gotmpl:
+*/ -}}
+#!/bin/bash
+
+# NetworkManager files hash:
+{{- range (glob (joinPath .chezmoi.sourceDir "etc/NetworkManager/**")) }}
+{{-   if not (stat .).isDir }}
+# {{ . | base }}: {{ include . | sha256sum }}
+{{-   end }}
+{{- end }}
+
+{{ template "utils" }}
+
+log_task "Restarting NetworkManager service"
+systemctl restart NetworkManager
