@@ -44,7 +44,7 @@
     },
   },
   "hyprland/submap": {
-    "max-length": 20,
+    // No max-length: submap names carry Pango markup that a cut would break.
     "tooltip": false,
   },
   "battery": {

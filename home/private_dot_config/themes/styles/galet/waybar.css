@@ -84,9 +84,9 @@ tooltip label {
   color: @on-accent;
 }
 
+/* Mode summary: title and keys in the accent, descriptions dimmed by markup */
 #submap {
-  background: @accent;
-  color: @on-accent;
+  color: @accent;
 }
 
 /* System island */
