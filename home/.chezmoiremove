@@ -1,0 +1,12 @@
+# waybar components moved to .config/themes/pastel/waybar/
+.config/waybar/components/backlight.css
+.config/waybar/components/battery.css
+.config/waybar/components/button.css
+.config/waybar/components/clock.css
+.config/waybar/components/cpu.css
+.config/waybar/components/custom.css
+.config/waybar/components/hyprland-window.css
+.config/waybar/components/pulseaudio.css
+.config/waybar/components/theme-vars.css
+.config/waybar/components/tray.css
+.config/waybar/components/windows-waybar.css

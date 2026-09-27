@@ -1,0 +1,70 @@
+{
+  "spacing": 4,
+  "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+  "modules-center": ["clock"],
+  "modules-right": [
+    "custom/updates",
+    "pulseaudio",
+    "backlight",
+    "cpu",
+    "battery",
+    "tray",
+  ],
+  "clock": {
+    "interval": 1,
+    "format": "{:%H:%M:%S  - %d/%m/%y }",
+    "calendar": {
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff0000'><b><u>{}</u></b></span>",
+      },
+    },
+  },
+  "hyprland/workspaces": {
+    "format": "{icon} {windows}",
+  },
+  "hyprland/submap": {
+    "format": "✌️{}✌️",
+  },
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-alt": "{time} {icon}",
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+  },
+  "pulseaudio": {
+    "format": "{volume}% {icon} {format_source}",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": "󰟎 {icon} {format_source}",
+    "format-muted": " {format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "headset": "",
+      "hdmi": "󰽟",
+      "default": ["", "", ""],
+    },
+  },
+  "custom/updates": {
+    "format": "{}",
+  },
+  "backlight": {
+    "format": "{icon} {percent}%",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+  },
+  "cpu": {
+    "interval": 10,
+    "format": "{usage}% ",
+    "max-length": 10,
+  },
+  "tray": {
+    "icon-size": 19,
+    "spacing": 10,
+    "gtk-layer-shell": false,
+  },
+}

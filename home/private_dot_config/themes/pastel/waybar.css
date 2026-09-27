@@ -1,0 +1,48 @@
+/* get from thie https://github.com/theCode-Breaker/riverwm/blob/main/waybar/river/river_style.css
+ * should try to add some stuff like this
+ * https://freefrontend.com/css-buttons/
+*/
+
+/* default value
+ * like margin-top margin bot etc.
+ */
+@import "waybar/theme-vars.css";
+/*default Config*/
+* {
+  border: none;
+  border-radius: 10;
+  font-family: "FiraCode Nerd Font";
+  font-size: 13px;
+  min-height: 10px;
+  background-color: @main-bg;
+}
+
+/* Windows#waybar + tooltitp*/
+@import "waybar/windows-waybar.css";
+
+/* Workspaces#buttons*/
+@import "waybar/button.css";
+
+/* pulse audio */
+@import "waybar/pulseaudio.css";
+
+/* battery css */
+@import "waybar/battery.css";
+
+/* backlight */
+@import "waybar/backlight.css";
+
+/* clock */
+@import "waybar/clock.css";
+
+/* hyprland windows */
+@import "waybar/hyprland-window.css";
+
+/* cpu */
+@import "waybar/cpu.css";
+
+/* tray */
+@import "waybar/tray.css";
+
+/* custom */
+@import "waybar/custom.css";

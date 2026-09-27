@@ -1,21 +1,12 @@
+// Behaviour shared by every theme.
+// The look (module layout, formats, icons) lives in ~/.config/themes/current/waybar.jsonc:
+// on duplicate keys this file wins, so keep look-related keys out of it.
 {
   "layer": "top",
-  "spacing": 4,
   "position": "top",
-  "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-  "modules-center": ["clock"],
-  "modules-right": [
-    "custom/updates",
-    "pulseaudio",
-    "backlight",
-    "cpu",
-    "battery",
-    "tray",
-  ],
+  "include": ["~/.config/themes/current/waybar.jsonc"],
   "clock": {
     "timezone": "Europe/Paris",
-    "interval": 1,
-    "format": "{:%H:%M:%S  - %d/%m/%y }",
     "tooltip-format": "<tt>{calendar}</tt>",
     "calendar": {
       "mode": "month",
@@ -23,13 +14,6 @@
       "weeks-pos": "right",
       "on-scroll": 1,
       "on-click-right": "mode",
-      "format": {
-        "months": "<span color='#ffead3'><b>{}</b></span>",
-        "days": "<span color='#ecc6d9'><b>{}</b></span>",
-        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-        "today": "<span color='#ff0000'><b><u>{}</u></b></span>",
-      },
       "actions": {
         "on-click-right": "mode",
         "on-scroll-up": "shift_up",
@@ -38,7 +22,6 @@
     },
   },
   "hyprland/workspaces": {
-    "format": "{icon} {windows}",
     "on-click": "activate",
     "window-rewrite-default": "",
     "window-rewrite": {
@@ -61,7 +44,6 @@
     },
   },
   "hyprland/submap": {
-    "format": "✌️{}✌️",
     "max-length": 20,
     "tooltip": false,
   },
@@ -71,46 +53,14 @@
       "warning": 30,
       "critical": 20,
     },
-    "format": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
-    "format-plugged": " {capacity}%",
-    "format-alt": "{time} {icon}",
-    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
   "pulseaudio": {
-    "format": "{volume}% {icon} {format_source}",
-    "format-bluetooth": "{volume}% {icon} {format_source}",
-    "format-bluetooth-muted": "󰟎 {icon} {format_source}",
-    "format-muted": " {format_source}",
-    "format-source": "",
-    "format-source-muted": "",
-    "format-icons": {
-      "headphone": "",
-      "headset": "",
-      "hdmi": "󰽟",
-      "default": ["", "", ""],
-    },
     "on-double-click": "uwsm app -- pavucontrol",
   },
   "custom/updates": {
-    "format": "{}",
     "exec": "~/.local/bin/scripts/update-sys",
     "on-click": "~/.local/bin/scripts/update-sys update",
     "interval": 300,
     "tooltip": true,
-  },
-  "backlight": {
-    "format": "{icon} {percent}%",
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
-  },
-  "cpu": {
-    "interval": 10,
-    "format": "{usage}% ",
-    "max-length": 10,
-  },
-  "tray": {
-    "icon-size": 19,
-    "spacing": 10,
-    "gtk-layer-shell": false,
   },
 }
