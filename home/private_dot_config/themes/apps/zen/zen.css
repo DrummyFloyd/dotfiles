@@ -26,7 +26,17 @@
   --toolbar-color: {{palette.text}} !important;
 }
 
-#zen-browser-background,
-#zen-toolbar-background {
-  background: {{palette.surface}} !important;
+/* The sidebar and toolbar backgrounds are painted by ::before/::after of these
+ * elements, from variables the gradient script sets on the elements
+ * themselves, so a value on :root never reaches them. */
+.zen-browser-generic-background {
+  --zen-main-browser-background: {{palette.surface}} !important;
+  --zen-main-browser-background-old: {{palette.surface}} !important;
+  --zen-main-browser-background-toolbar: {{palette.surface}} !important;
+  --zen-main-browser-background-toolbar-old: {{palette.surface}} !important;
+}
+
+/* Flat palette: no grain texture over it. */
+.zen-browser-grain {
+  display: none !important;
 }
