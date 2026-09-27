@@ -4,6 +4,6 @@
   "gtk": { "follow": true, "follow_auto": true },
   "dunst": { "follow": true, "follow_auto": true },
   "zen": { "follow": true, "follow_auto": true },
-  "nvim": { "follow": true, "follow_auto": false, "fallback": "tokyonight" },
+  "nvim": { "follow": true, "follow_auto": true, "fallback": "tokyonight" },
   "auto": { "prefer": "dominant", "wallpapers": {} }
 }
