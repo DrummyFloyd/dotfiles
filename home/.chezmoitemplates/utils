@@ -166,6 +166,28 @@ function ensure_services_fast() {
     fi
 }
 
+# Same for user services (systemctl --user, no sudo). Reloads units first so a
+# changed drop-in is picked up, and restarts the ones already running.
+function ensure_user_services_fast() {
+    local services=("$@")
+    local services_needing_action=()
+
+    systemctl --user daemon-reload
+
+    for service in "${services[@]}"; do
+        if ! systemctl --user is-enabled "$service" --quiet || ! systemctl --user is-active --quiet "$service"; then
+            services_needing_action+=("$service")
+        else
+            systemctl --user restart "$service"
+        fi
+    done
+
+    if (( ${#services_needing_action[@]} > 0 )); then
+        log_task "Enabling and starting user services: ${services_needing_action[*]}"
+        systemctl --user enable --now "${services_needing_action[@]}"
+    fi
+}
+
 # Function to ensure user is in specified group
 function ensure_user_in_group_fast() {
     local username="$1"

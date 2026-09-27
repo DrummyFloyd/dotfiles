@@ -7,7 +7,6 @@
 # batsignal battery alerts (Arch package)
 .config/systemd/user/batsignal.service.d/
 .config/systemd/user/batsignal.service.d/**
-.config/systemd/user/default.target.wants/batsignal.service
 # Hyprland helpers
 .local/bin/scripts/mainMonitorSwitch
 .local/bin/scripts/reloadHyprland
