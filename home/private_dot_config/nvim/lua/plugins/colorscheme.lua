@@ -52,7 +52,7 @@ local function tokyonight_colors(p)
     green2 = blend(p.term6, 0.6, p.surface),
     magenta = p.term5,
     magenta2 = p.crit,
-    orange = blend(p.term1, 0.5, p.term3),
+    orange = p.warn,
     purple = blend(p.term5, 0.8, p.surface),
     red = p.term1,
     red1 = p.crit,
