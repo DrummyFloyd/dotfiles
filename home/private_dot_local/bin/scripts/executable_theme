@@ -28,7 +28,7 @@ AUTO_DIR="$STATE_DIR/auto"
 MATUGEN_CONFIG="$HOME/.config/matugen/config.toml"
 WALLPAPER="$(dirname "$(readlink -f "$0")")/wallpaper"
 DEFAULT_STYLE="galet"
-DEFAULT_PALETTE="default"
+DEFAULT_PALETTE="tokyonight"
 # Held while rendering and reloading, so pickers and wallpaper changes queue up.
 LOCK="${XDG_RUNTIME_DIR:-/tmp}/theme.lock"
 # Last entry highlighted in a picker; previews only apply once it settles.
