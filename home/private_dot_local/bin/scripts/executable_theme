@@ -7,15 +7,19 @@
 #                                        plus palette.json, the style's "default"
 #   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/
 #   auto                                 palette matugen computes from the wallpaper
+#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty…)
+#   ~/.config/themes/settings.json       per app: follow the theme, and the auto palette
 #
-# matugen renders the style with the palette into ~/.config/themes/current/,
-# the directory every app config reads.
+# matugen renders the style and the apps with the palette into
+# ~/.config/themes/current/, the directory every app config reads.
 
 set -euo pipefail
 
 THEMES_DIR="$HOME/.config/themes"
 STYLES_DIR="$THEMES_DIR/styles"
 PALETTES_DIR="$THEMES_DIR/palettes"
+APPS_DIR="$THEMES_DIR/apps"
+SETTINGS="$THEMES_DIR/settings.json"
 CURRENT="$THEMES_DIR/current"
 # Matches the output_path of ~/.config/matugen/config.toml.
 STATE_DIR="$HOME/.local/state/theme"
@@ -92,9 +96,31 @@ generate_auto() {
   echo "$image" >"$AUTO_DIR/source"
 }
 
-# Render every file of the style with the palette into $CURRENT.
+# Value of an app setting from settings.json: true, false or null when unset.
+setting() {
+  jq -r --arg app "$1" --arg key "$2" '.[$app][$key]' "$SETTINGS" 2>/dev/null || echo null
+}
+
+# Whether an app takes its colours from the palette, per settings.json.
+follows() {
+  local app="$1" palette="$2"
+  [[ "$(setting "$app" follow)" != false ]] &&
+    [[ "$palette" != auto || "$(setting "$app" follow_auto)" != false ]]
+}
+
+# Add every template of a directory to a matugen config.
+add_templates() {
+  local config="$1" dir="$2" file
+  for file in "$dir"/*; do
+    [[ "${file##*/}" == palette.json ]] && continue
+    printf '[templates."%s"]\ninput_path = "%s"\noutput_path = "%s"\n\n' \
+      "${file##*/}" "$file" "$CURRENT/${file##*/}" >>"$config"
+  done
+}
+
+# Render the style and the apps with the palette into $CURRENT.
 render() {
-  local style="$1" palette="$2" dir config file
+  local style="$1" palette="$2" dir config app file skipped=()
   dir="$(palette_dir "$style" "$palette")"
   if [[ ! -d "$STYLES_DIR/$style" ]]; then
     echo "Unknown style: $style" >&2
@@ -110,10 +136,14 @@ render() {
 
   config="$(mktemp --suffix .toml)"
   printf '[config]\n\n' >"$config"
-  for file in "$STYLES_DIR/$style"/*; do
-    [[ "${file##*/}" == palette.json ]] && continue
-    printf '[templates."%s"]\ninput_path = "%s"\noutput_path = "%s"\n\n' \
-      "${file##*/}" "$file" "$CURRENT/${file##*/}" >>"$config"
+  add_templates "$config" "$STYLES_DIR/$style"
+  for app in "$APPS_DIR"/*/; do
+    app="$(basename "$app")"
+    if follows "$app" "$palette"; then
+      add_templates "$config" "$APPS_DIR/$app"
+    else
+      skipped+=("$APPS_DIR/$app"/*)
+    fi
   done
 
   # current used to be a symlink to a theme directory.
@@ -125,6 +155,11 @@ render() {
   matugen color hex "#000000" --config "$config" \
     --import-json "$dir/palette.json" --quiet </dev/null
   rm "$config"
+
+  # An app keeping its own theme gets empty files: its config still includes them.
+  for file in "${skipped[@]}"; do
+    : >"$CURRENT/${file##*/}"
+  done
 
   if [[ -d "$dir/backgrounds" ]]; then
     ln -s "$dir/backgrounds" "$CURRENT/backgrounds"
@@ -151,6 +186,8 @@ reload() {
     sleep 0.05
   done
   hyprctl eval 'hl.exec_cmd("uwsm app -- waybar")' >/dev/null
+  # kitty re-reads its config (and the included colours) on SIGUSR1.
+  pkill -USR1 -x kitty || true
 }
 
 # Render, remember and show a combination.
