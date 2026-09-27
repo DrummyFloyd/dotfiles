@@ -43,7 +43,6 @@ etc/wsl.conf
   "waybar/private_components"
   "wlogout"
   "wlogout/private_icons"
-  "wofi"
   "yay"
   "ZapZap"
 }}

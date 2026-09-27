@@ -10,3 +10,8 @@
 .config/waybar/components/theme-vars.css
 .config/waybar/components/tray.css
 .config/waybar/components/windows-waybar.css
+.config/waybar/components/memory.css
+.config/waybar/default-values.css
+.config/wofi
+.config/themes/galet-dark/wofi.css
+.config/themes/pastel/wofi.css
