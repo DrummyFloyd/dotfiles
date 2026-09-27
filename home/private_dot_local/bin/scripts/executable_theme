@@ -85,15 +85,36 @@ palette_dir() {
 }
 
 # Recompute the auto palette, unless it already comes from this wallpaper.
+# Which image colour seeds the auto palette, from settings.json: "dominant"
+# (the most present one), or a matugen --prefer value such as "saturation".
+# auto.wallpapers overrides it per wallpaper file name.
+auto_rule() {
+  jq -r --arg name "${1##*/}" \
+    '.auto.wallpapers[$name] // .auto.prefer // "dominant"' "$SETTINGS" 2>/dev/null ||
+    echo dominant
+}
+
+# What the auto palette was computed from: wallpaper and rule.
+auto_key() {
+  echo "$1 $(auto_rule "$1")"
+}
+
 generate_auto() {
-  local image="${1:-$("$WALLPAPER" current)}"
-  if [[ ! -f "$image" || "$(cat "$AUTO_DIR/source" 2>/dev/null)" == "$image" ]]; then
+  local image="${1:-$("$WALLPAPER" current)}" rule seed
+  if [[ ! -f "$image" || "$(cat "$AUTO_DIR/key" 2>/dev/null)" == "$(auto_key "$image")" ]]; then
     return 0
   fi
 
+  rule="$(auto_rule "$image")"
+  if [[ "$rule" == dominant ]]; then
+    seed=(--source-color-index 0)
+  else
+    seed=(--prefer "$rule")
+  fi
   matugen image "$image" --config "$MATUGEN_CONFIG" \
-    --mode dark --prefer saturation --quiet </dev/null
+    --mode dark "${seed[@]}" --quiet </dev/null
   echo "$image" >"$AUTO_DIR/source"
+  auto_key "$image" >"$AUTO_DIR/key"
 }
 
 # Value of an app setting from settings.json: true, false or null when unset.
@@ -297,7 +318,7 @@ menu() {
 # Wallpaper changed: recolour when the palette follows it.
 refresh() {
   local image="${1:-$("$WALLPAPER" current)}"
-  if [[ "$(active_palette)" != auto || "$(cat "$AUTO_DIR/source" 2>/dev/null)" == "$image" ]]; then
+  if [[ "$(active_palette)" != auto || "$(cat "$AUTO_DIR/key" 2>/dev/null)" == "$(auto_key "$image")" ]]; then
     return 0
   fi
 
