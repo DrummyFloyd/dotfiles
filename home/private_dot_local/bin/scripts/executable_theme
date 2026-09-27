@@ -7,7 +7,7 @@
 #                                        plus palette.json, the style's "default"
 #   ~/.config/themes/palettes/<name>/    palette.json, optional backgrounds/
 #   auto                                 palette matugen computes from the wallpaper
-#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty, gtk, dunst, zen…)
+#   ~/.config/themes/apps/<app>/         templates for apps outside the style (kitty, ghostty, gtk, dunst, zen…)
 #   ~/.config/themes/settings.json       per app: follow the theme, and the auto palette
 #
 # matugen renders the style and the apps with the palette into
@@ -276,6 +276,8 @@ reload() {
   hyprctl eval 'hl.exec_cmd("uwsm app -- waybar")' >/dev/null
   # kitty re-reads its config (and the included colours) on SIGUSR1.
   pkill -USR1 -x kitty || true
+  # Ghostty reloads its config (colours and custom CSS) on SIGUSR2.
+  pkill -USR2 -x ghostty || true
   # dunst re-reads dunstrc and its dunstrc.d/ drop-ins (the theme colours).
   dunstctl reload >/dev/null 2>&1 || true
   # GTK apps re-read their style (and gtk.css) when the GTK theme changes.

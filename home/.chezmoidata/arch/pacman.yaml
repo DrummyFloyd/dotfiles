@@ -101,6 +101,7 @@ arch:
 
     # --- terminal / editors
     - kitty
+    - ghostty
     - neovim
     - vim
 

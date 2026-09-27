@@ -1,0 +1,132 @@
+# Ghostty config mirroring kitty/kitty.conf (kitty_mod = ctrl+shift).
+# Run `ghostty +show-config --default --docs` for the full reference.
+
+# Fonts
+font-family = "FiraCode Nerd Font"
+font-size = 11
+# kitty: disable_ligatures cursor
+font-shaping-break = cursor
+
+# Theme (same palette as kitty/current-theme.conf)
+theme = TokyoNight Moon
+
+# Window (kitty defaults: no padding, tab bar only with 2+ tabs)
+window-padding-x = 0
+window-padding-y = 0
+window-show-tab-bar = auto
+
+# kitty-like tab bar: no titlebar, compact tabs at the bottom, styled in
+# tabs.css (powerline shapes aren't possible with GTK tabs).
+gtk-titlebar = false
+gtk-tabs-location = bottom
+gtk-wide-tabs = false
+gtk-custom-css = tabs.css
+# Tab colours of the desktop theme (~/.config/themes), over tabs.css.
+gtk-custom-css = ?~/.local/state/theme/current/ghostty-tabs.css
+
+# kitty: active_border_color. Ghostty can't color the focused split's
+# border, so use a visible divider (thickened in tabs.css) and dim the
+# unfocused splits more than the default 0.7.
+split-divider-color = #82aaff
+unfocused-split-opacity = 0.6
+
+# Colours of the desktop theme (~/.config/themes); left empty when Ghostty
+# keeps the theme above (see ~/.config/themes/settings.json).
+config-file = ?~/.local/state/theme/current/ghostty.conf
+
+# kitty: enable_audio_bell no
+bell-features = no-system,no-audio,attention,title,no-border
+
+# kitty: detect_urls yes / open_url_with default (ctrl+click opens links)
+link-url = true
+
+mouse-hide-while-typing = true
+
+# Keybindings: drop Ghostty's defaults and redefine kitty's.
+keybind = clear
+
+# Clipboard
+keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+shift+s=paste_from_selection
+keybind = shift+insert=paste_from_selection
+keybind = copy=copy_to_clipboard
+keybind = paste=paste_from_clipboard
+
+# Scrolling
+keybind = ctrl+shift+up=scroll_page_lines:-1
+keybind = ctrl+shift+k=scroll_page_lines:-1
+keybind = ctrl+shift+down=scroll_page_lines:1
+keybind = ctrl+shift+j=scroll_page_lines:1
+keybind = ctrl+shift+page_up=scroll_page_up
+keybind = ctrl+shift+page_down=scroll_page_down
+keybind = ctrl+shift+home=scroll_to_top
+keybind = ctrl+shift+end=scroll_to_bottom
+keybind = ctrl+shift+z=jump_to_prompt:-1
+keybind = ctrl+shift+x=jump_to_prompt:1
+# kitty: show_scrollback (opened in the default app instead of a pager)
+keybind = ctrl+shift+h=write_scrollback_file:open
+
+# Windows (kitty windows = Ghostty splits)
+keybind = ctrl+shift+enter=new_split:auto
+keybind = ctrl+shift+space=new_split:auto
+keybind = ctrl+shift+n=new_window
+keybind = ctrl+shift+w=close_surface
+keybind = ctrl+shift+]=goto_split:next
+keybind = ctrl+shift+[=goto_split:previous
+keybind = alt+tab=goto_split:next
+# kitty: next_layout (closest match is zooming the current split, like the stack layout)
+keybind = ctrl+shift+l=toggle_split_zoom
+
+# kitty: start_resizing_window (w/n wider/narrower, t/s taller/shorter, r reset)
+# Ghostty moves the divider in an absolute direction (it can't grow the
+# focused split like kitty's wider/narrower). The table name doubles as
+# kitty's help text: GTK shows it in the key-table overlay. catch_all
+# swallows other keys so they don't reach the shell while resizing.
+keybind = ctrl+shift+r=activate_key_table:RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/catch_all=ignore
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/w=resize_split:right,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/n=resize_split:left,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/t=resize_split:up,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/s=resize_split:down,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/arrow_right=resize_split:right,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/arrow_left=resize_split:left,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/arrow_up=resize_split:up,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/arrow_down=resize_split:down,50
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/r=equalize_splits
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/escape=deactivate_key_table
+keybind = RESIZE · W → · N ← · T ↑ · S ↓ · R reset · Esc quit/enter=deactivate_key_table
+
+# Tabs
+keybind = ctrl+shift+t=new_tab
+keybind = ctrl+shift+q=close_tab:this
+keybind = ctrl+shift+right=next_tab
+keybind = ctrl+shift+left=previous_tab
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+keybind = ctrl+shift+.=move_tab:1
+keybind = ctrl+shift+,=move_tab:-1
+keybind = ctrl+shift+alt+t=prompt_tab_title
+
+# Font size
+keybind = ctrl+shift+equal=increase_font_size:2
+keybind = ctrl+shift+plus=increase_font_size:2
+keybind = ctrl+shift+minus=decrease_font_size:2
+keybind = ctrl+shift+backspace=reset_font_size
+
+# kitty: open_url hints. Ghostty has no hints mode, so clear the prompt and
+# run ghostty-hints on a dump of the screen. Only works at a shell prompt.
+keybind = ctrl+shift+e=text:\x15 ghostty-hints\x20
+keybind = chain=write_screen_file:paste,plain
+keybind = chain=text:\r
+
+# Misc
+keybind = ctrl+shift+f=start_search
+keybind = escape=end_search
+keybind = ctrl+shift+f10=toggle_maximize
+keybind = ctrl+shift+f11=toggle_fullscreen
+keybind = ctrl+shift+f2=open_config
+keybind = ctrl+shift+f5=reload_config
+keybind = ctrl+shift+f6=inspector:toggle
+keybind = ctrl+shift+delete=reset
+keybind = ctrl+shift+escape=toggle_command_palette

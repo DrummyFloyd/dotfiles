@@ -1,0 +1,23 @@
+/* Ghostty tab bar colours from the active theme palette, rendered by the theme
+ * script and loaded after ~/.config/ghostty/tabs.css (shapes and the fallback
+ * colours). Turn off in ~/.config/themes/settings.json. */
+
+tabbar .box {
+  background: {{palette.surface}};
+}
+
+tabbar tab {
+  background: {{palette.surface_raised}};
+  color: {{palette.text_mute}};
+}
+
+tabbar tab:hover:not(:selected) {
+  background: {{palette.surface_raised}};
+  color: {{palette.text}};
+}
+
+tabbar tab:selected,
+tabbar tab:selected:hover {
+  background: {{palette.accent}};
+  color: {{palette.on_accent}};
+}

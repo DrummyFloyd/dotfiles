@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Pick a URL from a Ghostty screen dump and open it (kitty's ctrl+shift+e hints).
+# Called by the ctrl+shift+e keybind in ghostty/config with the dump path.
+set -euo pipefail
+
+screen_file="${1:?usage: ghostty-hints <screen-file>}"
+
+url=$(grep -oE '(https?|ftp|file)://[^][:space:]<>"'\''`()[]+' "$screen_file" |
+	sed -E 's/[.,;:!?]+$//' |
+	tac | awk '!seen[$0]++' |
+	fzf --exit-0 --height=40% --reverse --prompt='open> ') || exit 0
+
+setsid -f xdg-open "$url" >/dev/null 2>&1

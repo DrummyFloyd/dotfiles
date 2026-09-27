@@ -1,5 +1,6 @@
 {
   "kitty": { "follow": true, "follow_auto": true },
+  "ghostty": { "follow": true, "follow_auto": true },
   "gtk": { "follow": true, "follow_auto": true },
   "dunst": { "follow": true, "follow_auto": true },
   "zen": { "follow": true, "follow_auto": true },

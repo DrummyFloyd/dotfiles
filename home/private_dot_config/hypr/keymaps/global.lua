@@ -22,6 +22,7 @@ Bind.leader_cmd("P", SCRIPTS .. "/mainMonitorSwitch", "Switch main monitor")
 -- ############################# Applications #############################
 
 Bind.leader_cmd("Return", "uwsm app -- kitty", "Terminal")
+Bind.leader_cmd("SHIFT + Return", "uwsm app -- ghostty", "Terminal (Ghostty)")
 Bind.leader_cmd("E", "uwsm app -- nautilus", "File manager")
 Bind.leader_cmd("A", "uwsm app -- zen-browser || uwsm app -- firefox", "Browser")
 Bind.leader_cmd(

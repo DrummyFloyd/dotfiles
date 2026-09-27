@@ -1,0 +1,75 @@
+/* Flat, compact kitty-like tab bar using the colors from
+ * kitty/current-theme.conf (TokyoNight Moon). Overrides libadwaita's
+ * sizes (34px tab box, 26px tabs, 9px radius, 24px close button).
+ * Live-tweak with: GTK_DEBUG=interactive ghostty */
+
+tabbar .box {
+  background: #222436;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+tabbar tabbox {
+  min-height: 0;
+  padding: 0;
+}
+
+tabbar tabbox > tabboxchild {
+  border-radius: 0;
+}
+
+tabbar tabbox > separator {
+  opacity: 0;
+  margin: 0;
+  min-width: 1px;
+}
+
+tabbar tab {
+  background: #2f334d;
+  color: #545c7e;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 0;
+  padding: 0 8px;
+}
+
+tabbar tab label {
+  font-family: "FiraCode Nerd Font";
+  font-size: 10pt;
+}
+
+tabbar tab:hover:not(:selected) {
+  background: #2f334d;
+  color: #c8d3f5;
+}
+
+tabbar tab:selected,
+tabbar tab:selected:hover {
+  background: #82aaff;
+  color: #1e2030;
+}
+
+tabbar tab:selected label {
+  font-style: italic;
+}
+
+/* kitty has no close buttons on tabs */
+tabbar tab button.image-button {
+  opacity: 0;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  -gtk-icon-size: 0;
+}
+
+tabbar tab indicator {
+  opacity: 0;
+}
+
+/* Thicker split divider (color set by split-divider-color) */
+.window .split paned > separator {
+  min-width: 2px;
+  min-height: 2px;
+}
