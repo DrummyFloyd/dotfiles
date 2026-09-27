@@ -60,7 +60,7 @@ default_row = next((i for i, items in enumerate(sinks) if items["sink_name"].end
 active = f"-a {default_row}" if default_row is not None else ""
 
 # Call rofi and show the list. take the selected sink name and set it as the default sink
-rofi_command = f"echo '{output}' | rofi -dmenu -i -p 'select sink' {active} -theme-str 'window {{ width: 950px; }} mainbox {{ children: [listview]; }}'"
+rofi_command = f"echo '{output}' | rofi -dmenu -i -p 'select sink' {active} -theme-str 'window {{ width: 950px; }}'"
 rofi_process = subprocess.run(
     rofi_command,
     shell=True,
