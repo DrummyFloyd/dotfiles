@@ -240,15 +240,16 @@ render() {
 # nvim reads (and watches) this file from lua/plugins/colorscheme.lua: a palette
 # may name a native colorscheme, otherwise nvim builds one from the palette.
 write_nvim() {
-  local follow=false fallback
+  local follow=false
   if follows nvim "$1"; then
     follow=true
   fi
-  fallback="$(setting nvim fallback)"
-  [[ "$fallback" != null ]] || fallback=tokyonight
 
-  jq --argjson follow "$follow" --arg fallback "$fallback" \
-    '{follow: $follow, fallback: $fallback, colorscheme: .nvim.colorscheme, palette: .palette}' \
+  # Unset keys are left out: nvim then uses its own fallback colorscheme.
+  jq --argjson follow "$follow" \
+    --argjson fallback "$(jq -c '.nvim.fallback' "$SETTINGS" 2>/dev/null || echo null)" \
+    '{follow: $follow, fallback: $fallback, colorscheme: .nvim.colorscheme, palette: .palette}
+      | with_entries(select(.value != null))' \
     "$2" >"$3"
 }
 
