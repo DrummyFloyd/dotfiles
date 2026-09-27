@@ -42,31 +42,3 @@ hl.define_submap("Workspace Switch", function()
 	Bind.key("L", hl.dsp.workspace.move({ monitor = "+1" }), "Workspace to next monitor")
 	Bind.key("ESCAPE", hl.dsp.submap("reset"), "Exit mode")
 end)
-
--- ################################ Theme #################################
--- N / P cycle and stay in the mode to preview; D and M apply then exit.
--- A notification lists the themes with the active one highlighted.
-
-local THEME = require("config").scripts .. "/theme"
-
---- @param cmd string
---- @return fun()
-local function exec_and_exit(cmd)
-	return function()
-		hl.exec_cmd(cmd)
-		hl.dispatch(hl.dsp.submap("reset"))
-	end
-end
-
-Bind.key("ALT + T", function()
-	hl.dispatch(hl.dsp.submap("Theme"))
-	hl.exec_cmd(THEME .. " show")
-end, "Theme mode")
-
-hl.define_submap("Theme", function()
-	Bind.cmd("N", THEME .. " next", "Next theme")
-	Bind.cmd("P", THEME .. " prev", "Previous theme")
-	Bind.key("D", exec_and_exit(THEME .. " default"), "Default theme")
-	Bind.key("M", exec_and_exit(THEME .. " menu"), "Pick a theme")
-	Bind.key("ESCAPE", hl.dsp.submap("reset"), "Exit mode")
-end)
