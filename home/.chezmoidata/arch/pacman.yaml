@@ -156,7 +156,6 @@ arch:
     - musl
     - python-pip
     - python-pynvim
-    - python-virtualenv
     - python-boto3
     - uv
     - luarocks
