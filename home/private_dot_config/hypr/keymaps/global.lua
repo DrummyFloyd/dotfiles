@@ -87,6 +87,14 @@ Bind.cmd("XF86MonBrightnessDown", SCRIPTS .. "/brightnessCtrl --dec",    "Bright
 -- Audio sink/source picker (F1 on the desktop keyboard)
 Bind.leader_cmd({ "XF86AudioMute", "F1" }, SCRIPTS .. "/selectSinkSource", "Pick audio sink/source")
 
+-- ############################ Notifications #############################
+
+-- stylua: ignore start
+Bind.leader_cmd("N",          "dunstctl close",       "Dismiss notification")
+Bind.leader_cmd("SHIFT + N",  "dunstctl close-all",   "Dismiss all notifications")
+Bind.leader_cmd("CTRL + N",   "dunstctl history-pop", "Show last notification again")
+-- stylua: ignore end
+
 -- ############################## Screenshots #############################
 
 Bind.cmd("code:107", 'grim -g "$(slurp)"', "Screenshot a region")
