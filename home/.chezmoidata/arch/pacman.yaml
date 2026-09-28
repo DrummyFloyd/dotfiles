@@ -14,7 +14,6 @@ arch:
     - powertop
     - acpi_call
     - acpilight
-    - dmidecode
     - zsh
     - less
     - mandoc
@@ -55,7 +54,6 @@ arch:
     - rsync
     - rclone
     - sshfs
-    - sshpass
 
     # --- hyprland desktop
     - hyprland
@@ -64,7 +62,6 @@ arch:
     - uwsm
     - xdg-desktop-portal-hyprland
     - xdg-utils
-    - xorg-xhost
     - polkit-kde-agent
     - qt5-wayland
     - qt6-wayland
@@ -84,11 +81,7 @@ arch:
     # screenshots / screen
     - grim
     - slurp
-    - swappy
-    - wf-recorder
     - wl-clipboard
-    - wlr-randr
-    - wev
 
     # --- fonts
     - noto-fonts
@@ -123,15 +116,7 @@ arch:
     - mediainfo
     - fastfetch
     - superfile
-    - hyperfine
-    - strace
     - lsof
-    - stress
-    - libisoburn
-    - asciinema
-    - asciinema-agg-bin
-    - asciiquarium
-    - cowsay
 
     # --- git
     - git
@@ -153,20 +138,13 @@ arch:
 
     # --- dev toolchains
     - clang
-    - musl
     - python-pip
     - python-pynvim
-    - python-boto3
     - uv
-    - luarocks
-    - luajit-tiktoken-bin
     - graphviz
-    - mkcert
-    - wscat
     - lazysql
     - sqlitebrowser
     - doxx
-    - jsonnet-bundler-bin
 
     # --- containers / kubernetes
     - docker
@@ -179,19 +157,14 @@ arch:
     - helm
     - kustomize
     - argocd
-    - kubent-bin
-    - minikube
-    - chart-testing
     - talosctl
     - talhelper-bin
-    - tpi
 
     # --- cloud / iac
     - opentofu
     - terraform
     - ansible
     - aws-cli
-    - python-awscli-plugin-endpoint
 
     # --- desktop apps
     - zen-browser-bin
@@ -200,8 +173,6 @@ arch:
     - vlc
     - mpv
     - qbittorrent
-    - remmina
-    - rpi-imager
     - slack-desktop
     - vesktop-bin
     - zapzap
