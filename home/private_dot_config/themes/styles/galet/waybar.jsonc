@@ -83,11 +83,11 @@
   },
   "cpu": {
     "interval": 10,
-    "format": "<span color='{{palette.text_mute}}'>󰻟</span> {usage}%",
+    "format": "<span color='{{palette.text_mute}}' size='115%'>󰻟</span> {usage}%",
   },
   "memory": {
     "interval": 10,
-    "format": "<span color='{{palette.text_mute}}'></span> {percentage}%",
+    "format": "<span color='{{palette.text_mute}}' size='85%'> </span><span size='60%'> </span>{percentage}%",
     "tooltip-format": "{used:0.1f} / {total:0.1f} GiB",
   },
   "battery": {
