@@ -155,7 +155,6 @@ arch:
     # --- dev toolchains
     - clang
     - musl
-    - python
     - python-pip
     - python-pynvim
     - python-virtualenv
