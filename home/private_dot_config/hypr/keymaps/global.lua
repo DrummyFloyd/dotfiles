@@ -31,7 +31,7 @@ Bind.leader_cmd(
 	"Browser (private window)"
 )
 Bind.leader_cmd("D", "rofi -show drun -run-command 'uwsm app -- {cmd}'", "App launcher")
-Bind.leader_cmd("M", "wlogout --protocol layer-shell -b 2", "Logout menu")
+Bind.leader_cmd("M", SCRIPTS .. "/logoutMenu", "Logout menu")
 
 -- ############################## Window focus ############################
 

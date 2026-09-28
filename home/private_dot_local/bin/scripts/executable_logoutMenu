@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# wlogout as a small grid of buttons centred on the focused monitor.
+# wlogout only takes margins in pixels, so they are computed from its size.
+
+SIZE=260   # side of a button
+GAP=64     # space between buttons
+BUTTONS=4  # buttons in ~/.config/wlogout/layout
+COLS=2     # buttons per row, filled column by column (hence the order in layout)
+
+# Logical size of the focused monitor, sides swapped when rotated. wlogout's
+# overlay covers the bars too, so their reserved space is not taken off.
+read -r width height < <(hyprctl monitors -j | jq -r '.[] | select(.focused) | .transform as $t
+  | [(.width / .scale | floor), (.height / .scale | floor)]
+  | if $t % 2 == 1 then reverse else . end | @tsv' 2>/dev/null)
+
+if [[ -z "$width" ]]; then
+  exec wlogout --protocol layer-shell -b "$COLS"
+fi
+
+rows=$(((BUTTONS + COLS - 1) / COLS))
+grid_w=$((COLS * SIZE + (COLS - 1) * GAP))
+grid_h=$((rows * SIZE + (rows - 1) * GAP))
+side=$(((width - grid_w) / 2))
+top=$(((height - grid_h) / 2))
+exec wlogout --protocol layer-shell -b "$COLS" -c "$GAP" -r "$GAP" \
+  -L "$side" -R "$side" -T "$top" -B "$top"

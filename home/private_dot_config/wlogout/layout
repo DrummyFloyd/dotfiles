@@ -6,6 +6,13 @@
 }
 
 {
+  "label": "reboot",
+  "action": "systemctl reboot",
+  "text": "R",
+  "keybind": "r"
+}
+
+{
   "label": "logout",
   "action": "uwsm stop",
   "text": "E",
@@ -17,11 +24,4 @@
   "action": "systemctl poweroff",
   "text": "S",
   "keybind": "s"
-}
-
-{
-  "label": "reboot",
-  "action": "systemctl reboot",
-  "text": "R",
-  "keybind": "r"
 }
