@@ -158,7 +158,6 @@ arch:
     - kustomize
     - argocd
     - talosctl
-    - talhelper-bin
 
     # --- cloud / iac
     - opentofu
