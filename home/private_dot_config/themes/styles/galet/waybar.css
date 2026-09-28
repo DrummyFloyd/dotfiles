@@ -90,9 +90,11 @@ tooltip label {
 }
 
 /* System island */
+#custom-controls,
 #custom-updates,
 #pulseaudio,
 #backlight,
+#power-profiles-daemon,
 #cpu,
 #memory,
 #battery {
@@ -100,6 +102,27 @@ tooltip label {
 }
 
 #custom-updates {
+  color: @warn;
+}
+
+/* Controls drawer: the leader lights up on hover */
+#custom-controls {
+  color: @text-mute;
+  border-radius: 10px;
+  margin: 4px 0;
+  transition: all 200ms ease;
+}
+
+#custom-controls:hover {
+  background: alpha(@text, 0.12);
+  color: @text;
+}
+
+#power-profiles-daemon.power-saver {
+  color: @accent;
+}
+
+#power-profiles-daemon.performance {
   color: @warn;
 }
 

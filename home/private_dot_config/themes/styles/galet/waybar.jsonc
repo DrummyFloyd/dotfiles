@@ -10,7 +10,22 @@
   "modules-right": ["group/system", "tray"],
   "group/system": {
     "orientation": "inherit",
-    "modules": ["custom/updates", "pulseaudio", "backlight", "cpu", "memory", "battery"],
+    "modules": ["group/controls", "custom/updates", "cpu", "memory", "battery"],
+  },
+  // Drawer: only the leader shows, hovering it slides sound, brightness and power profile out to its left.
+  "group/controls": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 300,
+      "children-class": "controls-child",
+      "click-to-reveal": false,
+      "transition-left-to-right": false,
+    },
+    "modules": ["custom/controls", "pulseaudio", "backlight", "power-profiles-daemon"],
+  },
+  "custom/controls": {
+    "format": "󰘮 󰅁",
+    "tooltip": false,
   },
   "hyprland/workspaces": {
     // Names without an icon (every workspace but 9 and 10) show as is.
@@ -53,6 +68,18 @@
   "backlight": {
     "format": "<span color='{{palette.text_mute}}'>{icon}</span> {percent}%",
     "format-icons": ["󰃞", "󰃟", "󰃠"],
+    // Defaults to the format, whose markup the tooltip shows raw.
+    "tooltip-format": "Brightness: {percent}%",
+  },
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+    "format-icons": {
+      "default": "󰗑 {profile}",
+      "power-saver": "󰌪 power saver",
+      "balanced": "󰗑 balanced",
+      "performance": "󰓅 performance",
+    },
   },
   "cpu": {
     "interval": 10,
