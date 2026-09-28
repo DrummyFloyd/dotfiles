@@ -3,6 +3,7 @@
   "ghostty": { "follow": true, "follow_auto": true },
   "gtk": { "follow": true, "follow_auto": true },
   "dunst": { "follow": true, "follow_auto": true },
+  "wlogout": { "follow": true, "follow_auto": true },
   "zen": { "follow": true, "follow_auto": true },
   "nvim": { "follow": true, "follow_auto": true, "fallback": "tokyonight" },
   "auto": { "prefer": "dominant", "wallpapers": {} }

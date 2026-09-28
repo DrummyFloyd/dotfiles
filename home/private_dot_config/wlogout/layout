@@ -1,27 +1,27 @@
 {
   "label": "lock",
   "action": "hyprlock",
-  "text": "Lock"
+  "text": "L",
   "keybind": "l"
 }
 
 {
   "label": "logout",
   "action": "uwsm stop",
-  "text": "Logout"
+  "text": "E",
   "keybind": "e"
 }
 
 {
   "label": "shutdown",
   "action": "systemctl poweroff",
-  "text": "Shutdown"
+  "text": "S",
   "keybind": "s"
 }
 
 {
   "label": "reboot",
   "action": "systemctl reboot",
-  "text": "Reboot"
+  "text": "R",
   "keybind": "r"
 }

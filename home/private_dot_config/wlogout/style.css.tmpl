@@ -1,76 +1,44 @@
-/* from https://github.com/MrjmonnetRajan/Hypr-Dots/tree/main gruvMinimal*/
-window {
-  font-family:
-    CaskaydiaCove Nerd Font,
-    monospace;
-  font-size: 12pt;
-  color: #cde5f4;
-  background-color: rgba(0, 0, 0, 0.9);
-}
+/* Shapes only: the colours come from the active theme, see ~/.local/bin/scripts/theme */
+@import url("file://{{ .chezmoi.homeDir }}/.local/state/theme/current/wlogout.css");
 
+/* Symbolic icons take the button colour, and unlike the text of a button
+   (wlogout can't centre it) they sit in the middle. The text, stuck at the
+   bottom, shows the key of the button. */
 button {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 60%;
-  border: none;
-  color: #fbf1c7;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 32px;
   text-shadow: none;
-  border-radius: 20px 20px 20px 20px;
-  background-color: rgba(1, 121, 111, 0);
-  margin: 5px;
+  box-shadow: none;
+  /* The GTK theme rings the focused button, the first one on open, once a key
+     is pressed (the shortcut that opens the menu is enough) */
+  outline-style: none;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-position: center 40%;
+  background-size: 35%;
   transition:
-    box-shadow 0.2s ease-in-out,
-    background-color 0.2s ease-in-out;
-}
-
-button:hover {
-  background-color: rgba(213, 196, 161, 0.1);
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
 }
 
 #lock {
-  background-image: image(url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/lock.png"));
-  background-size: 15%;
-}
-#lock:focus,
-#lock:hover {
-  background-image: image(
-    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/lock-hover.png")
-  );
+  background-image: -gtk-icontheme("system-lock-screen-symbolic");
 }
 
 #logout {
-  background-image: image(
-    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/logout.png")
-  );
-  background-size: 14%;
-}
-#logout:focus,
-#logout:hover {
-  background-image: image(
-    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/logout-hover.png")
-  );
-}
-
-#shutdown {
-  background-image: image(url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/power.png"));
-  background-size: 14%;
-}
-#shutdown:focus,
-#shutdown:hover {
-  background-image: image(
-    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/power-hover.png")
-  );
+  background-image: -gtk-icontheme("system-log-out-symbolic");
 }
 
 #reboot {
-  background-image: image(
-    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/restart.png")
-  );
-  background-size: 14%;
+  background-image: -gtk-icontheme("view-refresh-symbolic");
 }
-#reboot:focus,
-#reboot:hover {
-  background-image: image(
-    url("{{ .chezmoi.homeDir }}/.config/wlogout/icons/restart-hover.png")
-  );
+
+#shutdown {
+  background-image: -gtk-icontheme("system-shutdown-symbolic");
+}
+
+button label {
+  font-family: "FiraCode Nerd Font";
+  font-size: 16px;
 }

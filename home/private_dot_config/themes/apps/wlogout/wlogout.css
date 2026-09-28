@@ -1,0 +1,43 @@
+/* wlogout colours from the active theme palette, rendered by the theme script and
+   imported by ~/.config/wlogout/style.css (which holds the shapes).
+   Turn off in ~/.config/themes/settings.json. */
+window {
+  background-color: alpha({{palette.surface}}, 0.88);
+}
+
+button {
+  background-color: transparent;
+  border-color: {{palette.outline}};
+  color: {{palette.text}};
+}
+
+button label {
+  color: {{palette.text_mute}};
+}
+
+/* Hover only: GTK focuses the first button on open, so :focus would always
+   light it up. The keys shown on the buttons pick them instead. */
+button:hover {
+  background-color: {{palette.surface_raised}};
+  border-color: currentColor;
+}
+
+button:hover label {
+  color: {{palette.text}};
+}
+
+#lock {
+  color: {{palette.accent}};
+}
+
+#logout {
+  color: {{palette.accent2}};
+}
+
+#reboot {
+  color: {{palette.accent3}};
+}
+
+#shutdown {
+  color: {{palette.crit}};
+}
