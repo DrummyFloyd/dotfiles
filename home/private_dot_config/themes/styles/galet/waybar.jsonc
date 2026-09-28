@@ -10,7 +10,7 @@
   "modules-right": ["group/system", "tray"],
   "group/system": {
     "orientation": "inherit",
-    "modules": ["custom/updates", "pulseaudio", "backlight", "cpu", "battery"],
+    "modules": ["custom/updates", "pulseaudio", "backlight", "cpu", "memory", "battery"],
   },
   "hyprland/workspaces": {
     // Names without an icon (every workspace but 9 and 10) show as is.
@@ -57,6 +57,11 @@
   "cpu": {
     "interval": 10,
     "format": "<span color='{{palette.text_mute}}'>󰻠</span> {usage}%",
+  },
+  "memory": {
+    "interval": 10,
+    "format": "<span color='{{palette.text_mute}}'>󰍛</span> {percentage}%",
+    "tooltip-format": "{used:0.1f} / {total:0.1f} GiB",
   },
   "battery": {
     "format": "<span color='{{palette.text_mute}}'>{icon}</span> {capacity}%",

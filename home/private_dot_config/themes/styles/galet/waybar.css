@@ -94,6 +94,7 @@ tooltip label {
 #pulseaudio,
 #backlight,
 #cpu,
+#memory,
 #battery {
   padding: 0 7px;
 }
