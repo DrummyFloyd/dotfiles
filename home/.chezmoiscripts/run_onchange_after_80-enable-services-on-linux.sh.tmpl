@@ -6,7 +6,7 @@
 {{ template "utils" }}
 
 {{- if .isArch }}
-ensure_services_fast docker.service containerd.service NetworkManager.service cronie.service systemd-resolved.service pcscd.service
+ensure_services_fast docker.service containerd.service NetworkManager.service cronie.service systemd-resolved.service pcscd.service power-profiles-daemon.service
 
 # batsignal options.conf hash: {{ include "private_dot_config/systemd/user/batsignal.service.d/options.conf" | sha256sum }}
 ensure_user_services_fast batsignal.service

@@ -12,6 +12,7 @@ arch:
     - fwupd
     - smartmontools
     - powertop
+    - power-profiles-daemon
     - acpi_call
     - acpilight
     - zsh
