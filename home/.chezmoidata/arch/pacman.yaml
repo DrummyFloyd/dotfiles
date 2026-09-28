@@ -18,7 +18,6 @@ arch:
     - zsh
     - less
     - mandoc
-    - iptables
     - systemd-resolvconf
 
     # --- package management
