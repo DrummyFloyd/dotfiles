@@ -83,7 +83,7 @@
   },
   "cpu": {
     "interval": 10,
-    "format": "<span color='{{palette.text_mute}}'>󰻠</span> {usage}%",
+    "format": "<span color='{{palette.text_mute}}'>󰻟</span> {usage}%",
   },
   "memory": {
     "interval": 10,
