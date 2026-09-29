@@ -6,7 +6,7 @@
   "margin-right": 10,
   "spacing": 6,
   "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-  "modules-center": ["clock", "custom/capslock"],
+  "modules-center": ["privacy", "clock", "custom/capslock"],
   "modules-right": ["group/system", "tray"],
   "group/system": {
     "orientation": "inherit",
@@ -58,6 +58,11 @@
   },
   "custom/updates": {
     "format": "{}",
+  },
+  "privacy": {
+    "icon-size": 14,
+    "icon-spacing": 6,
+    "transition-duration": 250,
   },
   "custom/capslock": {
     "format": "{icon}",

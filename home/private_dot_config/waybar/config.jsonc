@@ -57,6 +57,13 @@
   "pulseaudio": {
     "on-double-click": "uwsm app -- pavucontrol",
   },
+  // Speakers left out: any playing media would light the island up.
+  "privacy": {
+    "modules": [
+      { "type": "screenshare", "tooltip": true },
+      { "type": "audio-in", "tooltip": true },
+    ],
+  },
   // Refreshed by Hyprland on Caps_Lock release: keyboard-state reads the LED
   // before it changes and lags one toggle behind.
   "custom/capslock": {

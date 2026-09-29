@@ -89,6 +89,21 @@ tooltip label {
   color: @accent;
 }
 
+/* Privacy island, hidden by waybar while nothing records the screen or mic */
+#privacy {
+  background: @surface-raised;
+  border-radius: 15px;
+  padding: 0 11px;
+}
+
+#privacy-item.screenshare {
+  color: @crit;
+}
+
+#privacy-item.audio-in {
+  color: @warn;
+}
+
 /* Caps Lock island, hidden by waybar while unlocked */
 #custom-capslock {
   background: @surface-raised;
