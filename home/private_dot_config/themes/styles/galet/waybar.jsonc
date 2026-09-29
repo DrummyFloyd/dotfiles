@@ -6,7 +6,7 @@
   "margin-right": 10,
   "spacing": 6,
   "modules-left": ["hyprland/workspaces", "hyprland/submap"],
-  "modules-center": ["clock"],
+  "modules-center": ["clock", "custom/capslock"],
   "modules-right": ["group/system", "tray"],
   "group/system": {
     "orientation": "inherit",
@@ -58,6 +58,12 @@
   },
   "custom/updates": {
     "format": "{}",
+  },
+  "custom/capslock": {
+    "format": "{icon}",
+    "format-icons": {
+      "locked": "󰘲",
+    },
   },
   "pulseaudio": {
     "format": "<span color='{{palette.text_mute}}'>{icon}</span> {volume}%",

@@ -95,6 +95,16 @@ Bind.leader_cmd("SHIFT + N",  "dunstctl close-all",   "Dismiss all notifications
 Bind.leader_cmd("CTRL + N",   "dunstctl history-pop", "Show last notification again")
 -- stylua: ignore end
 
+-- ############################### Caps Lock ##############################
+
+-- Refresh the waybar Caps Lock island once the lock state has flipped;
+-- non_consuming so the key still reaches the keyboard.
+Bind.cmd("Caps_Lock", "pkill -RTMIN+8 waybar", "Refresh Caps Lock indicator", {
+	release = true,
+	non_consuming = true,
+	ignore_mods = true,
+})
+
 -- ############################## Screenshots #############################
 
 Bind.cmd("code:107", 'grim -g "$(slurp)"', "Screenshot a region")

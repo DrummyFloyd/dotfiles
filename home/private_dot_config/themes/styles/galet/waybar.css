@@ -89,6 +89,14 @@ tooltip label {
   color: @accent;
 }
 
+/* Caps Lock island, hidden by waybar while unlocked */
+#custom-capslock {
+  background: @surface-raised;
+  color: @warn;
+  border-radius: 15px;
+  padding: 0 13px 0 9px;
+}
+
 /* System island */
 #custom-controls,
 #custom-updates,

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Caps Lock state for the waybar custom/capslock module.
+# Prints nothing while unlocked so waybar hides the module.
+# Hyprland refreshes it on Caps_Lock release (pkill -RTMIN+8 waybar).
+
+state=$(hyprctl devices -j | jq '[.keyboards[] | select(.main) | .capsLock] | any')
+
+if [ "$state" = "true" ]; then
+    echo '{"text": "on", "alt": "locked", "class": "locked"}'
+else
+    echo
+fi

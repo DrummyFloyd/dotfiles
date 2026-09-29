@@ -8,6 +8,7 @@
 .config/systemd/user/batsignal.service.d/
 .config/systemd/user/batsignal.service.d/**
 # Hyprland helpers
+.local/bin/scripts/capslock
 .local/bin/scripts/mainMonitorSwitch
 .local/bin/scripts/reloadHyprland
 .local/bin/scripts/xdg-portal-hyprland

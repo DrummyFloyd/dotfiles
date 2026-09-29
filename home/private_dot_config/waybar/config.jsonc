@@ -57,6 +57,15 @@
   "pulseaudio": {
     "on-double-click": "uwsm app -- pavucontrol",
   },
+  // Refreshed by Hyprland on Caps_Lock release: keyboard-state reads the LED
+  // before it changes and lags one toggle behind.
+  "custom/capslock": {
+    "exec": "~/.local/bin/scripts/capslock",
+    "return-type": "json",
+    "interval": "once",
+    "signal": 8,
+    "tooltip": false,
+  },
   "custom/updates": {
     "exec": "~/.local/bin/scripts/update-sys",
     "on-click": "~/.local/bin/scripts/update-sys update",
