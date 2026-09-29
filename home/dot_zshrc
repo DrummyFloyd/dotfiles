@@ -21,9 +21,9 @@ fi
 plug "${HOME}/.config/zsh/behaviours.zsh"
 plug "${HOME}/.config/zsh/aliases.zsh"
 plug "${HOME}/.config/zsh/exports.zsh"
-# INFO: after exports so mise shims take precedence over PATH additions,
+# INFO: after exports so mise tool paths take precedence over PATH additions,
 # before anything running tools that may come from mise (fzf on ubuntu)
-eval "$(mise activate zsh --shims)"
+eval "$(mise activate zsh)"
 # INFO: fzf key-bindings and completion, after exports (FZF_* vars)
 source <(fzf --zsh)
 plug "${HOME}/.config/zsh/functions.zsh"
