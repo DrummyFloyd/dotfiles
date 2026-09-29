@@ -3,9 +3,13 @@
  * Turn off in ~/.config/themes/settings.json.
  * Zen derives most of its colours from --zen-primary-color and
  * --zen-branding-bg; its workspace gradient sets some of these inline, hence
- * !important. */
+ * !important.
+ * Only the "Perso" workspace follows the palette; the others keep their own
+ * gradient. Zen marks the shown workspace with [active] on its <zen-workspace>,
+ * whose id is the workspace uuid. Spaces sync keeps that uuid across machines,
+ * so it only changes if the workspace is recreated. */
 
-:root {
+:root:has(zen-workspace[id="{eb57e00b-ff6b-465a-81a5-abc9431e624a}"][active]) {
   --zen-primary-color: {{palette.accent}} !important;
   --zen-branding-bg: {{palette.surface}} !important;
 
@@ -29,7 +33,7 @@
 /* The sidebar and toolbar backgrounds are painted by ::before/::after of these
  * elements, from variables the gradient script sets on the elements
  * themselves, so a value on :root never reaches them. */
-.zen-browser-generic-background {
+:root:has(zen-workspace[id="{eb57e00b-ff6b-465a-81a5-abc9431e624a}"][active]) .zen-browser-generic-background {
   --zen-main-browser-background: {{palette.surface}} !important;
   --zen-main-browser-background-old: {{palette.surface}} !important;
   --zen-main-browser-background-toolbar: {{palette.surface}} !important;
@@ -37,6 +41,6 @@
 }
 
 /* Flat palette: no grain texture over it. */
-.zen-browser-grain {
+:root:has(zen-workspace[id="{eb57e00b-ff6b-465a-81a5-abc9431e624a}"][active]) .zen-browser-grain {
   display: none !important;
 }
