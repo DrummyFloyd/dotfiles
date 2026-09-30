@@ -1,0 +1,14 @@
+---
+# i7-12700K (UHD 770 drives the host display) + RTX 3080 for VMs.
+# Fill the addresses from the preflight report:
+#   ansible-playbook -i inventories/desktop playbooks/vfio-looking-glass.yml -t preflight
+
+# RTX 3080: video + HDMI audio functions.
+vfio_gpu_devices: []
+#  - "0000:01:00.0"
+#  - "0000:01:00.1"
+
+libvirt_vms:
+  - name: win-studio
+    # xHCI controller holding the SSL 2+, the MIDI keyboard and the dongles.
+    pci_passthrough: []

@@ -1,0 +1,68 @@
+---
+- name: Gather PCI and IOMMU facts
+  vfio_iommu_facts:
+    passthrough_devices: >-
+      {{ vfio_gpu_devices
+         + (libvirt_vms | map(attribute='pci_passthrough', default=[]) | flatten) }}
+  register: vfio_iommu
+
+- name: Show passthrough candidates
+  ansible.builtin.debug:
+    msg: >-
+      {%- set lines = [] -%}
+      {%- for c in vfio_iommu.passthrough_candidates -%}
+      {{- lines.append('[%s] %s %s:%s group=%s driver=%s isolated=%s %s' % (
+            c.kind, c.address, c.vendor_id, c.device_id, c.iommu_group,
+            c.driver, c.isolated, c.name)) -}}
+      {%- endfor -%}
+      {{ lines if vfio_iommu.iommu_enabled else 'IOMMU disabled, no groups to report' }}
+
+- name: Show all IOMMU groups
+  ansible.builtin.debug:
+    var: vfio_iommu.iommu_groups
+    verbosity: 1
+
+- name: Check CPU virtualization support
+  ansible.builtin.assert:
+    that: vfio_iommu.cpu_virtualization is not none
+    fail_msg: No vmx/svm CPU flag, enable VT-x/AMD-V in the firmware.
+    quiet: true
+
+- name: Check IOMMU is enabled
+  ansible.builtin.assert:
+    that: vfio_iommu.iommu_enabled
+    fail_msg: >-
+      IOMMU is disabled: enable VT-d in the firmware, run the vfio_host role
+      and reboot.
+    quiet: true
+  ignore_errors: "{{ not vfio_preflight_require_iommu }}"
+
+- name: Check requested passthrough devices exist
+  ansible.builtin.assert:
+    that: vfio_iommu.missing_devices | length == 0
+    fail_msg: "Unknown PCI addresses: {{ vfio_iommu.missing_devices | join(', ') }}"
+    quiet: true
+
+- name: Check requested devices are isolated in their IOMMU groups
+  ansible.builtin.assert:
+    that: vfio_iommu.group_conflicts | length == 0
+    fail_msg: >-
+      IOMMU group conflicts:
+      {% for c in vfio_iommu.group_conflicts -%}
+      {{ c.device }} shares IOMMU group {{ c.iommu_group }} with
+      {{ c.blocking | join(', ') }}, which must be passed through too.
+      {% endfor %}
+    quiet: true
+
+- name: Check a GPU is left for the host display
+  ansible.builtin.assert:
+    that: >-
+      vfio_iommu.passthrough_candidates
+      | selectattr('kind', 'eq', 'gpu')
+      | rejectattr('address', 'in', vfio_iommu.passthrough_devices)
+      | list | length > 0
+    fail_msg: >-
+      Every GPU is meant for passthrough: the host needs one (the iGPU) for
+      its display and the Looking Glass client.
+    quiet: true
+  when: vfio_gpu_devices | length > 0
