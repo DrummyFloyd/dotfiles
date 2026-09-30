@@ -1,0 +1,17 @@
+{{- /*
+  vim:ft=gotmpl:
+  INFO: lets git verify ssh signatures (git log --show-signature)
+*/ -}}
+{{- if .isPersonal }}
+{{- $personalKey := (rbw "drummy").data.public_key }}
+{{ .personal.email }} namespaces="git" {{ $personalKey }}
+26741817+DrummyFloyd@users.noreply.github.com namespaces="git" {{ $personalKey }}
+5369276-DrummyFloyd@users.noreply.gitlab.com namespaces="git" {{ $personalKey }}
+{{- end }}
+{{- if .isWork }}
+{{-   if not .work.sshKeyProvided }}
+{{ .work.email }} namespaces="git" {{ (rbw "work").data.public_key }}
+{{-   else if stat (printf "%s.pub" .work.sshKeyPath) }}
+{{ .work.email }} namespaces="git" {{ include (printf "%s.pub" .work.sshKeyPath) | trim }}
+{{-   end }}
+{{- end }}

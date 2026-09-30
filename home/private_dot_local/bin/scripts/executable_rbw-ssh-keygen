@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# gpg.ssh.program for git: `ssh-keygen -Y sign -f <key>` only asks the agent
+# behind SSH_AUTH_SOCK, which stays on the system agent. Point it to rbw when
+# the signing key is one served by rbw, keep it untouched otherwise.
+
+case " $* " in
+  *" ${HOME}/.ssh/rbw/"*)
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/rbw/ssh-agent-socket"
+    ;;
+esac
+
+exec ssh-keygen "$@"

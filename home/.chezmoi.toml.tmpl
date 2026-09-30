@@ -57,9 +57,14 @@
 
 {{ if $workConfig -}}
 [data.work]
-  generateWorkSshKey = {{ promptBool "🔧❓Generate new sshKey [Y/n]" true -}}
   email = {{ promptStringOnce . "work.email" "📧❓Gitconfig: Work email" | quote }}
   username = {{ promptStringOnce . "work.username" "🧑❓Gitconfig: Work username" | quote }}
+  # INFO: when no key is provided, the "work" SSH key item is served by rbw
+  {{- $workSshKeyProvided := promptBoolOnce . "work.sshKeyProvided" "🔑❓SSH key provided by work [y/N]" false }}
+  sshKeyProvided = {{ $workSshKeyProvided }}
+  {{- if $workSshKeyProvided }}
+  sshKeyPath = {{ promptStringOnce . "work.sshKeyPath" "🔑❓Path to the provided SSH private key" (joinPath .chezmoi.homeDir ".ssh/id_ed25519") | quote }}
+  {{- end }}
   # gpgKey = {{ promptBool "🔐❓Gitconfig: Work gpgKey [y/N]" false}}
 {{- end }}
 
