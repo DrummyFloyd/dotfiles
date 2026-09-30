@@ -1,5 +1,6 @@
 ubuntu:
-  aptWsl: []
+  aptWsl:
+    - wslu
   windows:
     - Google.Chrome
     - Microsoft.VisualStudioCode
