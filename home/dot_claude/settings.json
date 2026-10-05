@@ -21,13 +21,20 @@
   "enabledPlugins": {
     "crowdsec@crowdsecurity": true,
     "gopls-lsp@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true
+    "frontend-design@claude-plugins-official": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "crowdsecurity": {
       "source": {
         "source": "github",
         "repo": "crowdsecurity/crowdsec-skill"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
       }
     }
   },
