@@ -60,8 +60,9 @@ alias -- -='cd -'
 alias pip='noglob pip'
 
 # docker alias
-alias docker-stop-all='docker rm -f $(docker ps -aq)'
-alias docker-clean-all="docker system prune -a --volumes"
+alias docker-rm-all='docker ps -aq | xargs -r docker rm -f'
+alias docker-prune='docker system prune -a --volumes'
+alias docker-nuke='docker-rm-all && docker-prune -f && docker volume prune -af'
 
 # terraform
 alias tf="terraform"
