@@ -1,24 +1,15 @@
--- Maintained Lua fork of iamcco/markdown-preview.nvim (no Node.js needed).
--- Same plugin name as the one in LazyVim's lang.markdown extra, so this spec
--- merges into it: override every field that only makes sense upstream.
---  TODO: make a PR to use this fork ?
+-- mdkite.nvim: maintained Lua fork of iamcco/markdown-preview.nvim (no Node.js needed).
+-- Its name differs from the plugin in LazyVim's lang.markdown extra, so disable that one.
+--  TODO: drop once LazyVim/LazyVim#7264 is merged
 return {
+  { "iamcco/markdown-preview.nvim", enabled = false },
   {
-    "selimacerbas/markdown-preview.nvim",
-    dependencies = { "selimacerbas/live-server.nvim" },
-    build = false,
-    cmd = function()
-      return { "MarkdownPreview", "MarkdownPreviewRefresh", "MarkdownPreviewStop" }
-    end,
-    keys = function()
-      return {
-        { "<leader>cp", "<cmd>MarkdownPreview<cr>", ft = "markdown", desc = "Markdown Preview" },
-        { "<leader>cP", "<cmd>MarkdownPreviewStop<cr>", ft = "markdown", desc = "Markdown Preview Stop" },
-      }
-    end,
+    "selimacerbas/mdkite.nvim",
+    cmd = "MdKite",
+    keys = {
+      { "<leader>cp", "<cmd>MdKite toggle<cr>", ft = "markdown", desc = "Markdown Preview" },
+    },
     opts = {},
-    config = function(_, opts)
-      require("markdown_preview").setup(opts)
-    end,
   },
+  { "selimacerbas/kitehost.nvim", lazy = true },
 }
