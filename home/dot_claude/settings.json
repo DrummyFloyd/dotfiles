@@ -15,8 +15,21 @@
       "Bash(glab mr create:*)"
     ],
     "deny": ["Read(*.env)", "Bash(rm:*)", "Read(*.sec)"],
-    "ask": ["Bash(gh pr create:*)", "Bash(git push:*)"],
+    "ask": ["Bash(gh pr create:*)", "Bash(git push:*)", "Bash(kubectl exec:*)"],
     "defaultMode": "default"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -e '.tool_input.command | test(\"(^|[^|])[|]([^|]|$)\")' >/dev/null && { echo 'Pipe forbidden: use Read/Grep or separate commands.' >&2; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ]
   },
   "enabledPlugins": {
     "crowdsec@crowdsecurity": true,
