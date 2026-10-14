@@ -15,7 +15,16 @@
       "Bash(glab mr create:*)"
     ],
     "deny": ["Read(*.env)", "Bash(rm:*)", "Read(*.sec)"],
-    "ask": ["Bash(gh pr create:*)", "Bash(git push:*)", "Bash(kubectl exec:*)"],
+    "ask": [
+      "Bash(gh pr create:*)",
+      "Bash(git push:*)",
+      "Bash(kubectl exec:*)",
+      "Bash(kubectl * exec *)",
+      "Bash(k exec:*)",
+      "Bash(k * exec *)",
+      "Bash(kubectl debug:*)",
+      "Bash(kubectl * debug *)"
+    ],
     "defaultMode": "default"
   },
   "hooks": {
