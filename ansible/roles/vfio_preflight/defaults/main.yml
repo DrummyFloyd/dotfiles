@@ -1,0 +1,10 @@
+---
+# PCI addresses of the GPU handed to VMs (all its functions: video, audio...).
+vfio_gpu_devices: []
+
+# VMs described for libvirt_vm; only pci_passthrough is read here.
+libvirt_vms: []
+
+# Fail instead of warning when IOMMU is off. Leave false on a first run:
+# vfio_host enables IOMMU, which only takes effect after a reboot.
+vfio_preflight_require_iommu: false
