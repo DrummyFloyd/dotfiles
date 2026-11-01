@@ -1,1 +1,3 @@
 export HYPRLAND_NO_SD_NOTIFY=1
+# 0.57 asks rtkit for SCHED_RR; any >200ms main-thread stall gets it SIGKILLed (hyprwm/Hyprland#16648)
+export HYPRLAND_NO_RT=1
