@@ -94,7 +94,3 @@ Files in `apps/` are defaults: a style replaces one by shipping a file of the sa
 
 - Colours: `~/.config/zen/` (`user.js`, `chrome/userChrome.css`), linked into the default profile by the `93-link-zen-profile` script.
 - Extensions: `root/etc/zen/policies/policies.json` (`ExtensionSettings`). Listed ones are reinstalled if missing and can be disabled, not removed; others install normally from Zen.
-
-## Known issue
-
-Hyprland 0.56 can crash when a monitor is disabled (`leader+P`) right after a full config reload (`leader+SHIFT+R`, `leader+P` → _all monitors_, or `chezmoi apply` touching hypr files). Switching themes doesn't trigger a full reload.
